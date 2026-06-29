@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iyc/app/theme/theme_helper.dart';
 import 'package:iyc/model/offline_model/database/districts.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/utils/constants.dart';
 
 import '../dropdown_text_field.dart';
@@ -15,9 +16,12 @@ class DistrictPickerDropDownNSUI extends StatelessWidget {
             this.labelcolor,
 
       required this.selectedConstituency,
+      this.icon,
       this.viewOnly = false,
       this.isRegistrationPage = false})
       : super(key: key);
+
+  final IconData? icon;
 
   final Districts? currentDistrict;
   final List<Districts>? districtList;
@@ -39,10 +43,10 @@ class DistrictPickerDropDownNSUI extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "${isRegistrationPage ? "Home " : ""}District",
-                  style: TextStyle(color:labelcolor?? Colors.blueAccent, fontSize: 14),
-                ),
+                FieldLabelNSUI(
+                    icon: icon,
+                    label: "${isRegistrationPage ? "Home " : ""}District",
+                    color: labelcolor),
                 Container(
                   margin: EdgeInsets.only(
                     top: 5,
@@ -75,7 +79,7 @@ class DistrictPickerDropDownNSUI extends StatelessWidget {
                             style: theme.textTheme.bodyMedium!.copyWith(color: Colors.grey)
                             // Constants.formFieldItemTextStyle,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: theme.textTheme.bodyLarge!.color,

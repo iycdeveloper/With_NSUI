@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iyc/app/theme/theme_helper.dart';
 import 'package:iyc/model/offline_model/database/states.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/nusi/widgets/dropdown_text_field_nsui.dart';
 import 'package:iyc/utils/constants.dart';
 
@@ -15,8 +16,11 @@ class StatePickerDropDownNSUI extends StatelessWidget {
       required this.selectedState,
       this.viewOnly = false,
       this.labelcolor,
+      this.icon,
       this.isRegistrationPage = false})
       : super(key: key);
+
+  final IconData? icon;
 
   final States? currentState;
   final List<States>? stateList;
@@ -38,11 +42,10 @@ class StatePickerDropDownNSUI extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "${isRegistrationPage ? "Home " : ""}State",
-                  style: TextStyle(
-                      color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-                ),
+                FieldLabelNSUI(
+                    icon: icon,
+                    label: "${isRegistrationPage ? "Home " : ""}State",
+                    color: labelcolor),
                 Container(
                   margin: const EdgeInsets.only(
                     top: 5,
@@ -73,7 +76,7 @@ class StatePickerDropDownNSUI extends StatelessWidget {
                                 .copyWith(color: Colors.grey),
                             // Constants.formFieldItemTextStyle,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: theme.textTheme.bodyLarge!.color,

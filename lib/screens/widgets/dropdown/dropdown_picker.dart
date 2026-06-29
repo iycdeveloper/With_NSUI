@@ -75,7 +75,7 @@ class DropDownPicker extends StatelessWidget {
                             hintText,
                             style: Constants.formFieldItemTextStyle,
                           ),
-                          icon: const Icon(
+                          icon: const FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 20,
                             color: Color(0xff788EA9),

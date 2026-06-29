@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iyc/app/theme/theme_helper.dart';
 import 'package:iyc/model/offline_model/database/assembly.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/utils/constants.dart';
 
 import '../dropdown_text_field.dart';
@@ -15,8 +16,11 @@ class AssemblyPickerDropDownNSUI extends StatelessWidget {
       required this.selectedAssembly,
       this.viewOnly = false,
       this.labelcolor,
+      this.icon,
       this.title = "University"})
       : super(key: key);
+
+  final IconData? icon;
 
   final Assembly? currentAssembly;
   final List<Assembly>? assemblyList;
@@ -35,11 +39,7 @@ class AssemblyPickerDropDownNSUI extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-                ),
+                FieldLabelNSUI(icon: icon, label: title, color: labelcolor),
                 Container(
                   margin: EdgeInsets.only(
                     top: 5,
@@ -70,7 +70,7 @@ class AssemblyPickerDropDownNSUI extends StatelessWidget {
                                   .copyWith(color: Colors.grey)
                               // Constants.formFieldItemTextStyle,
                               ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: theme.textTheme.bodyLarge!.color,

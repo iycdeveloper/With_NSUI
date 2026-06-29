@@ -56,7 +56,7 @@ class DistrictPickerDropDown extends StatelessWidget {
                             selectedConstituency,
                             style: Constants.formFieldItemTextStyle,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 20,
                             color: Color(0xff788EA9),

@@ -52,7 +52,7 @@ class CategoryPickerWidget extends StatelessWidget {
                           hint: Text(
                             hintText,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 15,
                             color: Colors.grey.shade600,

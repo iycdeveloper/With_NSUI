@@ -33,11 +33,12 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
             width: double.infinity,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                     colors: [
-                  Color(0xFF4193D0),
-                  Color(0xFF3367B1),
+                  Color(0xFF1356BF),
+                  Color(0xFF5B2EC4),
+                  Color(0xFF2CC7E2),
                 ])),
             // padding: EdgeInsets.only(bottom: 235.v),
             child: SingleChildScrollView(
@@ -55,7 +56,13 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
                         padding: EdgeInsets.all(mediaQueryData.size.width * 0.05),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.15),
+                                  blurRadius: 24,
+                                  offset: const Offset(0, 12))
+                            ]),
                         child: Column(
                           children: [
                             const SizedBox(
@@ -63,25 +70,50 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
                             ),
                             Column(
                               children: [
-                                Text(
+                                Container(
+                                  height: 76,
+                                  width: 76,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xFFEAF1FC),
+                                        Color(0xFFF3ECFF)
+                                      ],
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: const Color(0xFF1356BF)
+                                              .withOpacity(0.18),
+                                          blurRadius: 16,
+                                          offset: const Offset(0, 6))
+                                    ],
+                                  ),
+                                  child: Image.asset(
+                                      'assets/nsui/applogo/playstore.png'),
+                                ),
+                                const SizedBox(height: 16),
+                                const Text(
                                   'Sign Up',
-                                  style: theme.textTheme.titleLarge!.copyWith(
-                                      // color: Colors.white,
-                                      fontSize:
-                                          mediaQueryData.size.height * 0.03),
+                                  style: TextStyle(
+                                      color: Color(0xFF1F2A44),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 6,
                                 ),
                                 Text(
-                                  'Create an account to continue!',
-                                  style: theme.textTheme.bodyLarge!.copyWith(
-                                      color: Colors.lightBlue,
-                                      fontSize:
-                                          mediaQueryData.size.height * 0.015),
+                                  'Join the movement — create your account 🚀',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.grey[600], fontSize: 13),
                                 ),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 24,
                                 ),
                                 
                                 CustomFloatingTextFieldNSUI(
@@ -308,23 +340,39 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
                                 SizedBox(
                                   height: mediaQueryData.size.height * 0.03,
                                 ),
-                                SizedBox(
-                                    width: mediaQueryData.size.width,
-                                    height: mediaQueryData.size.height * 0.05,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFF1D61E7),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10))),
-                                        onPressed: () {
-                                          controller.onTapRegister();
-                                        },
-                                        child: Text(
-                                          "Register",
-                                          style: theme.textTheme.bodyLarge!
-                                              .copyWith(color: Colors.white),
-                                        ))),
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.onTapRegister();
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 54,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color(0xFF1356BF),
+                                          Color(0xFF2CC7E2)
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: const Color(0xFF1356BF)
+                                                .withOpacity(0.35),
+                                            blurRadius: 16,
+                                            offset: const Offset(0, 8))
+                                      ],
+                                    ),
+                                    child: const Text(
+                                      "Register",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
                                 SizedBox(
                                   height: mediaQueryData.size.height * 0.05,
                                 ),

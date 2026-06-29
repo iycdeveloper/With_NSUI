@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iyc/app/core/app_export.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/utils/constants.dart';
 
 class TextFieldWithLabelNSUI extends StatelessWidget {
   final String? hintText;
+  final IconData? icon;
   final TextEditingController? controller;
   final String label;
   final TextInputType? keyBoardType;
@@ -26,6 +28,7 @@ class TextFieldWithLabelNSUI extends StatelessWidget {
   const TextFieldWithLabelNSUI(
       {Key? key,
       this.hintText,
+      this.icon,
       this.textFieldHeight = 55,
       this.controller,
       required this.label,
@@ -53,11 +56,7 @@ class TextFieldWithLabelNSUI extends StatelessWidget {
         crossAxisAlignment:
             centerLabel ? CrossAxisAlignment.center : CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style:
-                TextStyle(color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-          ),
+          FieldLabelNSUI(icon: icon, label: label, color: labelcolor),
           // Container(
           //     height: textFieldHeight,
           //     margin: EdgeInsets.only(top: 7),

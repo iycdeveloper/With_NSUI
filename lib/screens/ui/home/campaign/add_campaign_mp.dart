@@ -600,7 +600,7 @@ class _AddCampaignMpState extends State<AddCampaignMp> {
                                       style: Constants.formFieldItemTextStyle
                                           .copyWith(color: Colors.grey)),
                                   title: Text("कमलनाथ ने क्या 11 वचन दिए हैं..."),
-                                  buttonIcon: Icon(
+                                  buttonIcon: FaIcon(
                                     FontAwesomeIcons.angleDown,
                                     size: 20,
                                     color: Color(0xff788EA9),
@@ -1189,7 +1189,7 @@ class _AddCampaignMpState extends State<AddCampaignMp> {
                               style: Constants.formFieldItemTextStyle
                                   .copyWith(color: Colors.grey)),
                           title: Text("लाभ लेने इच्छुक गारंटी"),
-                          buttonIcon: Icon(
+                          buttonIcon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 20,
                             color: Color(0xff788EA9),

@@ -7,6 +7,7 @@ import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/nusi/widgets/date_picker_widget_nsui.dart';
 import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
 import 'package:iyc/nusi/widgets/education_dropdown_nsui.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/nusi/widgets/state_picker_dropdown_nsui.dart';
 import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
 import 'package:iyc/nusi/widgets/upload_button_nsui.dart';
@@ -18,7 +19,6 @@ import 'package:iyc/screens/widgets/button/upload_button.dart' as upload;
 import 'package:iyc/screens/widgets/dropdown/assembly_picker_dropdown_nsui.dart';
 import 'package:iyc/screens/widgets/dropdown/district_picker_dropdown_nsui.dart';
 import 'package:iyc/screens/widgets/network_loading.dart';
-import 'package:iyc/screens/widgets/u_round_button.dart';
 import 'package:iyc/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -98,19 +98,49 @@ class _NominationsMainState extends State<NominationsMain> {
                               padding: EdgeInsets.only(
                                   left: mediaQueryData.size.width * 0.05,
                                   right: mediaQueryData.size.width * 0.05),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                       colors: [
-                                    const Color(0xFF2CC7E2).withOpacity(0.1),
-                                    Colors.white
+                                    Color(0xFFF1F4FF),
+                                    Color(0xFFF8FAFF)
                                   ])),
                               child: GestureDetector(
                                 onTap: () => FocusScope.of(context).unfocus(),
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 14, left: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Candidate Details ✍️',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF1F2A44)),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Fill in your details to file the nomination',
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.grey[600]),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       DropDownPickerNSUI(
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
@@ -121,12 +151,14 @@ class _NominationsMainState extends State<NominationsMain> {
                                             model.changeCandidateLevel(val);
                                           },
                                           labelText: "Level Of Candidate",
+                                          icon: Icons.workspace_premium_outlined,
                                           hintText: "Select Candidate level"),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
 
                                         label: "Full Name",
+                                        icon: Icons.person_outline,
                                         hintText: "Full Name",
 
                                         // focusNode: model.usernameFocus,
@@ -159,12 +191,14 @@ class _NominationsMainState extends State<NominationsMain> {
                                         pickedFile: model.pickedProfileFile,
                                         showImage: model.showProfileImage,
                                         labelText: 'Upload Photo',
+                                        icon: Icons.add_a_photo_outlined,
                                       ),
 
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
                                         label: "Phone Number",
+                                        icon: Icons.phone_outlined,
                                         hintText: "Phone Number",
                                         keyBoardType: TextInputType.phone,
                                         controller: model.mobileController,
@@ -181,6 +215,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                             theme.textTheme.bodyLarge!.color,
 
                                         label: "Student ID",
+                                        icon: Icons.badge_outlined,
                                         hintText: "Student ID",
                                         // focusNode: model.usernameFocus,
                                         // nextFocus: model.lastNameFocus,
@@ -215,6 +250,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         pickedFile: model.pickedStudentIdFile,
                                         showImage: model.showStudentIdImage,
                                         labelText: 'Upload Student ID Card',
+                                        icon: Icons.assignment_ind_outlined,
                                       ),
                                       DropDownPickerNSUI(
                                           labelcolor:
@@ -225,18 +261,20 @@ class _NominationsMainState extends State<NominationsMain> {
                                             model.changeIdProof(val);
                                           },
                                           labelText: "Select ID Proof",
+                                          icon: Icons.verified_user_outlined,
                                           hintText: "Select ID Proof"),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
-                                        label: "Govenment ID Card",
-                                        hintText: "Govenment ID Card",
+                                        label: "Aadhaar ID Card",
+                                        icon: Icons.credit_card_outlined,
+                                        hintText: "Aadhaar ID Card",
                                         keyBoardType: TextInputType.name,
                                         controller:
                                             model.idCardNumberController,
                                         validation: (value) {
                                           if (value.isEmpty) {
-                                            return 'Enter A Valid Govenment ID  Number';
+                                            return 'Enter A Valid Aadhaar Number';
                                           }
                                           return null;
                                         },
@@ -245,8 +283,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                         lablecolor:
                                             theme.textTheme.bodyLarge!.color,
                                         buttonTextLabel: model.showIdImage
-                                            ? "Change Id card (F)"
-                                            : "Upload Id Card (Front)",
+                                            ? "Change Aadhaar Card (F)"
+                                            : "Upload Aadhaar Card (Front)",
                                         onTap: (str) => context
                                             .read<NominationsProvider>()
                                             .pickDocument(
@@ -255,15 +293,16 @@ class _NominationsMainState extends State<NominationsMain> {
                                                 upload.DocumentType.idFront),
                                         pickedFile: model.pickedIdFile,
                                         showImage: model.showIdImage,
-                                        labelText: 'Upload Id Card (Front)',
+                                        labelText: 'Upload Aadhaar Card (Front)',
+                                        icon: Icons.image_outlined,
                                       ),
                                       UploadButtonImageNSUI(
                                         lablecolor:
                                             theme.textTheme.bodyLarge!.color,
                                         buttonTextLabel:
                                             model.showIdDocumentBack
-                                                ? "Change Id card (B)"
-                                                : "Upload Id Card (Back)",
+                                                ? "Change Aadhaar Card (B)"
+                                                : "Upload Aadhaar Card (Back)",
                                         onTap: (str) => context
                                             .read<NominationsProvider>()
                                             .pickDocument(
@@ -272,9 +311,11 @@ class _NominationsMainState extends State<NominationsMain> {
                                                 upload.DocumentType.idBack),
                                         pickedFile: model.pickedIdBackFile,
                                         showImage: model.showIdDocumentBack,
-                                        labelText: 'Upload Id Card (Back)',
+                                        labelText: 'Upload Aadhaar Card (Back)',
+                                        icon: Icons.collections_outlined,
                                       ),
                                       DatePickerWidgetNSUI(
+                                          icon: Icons.cake_outlined,
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
                                           selectedDate: model.selectedDate,
@@ -347,12 +388,14 @@ class _NominationsMainState extends State<NominationsMain> {
                                         pickedFile: model.pickedDobFile,
                                         showImage: model.showDobProof,
                                         labelText: 'Upload DOB Proof',
+                                        icon: Icons.event_available_outlined,
                                       ),
                                       EducationDropdownNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
 
                                         labelText: "Education",
+                                        icon: Icons.school_outlined,
                                         hintText: "Select highest Education",
                                         // viewOnly: model.disableFields,
                                         currentValue: model.selectedEducation,
@@ -365,6 +408,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                             model.educationalDetailsList,
                                       ),
                                       StatePickerDropDownNSUI(
+                                        icon: Icons.public,
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
 
@@ -385,6 +429,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         // },
                                       ),
                                       DistrictPickerDropDownNSUI(
+                                          icon: Icons.location_city_outlined,
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
                                           currentDistrict:
@@ -409,6 +454,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
                                           title: 'University',
+                                          icon: Icons.account_balance_outlined,
                                           currentAssembly:
                                               model.selectedAssembly,
                                           assemblyList: model.assemblyList,
@@ -438,25 +484,27 @@ class _NominationsMainState extends State<NominationsMain> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  "College",
-                                                  style: TextStyle(
-                                                      color: theme.textTheme
-                                                          .bodyLarge!.color,
-                                                      fontSize: 14),
+                                                FieldLabelNSUI(
+                                                  icon: Icons.apartment_outlined,
+                                                  label: "College",
+                                                  color: theme.textTheme
+                                                      .bodyLarge!.color,
                                                 ),
                                                 Container(
                                                   decoration: BoxDecoration(
                                                       color: Colors.white,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              10),
+                                                              14),
                                                       boxShadow: [
                                                         BoxShadow(
-                                                            color: Colors
-                                                                .grey[200]!,
-                                                            spreadRadius: 1.2,
-                                                            blurRadius: 0.6),
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.06),
+                                                            blurRadius: 12,
+                                                            offset:
+                                                                const Offset(
+                                                                    0, 4)),
                                                       ]),
 
                                                   //  Constants
@@ -516,6 +564,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                                   .changeBooth(value);
                                             },
                                             labelText: "College",
+                                            icon: Icons.apartment_outlined,
                                             labelcolor: theme
                                                 .textTheme.bodyLarge!.color,
                                             hintText: "Select a College",
@@ -541,12 +590,14 @@ class _NominationsMainState extends State<NominationsMain> {
                                         pickedFile: model.pickedVideoFile,
                                         showImage: model.showVideoFile,
                                         lable: 'Upload Video',
+                                        icon: Icons.videocam_outlined,
                                       ),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
 
                                         label: "Email Id",
+                                        icon: Icons.email_outlined,
                                         hintText: "Email Id",
 
                                         // focusNode: model.emailFocus,
@@ -569,6 +620,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         // viewOnly: model.disableFields,
                                         listValues: model.genders,
                                         labelText: "Gender",
+                                        icon: Icons.wc_outlined,
                                         hintText: "Select a gender",
                                         currentValue: model.selectedGender,
                                       ),
@@ -582,6 +634,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                             model.changeCategory(val);
                                           },
                                           labelText: "Category",
+                                          icon: Icons.category_outlined,
                                           hintText: "Select Category"),
                                       if (model.isCategoryNeedDocuments ||
                                           model.selectedCategory == 'O')
@@ -602,6 +655,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                           showImage:
                                               model.showPickedCategoryFile,
                                           labelText: 'Upload Category Document',
+                                          icon: Icons.description_outlined,
                                         ),
                                       DropDownPickerNSUI(
                                         labelcolor:
@@ -613,6 +667,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         // viewOnly: model.disableFields,
                                         listValues: model.bloodGroups,
                                         labelText: "Blood Group",
+                                        icon: Icons.bloodtype_outlined,
                                         hintText: "Select a Blood Group",
                                         currentValue: model.selectedBloodGroup,
                                       ),
@@ -629,6 +684,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         // viewOnly: model.disableFields,
                                         listValues: model.bPLsubsidyYesorNo,
                                         labelText: "BPL Subsidy",
+                                        icon: Icons.savings_outlined,
                                         hintText: "BPL Subsidy",
                                         currentValue:
                                             model.bplStatusVal == 1 ? 'Y' : 'N',
@@ -649,6 +705,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                           pickedFile: model.pickedBPLFile,
                                           showImage: model.showBplImage,
                                           labelText: 'BPL Document',
+                                          icon: Icons.folder_copy_outlined,
                                         ),
                                       DropDownPickerNSUI(
                                         labelcolor:
@@ -661,6 +718,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         // viewOnly: model.disableFields,
                                         listValues: model.criminalcaseYseorNo,
                                         labelText: "Criminal Case",
+                                        icon: Icons.gavel_outlined,
                                         hintText: "Criminal Case",
                                         currentValue:
                                             model.pendingCaseValue ? 'Y' : 'N',
@@ -713,6 +771,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                           pickedFile: model.pickedCaseFile,
                                           showImage: model.showPickedCaseFile,
                                           labelText: 'Case File',
+                                          icon: Icons.folder_outlined,
                                         ),
                                       //
 
@@ -1513,14 +1572,41 @@ class _NominationsMainState extends State<NominationsMain> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      URoundButton(
-                                        height:
-                                            mediaQueryData.size.height * 0.065,
-                                        margin: const EdgeInsets.all(5),
-                                        title: "Apply",
+                                      GestureDetector(
                                         onTap: () async {
                                           model.getNominationAmount(context);
                                         },
+                                        child: Container(
+                                          height: mediaQueryData.size.height *
+                                              0.065,
+                                          margin: const EdgeInsets.all(5),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFF1356BF),
+                                                Color(0xFF2CC7E2)
+                                              ],
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFF1356BF)
+                                                    .withOpacity(0.35),
+                                                blurRadius: 16,
+                                                offset: const Offset(0, 8),
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Text(
+                                            'Apply',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 20,

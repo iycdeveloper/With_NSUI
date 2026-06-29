@@ -344,7 +344,7 @@ class _EventDetailsState extends State<EventDetails> {
         child: Container(
           width: 60,
           height: 60,
-          child: Center(child: FaIcon(icon, color: color, size: 40)),
+          child: Center(child: Icon(icon, color: color, size: 40)),
         ),
         onTap: onClicked,
       );

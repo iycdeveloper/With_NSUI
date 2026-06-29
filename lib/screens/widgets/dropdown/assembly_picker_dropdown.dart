@@ -53,7 +53,7 @@ class AssemblyPickerDropDown extends StatelessWidget {
                             selectedAssembly,
                             style: Constants.formFieldItemTextStyle,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 20,
                             color: Color(0xff788EA9),

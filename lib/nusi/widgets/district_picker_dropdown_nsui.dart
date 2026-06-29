@@ -65,7 +65,7 @@ class DistrictPickerDropDownNSUI extends StatelessWidget {
                             style: theme.textTheme.bodyMedium!.copyWith(color: Colors.grey)
                             // Constants.formFieldItemTextStyle,
                           ),
-                          icon: const Icon(
+                          icon: const FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: Colors.blueAccent,

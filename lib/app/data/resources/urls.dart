@@ -1,6 +1,6 @@
 class Urls {
   static const _productionUrlIYC =
-      "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/";
+      "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/";
 
   static const _baseUrl = _productionUrlIYC;
   static const baseUrl = _baseUrl;

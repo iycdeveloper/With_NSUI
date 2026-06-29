@@ -4,7 +4,6 @@ import 'package:iyc/app/core/utils/image_constant.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/app_bar/custom_app_bar.dart';
-import 'package:iyc/app/widgets/custom_elevated_button.dart';
 import 'package:iyc/provider/nomination/nominations_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,177 +14,172 @@ class NominationHelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          // drawer: HomePageDrawer(),
-          backgroundColor: Colors.white,
-          appBar: CustomAppBar(
-              leadingWidth: 44.h,
-              leading: AppbarImage(
-                  onTap: () {
-                    Get.back();
-                  },
-                  svgPath: ImageConstant.imgBiarrowleftIndigo800,
-                  margin: EdgeInsets.only(left: 20.h, top: 15.v, bottom: 15.v)),
-              title: AppbarSubtitle1(
-                  text: "Nomination", margin: EdgeInsets.only(left: 12.h)),
-              styleType: Style.standard),
-          body: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                    const Color(0xFF2CC7E2).withOpacity(0.1),
-                    Colors.white
-                  ])),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                        bottom: 20, top: 0, left: 20, right: 20),
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(
+            leadingWidth: 44.h,
+            leading: AppbarImage(
+                onTap: () {
+                  Get.back();
+                },
+                svgPath: ImageConstant.imgBiarrowleftIndigo800,
+                margin: EdgeInsets.only(left: 20.h, top: 15.v, bottom: 15.v)),
+            title: AppbarSubtitle1(
+                text: "Nomination", margin: EdgeInsets.only(left: 12.h)),
+            styleType: Style.standard),
+        body: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFFF1F4FF), Color(0xFFF8FAFF)],
+            ),
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Banner
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'assets/nsui/banner/nominationbanner.jpeg',
                     width: double.infinity,
-                    height: 190.v,
-                    decoration: BoxDecoration(
-                        // border: Border.all(color: Colors.grey),
-                        boxShadow: [
-                          BoxShadow(color: Colors.grey[200]!, spreadRadius: 1.2)
-                        ],
-                        borderRadius: BorderRadius.circular(16),
-                        image: const DecorationImage(
-                            image: AssetImage(
-                                'assets/nsui/banner/nominationbanner.jpeg'),
-                            fit: BoxFit.fitWidth)),
+                    height: 180,
+                    fit: BoxFit.cover,
                   ),
-                  // const HandIconIYC(),
-
-                  // Container(
-                  //   padding: const EdgeInsets.all(5),
-                  //   child: Text(
-                  //     "Welcome",
-                  //     style: TextStyle(
-                  //         fontSize: 22,
-                  //         fontWeight: FontWeight.w800,
-                  //         color: Constants.themeGradients[0]),
-                  //   ),
-                  // ),
-                  // RichText(
-                  //   text: new TextSpan(
-                  //     children: [
-                  //       new TextSpan(
-                  //         text:
-                  //             "•	Nomination will be conducted prior to the membership.\n"
-                  //             "•	All aspirants will have to file nominations in order to be eligible.\n"
-                  //             "•	List of nomination along with Candidate Serial Number will be displayed on IYC website.\n"
-                  //             "•	Members will have to choose the “Candidate Serial Number” to select the candidate of their choice for each committee level when they fill up the membership form:",
-                  //         style: new TextStyle(color: Colors.black),
-                  //       ),
-                  //       new TextSpan(
-                  //         text: '',
-                  //         style: new TextStyle(color: Colors.blue),
-                  //         recognizer: new TapGestureRecognizer()..onTap = () {},
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        const MembershipWelcomePageTextItem(
-                          labelText:
-                              "Nomination will be conducted prior to the membership.",
-                        ),
-                        const MembershipWelcomePageTextItem(
-                          labelText:
-                              "All aspirants will have to file nominations in order to be eligible.",
-                        ),
-                        const MembershipWelcomePageTextItem(
-                          labelText:
-                              "Nomination along with candidate serial number will be displayed on NSUI website.",
-                        ),
-                        // MembershipWelcomePageTextItem(
-                        //   labelText: "District GS Committee",
-                        // ),
-                        const MembershipWelcomePageTextItem(
-                          labelText:
-                              "Members will have to choose the \"Candidate Serial Number\" to select the candidate of their choice for each committee level when they fill up the membership form:",
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "1. Assembly Committee",
-                                  style: theme.textTheme.bodyLarge!.copyWith(),
-                                ),
-                                Text(
-                                  "2. District President Committee",
-                                  style: theme.textTheme.bodyLarge!.copyWith(),
-                                ),
-                                Text(
-                                  "3.  District GS Committee",
-                                  style: theme.textTheme.bodyLarge!.copyWith(),
-                                ),
-                                Text(
-                                  "4. State GS Committee",
-                                  style: theme.textTheme.bodyLarge!.copyWith(),
-                                ),
-                                Text(
-                                  "5. State President Committee",
-                                  style: theme.textTheme.bodyLarge!.copyWith(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // const Spacer(),
-                  // URoundButton(
-                  //     title: "Apply",
-                  //     onTap: () async {
-                  //       context
-                  //           .read<NominationsProvider>()
-                  //           .agrCreateBatch(context);
-                  //     })
-                ],
-              )),
-          bottomNavigationBar: Container(
-              padding: EdgeInsets.only(
-                  left: 20.h, right: 20.h, bottom: 10.v, top: 10.v),
-              decoration: AppDecoration.outlineBlue100011,
-              child: CustomElevatedButton(
+                ),
+                const SizedBox(height: 22),
+                const Text(
+                  'Before you begin 🗳️',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1F2A44)),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Quick rules for filing your nomination',
+                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 16),
+                // Rules card
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          spreadRadius: 0.6,
-                          blurRadius: 0.6
-                        )
-                      ]),
-                  buttonStyle: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10), // This creates sharp, unrounded corners
-                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  text: "Apply",
-                  onTap: () {
-                    context.read<NominationsProvider>().agrCreateBatch(context);
-                  }))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      MembershipWelcomePageTextItem(
+                        labelText:
+                            "Nomination will be conducted prior to the membership.",
+                      ),
+                      MembershipWelcomePageTextItem(
+                        labelText:
+                            "All aspirants will have to file nominations in order to be eligible.",
+                      ),
+                      MembershipWelcomePageTextItem(
+                        labelText:
+                            "Nomination along with candidate serial number will be displayed on NSUI website.",
+                      ),
+                      MembershipWelcomePageTextItem(
+                        labelText:
+                            "Members will have to choose the \"Candidate Serial Number\" to select the candidate of their choice for each committee level when they fill up the membership form.",
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Committee levels card
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF1356BF), Color(0xFF5B2EC4)],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1356BF).withOpacity(0.3),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Committee Levels',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 14),
+                      _CommitteeItem(index: 1, label: 'Assembly Committee'),
+                      _CommitteeItem(
+                          index: 2, label: 'District President Committee'),
+                      _CommitteeItem(index: 3, label: 'District GS Committee'),
+                      _CommitteeItem(index: 4, label: 'State GS Committee'),
+                      _CommitteeItem(
+                          index: 5, label: 'State President Committee'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.fromLTRB(18, 12, 18, 16),
+          color: Colors.white,
+          child: GestureDetector(
+            onTap: () {
+              context.read<NominationsProvider>().agrCreateBatch(context);
+            },
+            child: Container(
+              height: 54,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF1356BF), Color(0xFF2CC7E2)],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF1356BF).withOpacity(0.35),
+                    blurRadius: 16,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const Text(
+                'Apply',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -198,27 +192,74 @@ class MembershipWelcomePageTextItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.all(5),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: CustomImageView(
-            svgPath: ImageConstant.imgBoldArrow,
-            color: const Color(0xFF4193D0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1356BF).withOpacity(0.10),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.check_rounded,
+                size: 16, color: Color(0xFF1356BF)),
           ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.75,
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(
-            labelText,
-            style: theme.textTheme.bodyMedium!
-                .copyWith(color: theme.textTheme.bodyLarge!.color),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              labelText,
+              style: const TextStyle(
+                fontSize: 14,
+                height: 1.4,
+                color: Color(0xFF3A4357),
+              ),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
+    );
+  }
+}
+
+class _CommitteeItem extends StatelessWidget {
+  final int index;
+  final String label;
+
+  const _CommitteeItem({required this.index, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Container(
+            height: 26,
+            width: 26,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Text(
+              '$index',
+              style: const TextStyle(
+                  color: Color(0xFF1356BF),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

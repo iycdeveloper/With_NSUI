@@ -22,7 +22,7 @@ class PaymentRepo {
         'Authorization': 'Bearer ${AppConstants.authorisationKey}'
       }, responseType: ResponseType.plain))
           .get(
-        "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/ccavenue/GetRSA.php?access_code=${await LocalStorageServices().getPaymentAccessCode()}&order_id=$transactionID",
+        "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/ccavenue/GetRSA.php?access_code=${await LocalStorageServices().getPaymentAccessCode()}&order_id=$transactionID",
       );
 
       return ApiResponse.withSuccess(result);
@@ -39,7 +39,7 @@ class PaymentRepo {
       var base64encoded = base64.encode(utf8.encode(data));
 
       final result = await dioClient.post(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/BatchFees.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/BatchFees.php",
           data: base64encoded);
       return ApiResponse.withSuccess(result);
     } catch (e) {
@@ -57,7 +57,7 @@ class PaymentRepo {
       var base64encoded = base64.encode(utf8.encode(data));
 
       final result = await dioClient.post(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/payment_initiateonline.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/payment_initiateonline.php",
           data: base64encoded);
       return ApiResponse.withSuccess(result);
     } catch (e) {
@@ -76,7 +76,7 @@ class PaymentRepo {
       var base64encoded = base64.encode(utf8.encode(data));
 
       final result = await dioClient.post(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/payment_check.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/payment_check.php",
           data: base64encoded);
       return ApiResponse.withSuccess(result);
     } catch (e) {
@@ -93,7 +93,7 @@ class PaymentRepo {
       var base64encoded = base64.encode(utf8.encode(data));
 
       final result = await dioClient.post(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/payment_status.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/payment_status.php",
           data: base64encoded);
       return ApiResponse.withSuccess(result);
     } catch (e) {
@@ -153,7 +153,7 @@ class PaymentRepo {
       var base64encoded = base64.encode(utf8.encode(data));
 
       final result = await DioClient.second().post(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php",
           data: base64encoded);
       return ApiResponse.withSuccess(result);
     } catch (e) {

@@ -293,7 +293,7 @@ class _AddCampaignState extends State<AddCampaign> {
                           title: Text(model.isEnglish
                               ? "Selected a Promise"
                               : " ಆಯ್ಕೆಮಾಡಿ"),
-                          buttonIcon: Icon(
+                          buttonIcon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 20,
                             color: Color(0xff788EA9),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iyc/app/core/app_export.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/screens/widgets/video_player_local.dart';
 import 'package:iyc/screens/widgets/video_recoder_widget.dart';
 import 'package:iyc/utils/constants.dart';
@@ -95,11 +96,13 @@ class UploadButtonImageNSUI extends StatelessWidget {
   final bool showImage;
   final onlyCamera;
   final Color? lablecolor;
+  final IconData? icon;
 
   const UploadButtonImageNSUI(
       {required this.onTap,
       this.pickedFile,
       this.lablecolor,
+      this.icon,
       this.readOnly = false,
       required this.labelText,
       this.buttonTextLabel = "Upload Media",
@@ -117,11 +120,7 @@ class UploadButtonImageNSUI extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            labelText,
-            style:
-                TextStyle(color: lablecolor ?? Colors.blueAccent, fontSize: 14),
-          ),
+          FieldLabelNSUI(icon: icon, label: labelText, color: lablecolor),
           Container(
             margin: const EdgeInsets.only(
               top: 5,
@@ -383,12 +382,14 @@ class UploadButtonVideo extends StatelessWidget {
   final bool showImage;
   final String lable;
   final Color? labelcolor;
+  final IconData? icon;
 
   const UploadButtonVideo({
     required this.onTap,
     this.pickedFile,
     required this.lable,
     this.labelcolor,
+    this.icon,
     this.buttonTextLabel = "Upload Media",
     Key? key,
     required this.showImage,
@@ -401,11 +402,7 @@ class UploadButtonVideo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            lable,
-            style:
-                TextStyle(color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-          ),
+          FieldLabelNSUI(icon: icon, label: lable, color: labelcolor),
           Container(
             margin: const EdgeInsets.only(
               top: 5,

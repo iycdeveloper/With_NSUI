@@ -84,7 +84,7 @@ class MembershipRepo {
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(
-          'https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/epicCheck.php',
+          'https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/epicCheck.php',
           options: Options(
             contentType: Headers.textPlainContentType,
             responseType: ResponseType.plain,

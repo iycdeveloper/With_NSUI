@@ -70,7 +70,7 @@ class StateNominationPickerWidget extends StatelessWidget {
                           .copyWith(color: Colors.grey),
                       //Constants.formFieldItemTextStyle,
                     ),
-                    icon: Icon(
+                    icon: FaIcon(
                       FontAwesomeIcons.angleDown,
                       size: 18,
                       color: theme.textTheme.bodyLarge!.color,

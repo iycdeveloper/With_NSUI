@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iyc/app/theme/theme_helper.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/utils/constants.dart';
 
 class DatePickerWidgetNSUI extends StatelessWidget {
@@ -7,11 +8,13 @@ class DatePickerWidgetNSUI extends StatelessWidget {
   final Function onTap;
   final String labelText;
   final Color? labelcolor;
+  final IconData? icon;
 
   const DatePickerWidgetNSUI({
     Key? key,
     this.selectedDate,
     this.labelcolor,
+    this.icon,
     required this.onTap,
     this.labelText = "DOB",
   }) : super(key: key);
@@ -23,11 +26,7 @@ class DatePickerWidgetNSUI extends StatelessWidget {
         alignment: Alignment.center,
         // padding: const EdgeInsets.only(top: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            labelText,
-            style:
-                TextStyle(color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-          ),
+          FieldLabelNSUI(icon: icon, label: labelText, color: labelcolor),
           GestureDetector(
               child: Container(
                 margin: const EdgeInsets.only(top: 7),

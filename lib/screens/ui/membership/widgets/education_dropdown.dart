@@ -57,7 +57,7 @@ class EducationDropdown extends StatelessWidget {
                             hintText,
                             //  style: Constants.formFieldItemTextStyle,
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 15,
                             color: Colors.grey.shade600,

@@ -12,12 +12,15 @@ import 'package:iyc/model/data_model/batch_member.dart';
 class MembershipMemberListScreen extends StatelessWidget {
   const MembershipMemberListScreen();
 
+  static const Color _ink = Color(0xFF1F2A44);
+  static const Color _indigo = Color(0xFF1356BF);
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MembershipMemberListController>(builder: (logic) {
       return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xFFF8FAFF),
+          backgroundColor: const Color(0xFFF1F4FF),
           appBar: CustomAppBar(
             leadingWidth: 44.h,
             leading: AppbarImage(
@@ -29,395 +32,36 @@ class MembershipMemberListScreen extends StatelessWidget {
             title: AppbarSubtitle1(
                 text: "${logic.batchId}", margin: EdgeInsets.only(left: 12.h)),
             styleType: Style.standard,
-            actions: const [
-              // logic.isSyncMembers
-              //     ? SizedBox.shrink()
-              //     : IconButton(
-              //         onPressed: () async {
-              //           var aggrId =
-              //               await LocalStorageServices().getAgrIDMembership();
-              //           Log.printDLog(aggrId);
-              //           TextEditingController sumController =
-              //               TextEditingController();
-              //           var random = Random();
-              //           int randomNumber1 = random.nextInt(98) + 1;
-              //           int randomNumber2 = random.nextInt(98) + 1;
-              //           mediaQueryData = MediaQuery.of(Get.context!);
-              //           Get.bottomSheet(
-              //             Container(
-              //                 decoration: BoxDecoration(
-              //                     color: Colors.white,
-              //                     borderRadius: BorderRadius.only(
-              //                         topLeft: Radius.circular(24),
-              //                         topRight: Radius.circular(24))),
-              //                 width: double.maxFinite,
-              //                 height: 372.v,
-              //                 child: SingleChildScrollView(
-              //                   child: Column(children: [
-              //                     Container(
-              //                         decoration: BoxDecoration(
-              //                             // color: Colors.white,
-              //                             color: appTheme.indigo800,
-              //                             borderRadius: BorderRadius.only(
-              //                                 topLeft: Radius.circular(24),
-              //                                 topRight: Radius.circular(24))),
-              //                         width: double.maxFinite,
-              //                         padding: EdgeInsets.symmetric(
-              //                             horizontal: 20.h, vertical: 17.v),
-              //                         // decoration: AppDecoration.heading,
-              //                         child: Row(
-              //                           mainAxisAlignment:
-              //                               MainAxisAlignment.spaceBetween,
-              //                           children: [
-              //                             Text("Verification",
-              //                                 style: CustomTextStyles
-              //                                     .titleMediumOnPrimaryContainer18),
-              //                             AppbarImage1(
-              //                               onTap: () {
-              //                                 Get.back();
-              //                               },
-              //                               svgPath:
-              //                                   ImageConstant.imgEpcircleclose,
-              //                             ),
-              //                           ],
-              //                         )),
-              //                     SizedBox(height: 33.v),
-              //                     CustomImageView(
-              //                         svgPath: ImageConstant.imgTrash,
-              //                         height: 69.adaptSize,
-              //                         width: 69.adaptSize),
-              //                     SizedBox(height: 25.v),
-              //                     Text("$randomNumber1 + $randomNumber2 = ?",
-              //                         style: theme.textTheme.titleLarge),
-              //                     SizedBox(height: 9.v),
-              //                     Padding(
-              //                       padding: const EdgeInsets.symmetric(
-              //                           horizontal: 20.0),
-              //                       child: TextField(
-              //                         controller: sumController,
-              //                         keyboardType: TextInputType.number,
-              //                         decoration: InputDecoration(
-              //                           hintText: 'Enter sum of above number',
-              //                           border: OutlineInputBorder(
-              //                             borderRadius: BorderRadius.circular(
-              //                                 8.0), // Circular border
-              //                             borderSide: BorderSide(
-              //                               color: Colors.blue, // Border color
-              //                               width: 2.0, // Border width
-              //                             ),
-              //                           ),
-              //                           enabledBorder: OutlineInputBorder(
-              //                             borderRadius:
-              //                                 BorderRadius.circular(8.0),
-              //                             borderSide: BorderSide(
-              //                               color: Colors.blue,
-              //                               width: 2.0,
-              //                             ),
-              //                           ),
-              //                           focusedBorder: OutlineInputBorder(
-              //                             borderRadius:
-              //                                 BorderRadius.circular(8.0),
-              //                             borderSide: BorderSide(
-              //                               color: Colors.blue,
-              //                               width: 2.0,
-              //                             ),
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                     SizedBox(height: 25.v),
-              //                     CustomOutlinedButton(
-              //                         width: 220.h,
-              //                         text: "Submit".toUpperCase(),
-              //                         buttonStyle:
-              //                             CustomButtonStyles.outlinePrimary,
-              //                         onTap: () {
-              //                           if (sumController.text.isEmpty) {
-              //                             Get.back();
-              //                             CustomSnackBar.showErrorSnackBar(
-              //                                 'Verification failed');
-              //                           }
-              //                           if (randomNumber1 + randomNumber2 ==
-              //                               int.parse(sumController.text)) {
-              //                             Get.back();
-              //                             logic.initiateSyncMembership(context);
-              //                           } else {
-              //                             Get.back();
-              //                             CustomSnackBar.showErrorSnackBar(
-              //                                 'Verification failed');
-              //                           }
-              //                         }),
-              //                     SizedBox(height: 5.v)
-              //                   ]),
-              //                 )),
-              //           );
-              //         },
-              //         icon: Icon(
-              //           Icons.sync,
-              //           color: Color(0xFF244974),
-              //         )),
-            ],
           ),
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                  const Color(0xFF2CC7E2).withOpacity(0.1),
-                  Colors.white
-                ])),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFFF1F4FF), Color(0xFFF8FAFF)])),
             child: ListView(
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 28),
               children: [
-                const SizedBox(
-                  height: 24,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Member Data',
-                        style: TextStyle(
-                          color: Color(
-                              0xFF244974), // This is the hex code for #244974
-                          fontFamily: 'Be Vietnam Pro',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Member Data',
+                      style: TextStyle(
+                          color: _ink,
                           fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          height: 1.4, // This is equivalent to 140% line height
-                        ),
-                      ),
-                      if (logic.membershipRequestList.isEmpty) ...[
-                        InkWell(
-                          onTap: () async {
-                            final aggrId = await LocalStorageServices()
-                                .getAgrIDMembership();
-                            final stateCode =
-                                await LocalStorageServices().getSTCode();
-                            if (logic.membershipRequestList.length >= 10) {
-                              CustomSnackBar.showErrorSnackBar(
-                                  'Only 10 members are allowed');
-                              return;
-                            }
-                            RoutesManagement.goToMembershipMemberCreateScreen(
-                                BatchMember(
-                                    memberId:
-                                        (logic.membershipRequestList.length + 1)
-                                                    .toString()
-                                                    .length <
-                                                2
-                                            ? logic.batchId +
-                                                "0" +
-                                                (logic.membershipRequestList
-                                                            .length +
-                                                        1)
-                                                    .toString()
-                                                    .padLeft(1, "0")
-                                            : logic.batchId +
-                                                "0" +
-                                                (logic.membershipRequestList
-                                                            .length +
-                                                        1)
-                                                    .toString(),
-                                    batchId: logic.batchId,
-                                    isSync: "0",
-                                    aggrId: aggrId,
-                                    stateCode: stateCode),
-                                isUpdate: false);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                               boxShadow: const [
-                                          BoxShadow(
-                                              color: Colors.grey,
-                                              spreadRadius: 0.5,
-                                              blurRadius: 0.5)
-                                        ],
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color:
-                                    const Color(0xFF2CC7E2), // Cyan-Blue color
-                                width: 1.0,
-                              ),
-                              color: const Color(0xFF0297F3), // White background
-                            ),
-                            child: const Text(
-                              'ADD MEMBER',
-                              style: TextStyle(
-                                color: Colors.white, // Cyan-Blue color
-                                fontFamily: 'Be Vietnam Pro',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                height: 1.4, // 140% line height
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      ],
-                    ],
-                  ),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    if (logic.membershipRequestList.isEmpty)
+                      _addMemberButton(logic),
+                  ],
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                if (logic.membershipRequestList.isEmpty) ...[
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'No record found, for the given batch no',
-                        style: TextStyle(
-                          color: Color(
-                              0xFF244974), // This is the hex code for #244974
-                          fontFamily: 'Be Vietnam Pro',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          height: 1.4, // This is equivalent to 140% line height
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                if (logic.membershipRequestList.isNotEmpty) ...[
-                  Container(
-                    height: 54.v,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.only(left: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFFC0D5F3), // Stroke color
-                        width: 1.0,
-                      ),
-                      color: Colors.white, // White background
-                    ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Color(0xFF365B85),
-                            size: 20,
-                          ),
-                          label: Text(
-                            'Search Batch-Id',
-                            style: TextStyle(
-                              color: Color(0xFF365B85), // Body color
-                              fontFamily: 'Be Vietnam Pro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              height: 1.0, // 100% line height
-                            ),
-                          )),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    height: 64,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(12),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                      color: Color(0xFF244974),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Member Id',
-                          style: titleStyle,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 18.0),
-                          child: Text(
-                            'Sync',
-                            style: titleStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xFFC0D5F3), // Stroke color
-                        width: 1.0,
-                      ),
-                    ),
-                    child: Column(
-                      children: List.generate(
-                        logic.membershipRequestList.length,
-                        (index) {
-                          return InkWell(
-                            onTap: () {
-                              RoutesManagement.goToMembershipMemberViewScreen(
-                                  logic.membershipRequestList[index],
-                                  isUpdate: (logic.membershipRequestList[index]
-                                          .isSync ==
-                                      "1"),
-                                  isUpdateToDB: true);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 12),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Color(0xFFC0D5F3), // Stroke color
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '${logic.membershipRequestList[index].memberId}',
-                                    style: const TextStyle(
-                                      color: Color(0xFF365B85), // Body color
-                                      fontFamily: 'Be Vietnam Pro',
-                                      fontSize: 14,
-                                      fontWeight:
-                                          FontWeight.w400, // Normal font weight
-                                      height: 1.6, // 160% line height
-                                    ),
-                                  ),
-                                  Text(
-                                    logic.membershipRequestList[index].isSync ==
-                                            "1"
-                                        ? "Completed"
-                                        : "Pending",
-                                    style: const TextStyle(
-                                      color: Color(0xFF365B85), // Body color
-                                      fontFamily: 'Be Vietnam Pro',
-                                      fontSize: 14,
-                                      fontWeight:
-                                          FontWeight.w400, // Normal font weight
-                                      height: 1.6, // 160% line height
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ]
+                const SizedBox(height: 18),
+                if (logic.membershipRequestList.isEmpty)
+                  _emptyState()
+                else
+                  for (final member in logic.membershipRequestList)
+                    _memberCard(member),
               ],
             ),
           ),
@@ -425,12 +69,163 @@ class MembershipMemberListScreen extends StatelessWidget {
       );
     });
   }
-}
 
-TextStyle titleStyle = const TextStyle(
-  color: Colors.white, // White color
-  fontFamily: 'Be Vietnam Pro',
-  fontSize: 16,
-  fontWeight: FontWeight.w400, // Normal font weight
-  height: 1.6, // 160% line height
-);
+  Widget _addMemberButton(MembershipMemberListController logic) {
+    return GestureDetector(
+      onTap: () async {
+        final aggrId = await LocalStorageServices().getAgrIDMembership();
+        final stateCode = await LocalStorageServices().getSTCode();
+        if (logic.membershipRequestList.length >= 10) {
+          CustomSnackBar.showErrorSnackBar('Only 10 members are allowed');
+          return;
+        }
+        RoutesManagement.goToMembershipMemberCreateScreen(
+            BatchMember(
+                memberId: (logic.membershipRequestList.length + 1)
+                            .toString()
+                            .length <
+                        2
+                    ? logic.batchId +
+                        "0" +
+                        (logic.membershipRequestList.length + 1)
+                            .toString()
+                            .padLeft(1, "0")
+                    : logic.batchId +
+                        "0" +
+                        (logic.membershipRequestList.length + 1).toString(),
+                batchId: logic.batchId,
+                isSync: "0",
+                aggrId: aggrId,
+                stateCode: stateCode),
+            isUpdate: false);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1356BF), Color(0xFF2CC7E2)],
+          ),
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: _indigo.withOpacity(0.30),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: const Row(
+          children: [
+            Text('Add Member',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600)),
+            SizedBox(width: 6),
+            Icon(Icons.add_rounded, color: Colors.white, size: 18),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _emptyState() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 70),
+      child: Column(
+        children: [
+          Icon(Icons.group_off_rounded, size: 56, color: Colors.grey[400]),
+          const SizedBox(height: 14),
+          Text('No members yet',
+              style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+          Text(
+            'No records found for this batch.\nTap "Add Member" to get started.',
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(color: Colors.grey[500], fontSize: 13, height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _memberCard(BatchMember member) {
+    final bool synced = member.isSync == "1";
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () {
+          RoutesManagement.goToMembershipMemberViewScreen(
+            member,
+            isUpdate: (member.isSync == "1"),
+            isUpdateToDB: true,
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 14,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _indigo.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.person_rounded, color: _indigo),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${member.memberId}',
+                      style: const TextStyle(
+                          color: _ink,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 6),
+                    _miniChip(synced ? 'Completed' : 'Pending',
+                        synced ? const Color(0xFF11998E) : Colors.orange),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right_rounded, color: Color(0xFF9AA7BD)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _miniChip(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        text,
+        style:
+            TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}

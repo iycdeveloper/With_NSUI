@@ -25,11 +25,12 @@ class OtpScreenNSUI extends GetWidget<LoginNSUIController> {
             width: double.infinity,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                     colors: [
-                  Color(0xFF4193D0),
-                  Color(0xFF3367B1),
+                  Color(0xFF1356BF),
+                  Color(0xFF5B2EC4),
+                  Color(0xFF2CC7E2),
                 ])),
             // padding: EdgeInsets.only(bottom: 235.v),
             child: Column(
@@ -41,15 +42,37 @@ class OtpScreenNSUI extends GetWidget<LoginNSUIController> {
                     padding: EdgeInsets.all(mediaQueryData.size.width * 0.05),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 24,
+                              offset: const Offset(0, 12))
+                        ]),
                     child: Column(
                       children: [
-                        SizedBox(
-                          width: mediaQueryData.size.width * 0.2,
-                          height: mediaQueryData.size.height * 0.1,
+                        Container(
+                          height: 92,
+                          width: 92,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFFEAF1FC), Color(0xFFF3ECFF)],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: const Color(0xFF1356BF)
+                                      .withOpacity(0.18),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6))
+                            ],
+                          ),
                           child: Image.asset(
                             "assets/nsui/applogo/playstore.png",
-                            fit: BoxFit.fill,
+                            fit: BoxFit.contain,
                           ),
                         ),
                         const SizedBox(
@@ -57,20 +80,21 @@ class OtpScreenNSUI extends GetWidget<LoginNSUIController> {
                         ),
                         Column(
                           children: [
-                            Text(
+                            const Text(
                               'Verify Your Phone',
-                              style: theme.textTheme.titleLarge!.copyWith(
-                                  // color: Colors.white,
-                                  fontSize: mediaQueryData.size.height * 0.03),
+                              style: TextStyle(
+                                  color: Color(0xFF1F2A44),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 6,
                             ),
                             Text(
-                              'Enter the code we  send to your phone number.',
-                              style: theme.textTheme.bodyLarge!.copyWith(
-                                  color: Colors.black,
-                                  fontSize: mediaQueryData.size.height * 0.015),
+                              'Enter the code we sent to your phone number.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 13),
                             ),
 
                             Obx(
@@ -87,31 +111,47 @@ class OtpScreenNSUI extends GetWidget<LoginNSUIController> {
                             SizedBox(
                               height: mediaQueryData.size.height * 0.03,
                             ),
-                            SizedBox(
-                                width: mediaQueryData.size.width,
-                                height: mediaQueryData.size.height * 0.05,
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueAccent,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    onPressed: () {
-                                      if (controller.otpController.value.text
-                                          .isNotEmpty) {
-                                        controller.verifyLoginOtp(controller
-                                            .otpController.value.text
-                                            .toString());
-                                      } else {
-                                        CustomSnackBar.showWarningSnackBar(
-                                            'Please enter correct OTP');
-                                      }
-                                    },
-                                    child: Text(
-                                      "Log In",
-                                      style: theme.textTheme.bodyLarge!
-                                          .copyWith(color: Colors.white),
-                                    ))),
+                            GestureDetector(
+                              onTap: () {
+                                if (controller.otpController.value.text
+                                    .isNotEmpty) {
+                                  controller.verifyLoginOtp(controller
+                                      .otpController.value.text
+                                      .toString());
+                                } else {
+                                  CustomSnackBar.showWarningSnackBar(
+                                      'Please enter correct OTP');
+                                }
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 54,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF1356BF),
+                                      Color(0xFF2CC7E2)
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: const Color(0xFF1356BF)
+                                            .withOpacity(0.35),
+                                        blurRadius: 16,
+                                        offset: const Offset(0, 8))
+                                  ],
+                                ),
+                                child: const Text(
+                                  "Log In",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
                             SizedBox(
                               height: mediaQueryData.size.height * 0.05,
                             ),

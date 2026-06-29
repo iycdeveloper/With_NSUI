@@ -33,8 +33,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _initWebViewController() {
     final paymentUrl = "${widget.source == "LC"
-        ? "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/legalCell/initiateLegalCellPayment.php?"
-        : "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php?"}SOURCE=${widget.source}&ORDER_NUMBER=${widget.transactionId}&AMOUNT=1";
+        ? "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/legalCell/initiateLegalCellPayment.php?"
+        : "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php?"}SOURCE=${widget.source}&ORDER_NUMBER=${widget.transactionId}&AMOUNT=1";
 print(paymentUrl);
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)

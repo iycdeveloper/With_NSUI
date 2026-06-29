@@ -442,325 +442,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                             ],
                           ),
                         ))
-                    : Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        padding: EdgeInsets.only(
-                            left: mediaQueryData.size.width * 0.05,
-                            right: mediaQueryData.size.width * 0.05),
-                        decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [Color(0xFF2CC7E2), Colors.white])),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: height * 0.01,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          spreadRadius: 0.1,
-                                          blurRadius: 0.8)
-                                    ]),
-                                width: mediaQueryData.size.width,
-                                height: mediaQueryData.size.height * 0.18,
-                                clipBehavior: Clip.hardEdge,
-                                child: Image.asset(
-                                    fit: BoxFit.fill,
-                                    'assets/nsui/banner/newbanner2.jpeg'),//homebanner
-                              ),
-                              SizedBox(
-                                height: height * 0.01,
-                              ),
-                              Container(
-                                width: mediaQueryData.size.width,
-                                // height: mediaQueryData.size.height * 0.2,
-                                padding: EdgeInsets.all(
-                                    mediaQueryData.size.height * 0.01),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.black12,
-                                          spreadRadius: 0.1,
-                                          blurRadius: 0.6)
-                                    ],
-                                    border: Border.all(
-                                        color: const Color(0xFFC0D5F3)),
-                                    borderRadius: BorderRadius.circular(
-                                        mediaQueryData.size.width * 0.03)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Welcome Back!",
-                                      style: theme.textTheme.bodyLarge!
-                                          .copyWith(shadows: [
-                                        Shadow(
-                                          offset: const Offset(1,
-                                              1), // horizontal & vertical shadow offset
-                                          blurRadius: 4, // softness of shadow
-                                          color: Colors.black
-                                              .withOpacity(0.2), // shadow color
-                                        ),
-                                      ], fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Divider(),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height:
-                                              mediaQueryData.size.height * 0.08,
-                                          width:
-                                              mediaQueryData.size.width * 0.16,
-                                          decoration: BoxDecoration(
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                  color: Colors.black,
-                                                  spreadRadius: 0.2,
-                                                  blurRadius: 0.6)
-                                            ],
-                                            shape: BoxShape.circle,
-                                            // borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(
-                                                width: 1,
-                                                color: Colors.grey[200]!),
-                                          ),
-                                          clipBehavior: Clip
-                                              .hardEdge, // Ensures image respects borderRadius
-                                          child: Image.network(
-                                            controller.profileController
-                                                    .userDetail?.profilePic ??
-                                                '',
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              // If image fails to load, show a fallback image
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  'assets/nsui/images/Vector2.png',
-                                                  // fit: BoxFit.fill,
-                                                  scale: 0.5,
-                                                  // height: height * 0.02,
-                                                  // width: width * 0.10,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              controller.profileController
-                                                          .userDetail !=
-                                                      null
-                                                  ? controller.profileController
-                                                      .userDetail!.name
-                                                  : 'Test',
-                                              style: theme.textTheme.bodyLarge!
-                                                  .copyWith(shadows: [
-                                                Shadow(
-                                                  offset: const Offset(1,
-                                                      1), // horizontal & vertical shadow offset
-                                                  blurRadius:
-                                                      4, // softness of shadow
-                                                  color: Colors.black
-                                                      .withOpacity(
-                                                          0.2), // shadow color
-                                                ),
-                                              ], fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              controller.profileController
-                                                          .userDetail ==
-                                                      null
-                                                  ? ''
-                                                  : controller.maskMobileNumber(
-                                                      controller
-                                                          .profileController
-                                                          .userDetail!
-                                                          .mobile),
-                                              style: theme.textTheme.bodyMedium!
-                                                  .copyWith(color: Colors.grey),
-                                            ),
-                                            CustomRatingBar(
-                                                itemSize: 12,
-                                                alignment: Alignment.center,
-                                                itemCount: 5,
-                                                color: const Color(0xffFFB800),
-                                                initialRating: int.parse(
-                                                        controller
-                                                            .profileController
-                                                            .authPoint) *
-                                                    1.0),
-                                            // image
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                width: mediaQueryData.size.width,
-                                // height: mediaQueryData.size.height * 0.2,
-                                padding: EdgeInsets.all(
-                                    mediaQueryData.size.height * 0.01),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          spreadRadius: 0.1,
-                                          blurRadius: 0.8)
-                                    ],
-                                    border: Border.all(
-                                        color: const Color(0xFFC0D5F3)),
-                                    borderRadius: BorderRadius.circular(
-                                        mediaQueryData.size.width * 0.03)),
-
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Election",
-                                      style: theme.textTheme.bodyLarge!
-                                          .copyWith(shadows: [
-                                        Shadow(
-                                          offset: const Offset(1,
-                                              1), // horizontal & vertical shadow offset
-                                          blurRadius: 4, // softness of shadow
-                                          color: Colors.black
-                                              .withOpacity(0.2), // shadow color
-                                        ),
-                                      ], fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              menucontainer(
-                                                  'Membership', 'membership',
-                                                  () {
-                                                RoutesManagement
-                                                    .goToMembershipBatchScreen();
-                                              }),
-                                              menucontainer(
-                                                  'Nomination', 'nomination',
-                                                  () {
-                                                toPage(
-                                                  context,
-                                                  MultiProvider(
-                                                      providers: [
-                                                        ChangeNotifierProvider(
-                                                          create: (context) =>
-                                                              NominationsProvider(
-                                                                  apiConfig: sl<
-                                                                      ApiConfig>()),
-                                                        ),
-                                                        ChangeNotifierProvider(
-                                                            create: (context) =>
-                                                                ViewNominationVm())
-                                                      ],
-                                                      child:
-                                                          const NominationsMain()),
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              menucontainer(
-                                                  'Scrutiny', 'scrutiny', () {
-                                                CustomSnackBar
-                                                    .showAlertSnackBar(
-                                                        'Comming Soon..');
-                                                // toPage(
-                                                //     context,
-                                                //     MultiProvider(
-                                                //         providers: [
-                                                //           ChangeNotifierProvider(
-                                                //             create: (context) =>
-                                                //                 ScrutinyBatchVM(
-                                                //                     scrutinyRepo:
-                                                //                         sl(),
-                                                //                     apiConfig:
-                                                //                         sl()),
-                                                //           )
-                                                //         ],
-                                                //         child:
-                                                //             const ScrutinyBatchList()));
-                                              }),
-                                              menucontainer(
-                                                  'RO Access', 'roaccess', () {
-                                                CustomSnackBar
-                                                    .showAlertSnackBar(
-                                                        'Comming Soon..');
-                                                // showRoAccessBottomSheet();
-                                              }),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              menucontainer('Result', 'result',
-                                                  () {
-                                                CustomSnackBar
-                                                    .showAlertSnackBar(
-                                                        'Comming Soon..');
-                                              }),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    : _buildGenZHome(context, controller),
                 // const SocialscreenNSUI(),
                 socialMediaPage(),
                 const ProfilescreenNSUI(),
@@ -966,46 +648,371 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
     });
   }
 
-  InkWell menucontainer(String titel, String svgname, Function()? onTap) {
-    return InkWell(
+  // ===================== Gen-Z home redesign =====================
+
+  Widget _buildGenZHome(BuildContext context, HomeNSUIController controller) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFF1F4FF), Color(0xFFF8FAFF)],
+        ),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(18, 14, 18, 28),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHero(controller),
+            const SizedBox(height: 18),
+            _buildBanner(),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text('Quick Actions',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1F2A44))),
+                Text('Election',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1356BF))),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                _bentoTile(
+                  title: 'Membership',
+                  subtitle: 'Add & manage',
+                  svgname: 'membership',
+                  colors: const [Color(0xFF1356BF), Color(0xFF3B82F6)],
+                  onTap: () => RoutesManagement.goToMembershipBatchScreen(),
+                ),
+                const SizedBox(width: 14),
+                _bentoTile(
+                  title: 'Nomination',
+                  subtitle: 'File yours',
+                  svgname: 'nomination',
+                  colors: const [Color(0xFFF7971E), Color(0xFFFF5F6D)],
+                  onTap: () {
+                    toPage(
+                      context,
+                      MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                              create: (context) => NominationsProvider(
+                                  apiConfig: sl<ApiConfig>()),
+                            ),
+                            ChangeNotifierProvider(
+                                create: (context) => ViewNominationVm())
+                          ],
+                          child: const NominationsMain()),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                _bentoTile(
+                  title: 'Scrutiny',
+                  subtitle: 'Coming soon',
+                  svgname: 'scrutiny',
+                  colors: const [Color(0xFF7B2FF7), Color(0xFFB14BF4)],
+                  onTap: () =>
+                      CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+                ),
+                const SizedBox(width: 14),
+                _bentoTile(
+                  title: 'RO Access',
+                  subtitle: 'Coming soon',
+                  svgname: 'roaccess',
+                  colors: const [Color(0xFF11998E), Color(0xFF38EF7D)],
+                  onTap: () =>
+                      CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            _wideTile(
+              title: 'Result',
+              subtitle: 'Live results & winners',
+              svgname: 'result',
+              colors: const [Color(0xFFFFB300), Color(0xFFFF7043)],
+              onTap: () => CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHero(HomeNSUIController controller) {
+    final name = controller.profileController.userDetail?.name ?? 'Member';
+    final mobile = controller.profileController.userDetail == null
+        ? ''
+        : controller.maskMobileNumber(
+            controller.profileController.userDetail!.mobile);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF1356BF), Color(0xFF5B2EC4), Color(0xFF2CC7E2)],
+        ),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1356BF).withOpacity(0.35),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 58,
+                width: 58,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Image.network(
+                  controller.profileController.userDetail?.profilePic ?? '',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset('assets/nsui/images/Vector2.png'),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Hey there 👋',
+                        style: TextStyle(color: Colors.white70, fontSize: 13)),
+                    const SizedBox(height: 2),
+                    Text(name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold)),
+                    if (mobile.isNotEmpty)
+                      Text(mobile,
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 12)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.18),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.bolt_rounded,
+                    color: Color(0xffFFD54F), size: 20),
+                const SizedBox(width: 8),
+                const Text('Your points',
+                    style: TextStyle(color: Colors.white, fontSize: 13)),
+                const Spacer(),
+                CustomRatingBar(
+                  itemSize: 16,
+                  alignment: Alignment.center,
+                  itemCount: 5,
+                  color: const Color(0xffFFD54F),
+                  initialRating:
+                      int.parse(controller.profileController.authPoint) * 1.0,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBanner() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: Stack(
+        children: [
+          Image.asset('assets/nsui/banner/newbanner2.jpeg',
+              width: double.infinity,
+              height: mediaQueryData.size.height * 0.20,
+              fit: BoxFit.cover),
+          Positioned(
+            left: 14,
+            top: 14,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.45),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: const Text('✦ Featured',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _bentoTile({
+    required String title,
+    required String subtitle,
+    required String svgname,
+    required List<Color> colors,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 152,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: colors,
+            ),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: colors.last.withOpacity(0.35),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/nsui/svg/$svgname.svg',
+                      height: 26,
+                      width: 26,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_outward_rounded,
+                      color: Colors.white, size: 20),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.85), fontSize: 11)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _wideTile({
+    required String title,
+    required String subtitle,
+    required String svgname,
+    required List<Color> colors,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: mediaQueryData.size.width * 0.3,
-        padding: EdgeInsets.all(mediaQueryData.size.height * 0.018),
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: colors,
+          ),
+          borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey[300]!, spreadRadius: 0.8, blurRadius: 0.8)
+              color: colors.last.withOpacity(0.35),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
           ],
-          borderRadius: BorderRadius.circular(10),
-          // border: Border.all(color: Colors.grey[200]!)
         ),
-        child: Column(
+        child: Row(
           children: [
-            SvgPicture.asset(
-              'assets/nsui/svg/$svgname.svg',
-              fit: BoxFit.cover,
-              height: mediaQueryData.size.height * 0.05,
-              width: mediaQueryData.size.width * 0.05,
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle),
+              child: SvgPicture.asset('assets/nsui/svg/$svgname.svg',
+                  height: 28, width: 28),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "$titel",
-              style: theme.textTheme.bodySmall!.copyWith(
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: const Offset(
-                        1, 1), // horizontal & vertical shadow offset
-                    blurRadius: 2, // softness of shadow
-                    color: Colors.black.withOpacity(0.1), // shadow color
-                  ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.9), fontSize: 12)),
                 ],
               ),
             ),
+            const Icon(Icons.arrow_forward_ios_rounded,
+                color: Colors.white, size: 18),
           ],
         ),
       ),

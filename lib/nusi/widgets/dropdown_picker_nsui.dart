@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/model/data_model/dropdown_item.dart';
+import 'package:iyc/nusi/widgets/field_label_nsui.dart';
 import 'package:iyc/nusi/widgets/dropdown_text_field_nsui.dart';
 import 'package:iyc/screens/widgets/dropdown_text_field.dart';
 import 'package:iyc/utils/constants.dart';
@@ -14,6 +15,7 @@ class DropDownPickerNSUI extends StatelessWidget {
     required this.onChanged,
     required this.labelText,
     required this.hintText,
+    this.icon,
     this.selectedBuilder,
     this.labelcolor,
     this.height,
@@ -30,6 +32,7 @@ class DropDownPickerNSUI extends StatelessWidget {
   final String labelText;
   final double? height;
   final bool viewOnly;
+  final IconData? icon;
   final GlobalKey? refKey;
 
   @override
@@ -46,11 +49,7 @@ class DropDownPickerNSUI extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  labelText,
-                  style: TextStyle(
-                      color: labelcolor ?? Colors.blueAccent, fontSize: 14),
-                ),
+                FieldLabelNSUI(icon: icon, label: labelText, color: labelcolor),
                 Container(
                   margin: const EdgeInsets.only(
                     top: 5,
@@ -90,7 +89,7 @@ class DropDownPickerNSUI extends StatelessWidget {
                             style: theme.textTheme.bodyMedium!
                                 .copyWith(color: Colors.grey),
                           ),
-                          icon: Icon(
+                          icon: FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: theme.textTheme.bodyLarge!.color,

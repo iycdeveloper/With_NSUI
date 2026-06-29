@@ -781,14 +781,14 @@ class MembershipMemberCreateScreen extends StatelessWidget {
               // titleText: 'Document',
               // defaultPadding: true,
               onlyCamera: true,
-              buttonTextLabel: "Upload Photo",
+              buttonTextLabel: "Upload Aadhaar Card Photo",
               onTap: (str) {
                 logic.pickDocument(str, logic.pickedDocumentBackFilePath,
                     upload.DocumentType.idBack, Get.context!);
               },
               pickedFile: logic.pickedDocumentBack,
               showImage: logic.pickedDocumentBackFilePath != null,
-              labelText: 'Upload Government ID',
+              labelText: 'Upload Aadhaar Card Photo',
             ),
             SizedBox(
               height: 10,
@@ -932,9 +932,9 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                 logic.changeStateGSNomination(val);
               },
               listValues: logic.stateGeneralSecretaryNominationsList,
-              labelText: "State General Secretary Candidate",
+              labelText: "District President Candidate",
               currentValue: logic.selectedStateGSNominations,
-              defaultValue: "Select State General Secretary Nomination",
+              defaultValue: "Select District President Nomination",
             ),
             StateNominationPickerWidget(
               lablecolor: theme.textTheme.bodyLarge!.color,
@@ -942,9 +942,9 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                 logic.changeDistrictNomination(val);
               },
               listValues: logic.districtNominationsList,
-              labelText: "District President Candidate",
+              labelText: "College President Candidate",
               currentValue: logic.selectedDistrictNominations,
-              defaultValue: "Select District President Nomination",
+              defaultValue: "College President Candidate",
             ),
             // StateNominationPickerWidget(
             //   lablecolor: theme.textTheme.bodyLarge!.color,

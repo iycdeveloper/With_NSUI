@@ -13,7 +13,7 @@ class SocialFeedsRepo {
   Future getSocialFeeds() async {
     try {
       Response result = await dioClient.get(
-          "https://nsui.ycea.in/ycea/ycea-api/service/iyc/api/v1.0/iyc_social/getSocialFeeds.php",
+          "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/iyc_social/getSocialFeeds.php",
           options: Options(
             contentType: Headers.textPlainContentType,
             responseType: ResponseType.plain,

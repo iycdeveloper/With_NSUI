@@ -77,7 +77,7 @@ class NominationsProvider extends ChangeNotifier {
   bool showError = false;
   String? selectedDate;
   String? selectedEducation;
-  String? selectedIdProof;
+  String? selectedIdProof = "AC";
   String? selectedCandidateLevel;
   DateTime eventDate = DateTime.now();
 
@@ -95,9 +95,7 @@ class NominationsProvider extends ChangeNotifier {
     DropdownItem("Bangalore University", "Bangalore University"),
   ];
   List<DropdownItem> idProofList = [
-    DropdownItem("10th Certificate", "10C"),
-    DropdownItem("Passport", "PP"),
-    DropdownItem("Driving Licence", "DL"),
+    DropdownItem("Aadhaar Card", "AC"),
   ];
   List<DropdownItem> genders = [
     DropdownItem("Male", "M"),

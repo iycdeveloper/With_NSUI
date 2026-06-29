@@ -28,11 +28,12 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
             width: double.infinity,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                     colors: [
-                  Color(0xFF4193D0),
-                  Color(0xFF3367B1),
+                  Color(0xFF1356BF),
+                  Color(0xFF5B2EC4),
+                  Color(0xFF2CC7E2),
                 ])),
             // padding: EdgeInsets.only(bottom: 235.v),
             child: Column(
@@ -44,15 +45,38 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                     padding: EdgeInsets.all(mediaQueryData.size.width * 0.05),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 24,
+                              offset: const Offset(0, 12))
+                        ]),
                     child: Column(
                       children: [
-                        CircleAvatar(
+                        Container(
+                          height: 92,
+                          width: 92,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFFEAF1FC), Color(0xFFF3ECFF)],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: const Color(0xFF1356BF)
+                                      .withOpacity(0.18),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6))
+                            ],
+                          ),
                           child: Image.asset(
                             "assets/nsui/applogo/playstore.png",
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
-                          radius: mediaQueryData.size.height*0.05,
                         ),
                         const SizedBox(
                           height: 20,
@@ -68,22 +92,22 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                                 //   print(result);
                                 // }
                               },
-                              child: Text(
+                              child: const Text(
                                 'Welcome !',
-                                style: theme.textTheme.titleLarge!.copyWith(
-                                    // color: Colors.white,
-                                    fontSize:
-                                        mediaQueryData.size.height * 0.03),
+                                style: TextStyle(
+                                    color: Color(0xFF1F2A44),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 6,
                             ),
                             Text(
                               'Login with your mobile number to continue.',
-                              style: theme.textTheme.bodyLarge!.copyWith(
-                                  color: Colors.black,
-                                  fontSize: mediaQueryData.size.height * 0.015),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 13),
                             ),
                             const SizedBox(
                               height: 20,
@@ -91,6 +115,7 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                             Obx(
                               () => TextFieldWithLabelNSUI(
                                 label: "Enter Phone Number",
+                                icon: Icons.phone_outlined,
                                 hintText: "Phone Number",
                                 // focusNode: model.usernameFocus,
                                 // nextFocus: model.lastNameFocus,
@@ -115,21 +140,37 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                             SizedBox(
                               height: mediaQueryData.size.height * 0.03,
                             ),
-                            SizedBox(
-                                width: mediaQueryData.size.width,
-                                height: mediaQueryData.size.height * 0.05,
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueAccent,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    onPressed: controller.onClickLogin,
-                                    child: Text(
-                                      "Next",
-                                      style: theme.textTheme.bodyLarge!
-                                          .copyWith(color: Colors.white),
-                                    ))),
+                            GestureDetector(
+                              onTap: controller.onClickLogin,
+                              child: Container(
+                                width: double.infinity,
+                                height: 54,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF1356BF),
+                                      Color(0xFF2CC7E2)
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: const Color(0xFF1356BF)
+                                            .withOpacity(0.35),
+                                        blurRadius: 16,
+                                        offset: const Offset(0, 8))
+                                  ],
+                                ),
+                                child: const Text(
+                                  "Next",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
                             SizedBox(
                               height: mediaQueryData.size.height * 0.05,
                             ),

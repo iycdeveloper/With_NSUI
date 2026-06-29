@@ -64,7 +64,7 @@ class CommonPickerDropDownNSUI extends StatelessWidget {
                             hinttext!,
                             style: Constants.formFieldItemTextStyle,
                           ),
-                          icon: const Icon(
+                          icon: const FaIcon(
                             FontAwesomeIcons.angleDown,
                             size: 18,
                             color: Colors.blueAccent,

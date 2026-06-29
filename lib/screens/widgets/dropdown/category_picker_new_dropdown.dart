@@ -111,7 +111,7 @@ class CategoryPickerNew extends StatelessWidget {
                           ),
                           icon: Padding(
                             padding: EdgeInsets.only(right: 11, bottom: 12.v),
-                            child: Icon(
+                            child: FaIcon(
                               FontAwesomeIcons.angleDown,
                               size: 10,
                               color: Color(0xff788EA9),

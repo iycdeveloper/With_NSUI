@@ -561,7 +561,7 @@ class _AddCampaignTLState extends State<AddCampaignTL> {
                               title: Text(model.isEnglish
                                   ? "Selected a Guarantees"
                                   : "ఒక హామీని ఎంచుకున్నారు"),
-                              buttonIcon: Icon(
+                              buttonIcon: FaIcon(
                                 FontAwesomeIcons.angleDown,
                                 size: 20,
                                 color: Color(0xff788EA9),
