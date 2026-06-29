@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:iyc/app/theme/theme_helper.dart';
+import 'package:iyc/utils/constants.dart';
+
+class DatePickerWidgetNSUI extends StatelessWidget {
+  final String? selectedDate;
+  final Function onTap;
+  final String labelText;
+  final Color? labelcolor;
+
+  const DatePickerWidgetNSUI({
+    Key? key,
+    this.selectedDate,
+    this.labelcolor,
+    required this.onTap,
+    this.labelText = "DOB",
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        alignment: Alignment.center,
+        // padding: const EdgeInsets.only(top: 10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            labelText,
+            style:
+                TextStyle(color: labelcolor ?? Colors.blueAccent, fontSize: 14),
+          ),
+          GestureDetector(
+              child: Container(
+                margin: const EdgeInsets.only(top: 7),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey[200]!,
+                          spreadRadius: 1.2,
+                          blurRadius: 0.6),
+                    ]),
+                //Constants.formItemDecoration,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    selectedDate != null
+                        ? Text(
+                            selectedDate!,
+                            style: theme.textTheme.bodyLarge!.copyWith(
+                                color: theme.textTheme.bodyLarge!.color,
+                                fontWeight: FontWeight.w500),
+                          )
+                        : Text(
+                            "DD/MM/YYYY",
+                            style:  Constants.formFieldItemTextStyle
+                                    .copyWith(color: Colors.grey),
+                          ),
+                    // Icon(Icons.calendar_today_rounded)
+                  ],
+                ),
+              ),
+              onTap: () => onTap()),
+        ]));
+  }
+}

@@ -1,0 +1,205 @@
+name: iyc
+description: IYC Program Registration.
+publish_to: 'none' 
+
+version: 18.9.6+496
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  amazon_cognito_identity_dart_2: ^3.8.0
+  another_stepper: ^1.2.2
+  app_settings: ^5.1.1
+  cached_network_image: ^3.4.1
+  calendar_view: ^1.0.0
+  camera: ^0.11.0+1
+    # git:
+    #   url: https://github.com/flutter/plugins.git
+    #   path: packages/camera/camera
+    #   ref: cfa709835ab85702ee8a9ed24bbe7a3fe736c3f5
+  carousel_slider: ^5.0.0
+  connectivity_plus: ^6.1.2
+  convex_bottom_bar: ^3.2.0
+  crop_image: ^1.0.15 # Not in use
+  cross_file: ^0.3.3+4 # need to check
+  cross_scroll: ^0.1.1
+  cupertino_icons: ^1.0.2
+  detectable_text_field: ^3.0.2 # Need to check
+  device_info_plus: ^11.2.1
+  dio: ^5.7.0
+  dropdown_button2:
+  dropdown_search: ^6.0.2
+  easy_stepper: ^0.8.5+1
+  file_picker: ^8.1.7
+  firebase_analytics: ^11.4.1
+  firebase_core: ^3.12.1
+  firebase_crashlytics: ^4.3.1
+  firebase_messaging: ^15.2.1
+  flutter:
+    sdk: flutter
+  # flutter_app_version_checker: ^0.3.2
+  flutter_emoji_feedback: ^1.0.3 # need to check
+  flutter_image: ^4.1.6
+  flutter_inappwebview: ^6.1.5
+  flutter_keyboard_visibility: ^6.0.0
+  flutter_local_notifications: ^18.0.1
+  flutter_parsed_text: ^2.2.1
+  flutter_pdfview: ^1.3.4
+  flutter_rating_bar: ^4.0.1
+  flutter_spinkit: ^5.2.0
+  flutter_stepindicator: ^0.1.7
+  flutter_svg: ^2.0.10
+  font_awesome_flutter: ^10.1.0
+  geocode: ^1.0.3
+  geocoding: ^3.0.0
+  geolocator: ^13.0.2
+  get: ^4.6.5
+  get_it:
+  google_fonts: ^6.2.1
+  google_maps_flutter:
+  grouped_list: ^6.0.0
+  hive:
+  hive_flutter:
+  htmltopdfwidgets: ^1.0.9
+  im_stepper: ^1.0.1+1
+  image_cropper: ^8.1.0
+  image_picker: ^1.1.2
+  internet_connection_checker: ^3.0.1
+  intl: ^0.20.1
+  # liveness_cam: ^0.0.8
+  location: ^7.0.1
+  logger: ^2.0.2+1
+  map_launcher: ^3.5.0
+  map_picker:
+  multi_select_flutter: ^4.1.2
+  path_provider: ^2.0.9
+  pdf: ^3.11.1
+  permission_handler: ^11.3.1
+  photo_view: ^0.15.0
+  pin_code_fields: ^8.0.1
+  pinput: ^5.0.1
+  provider:
+  readmore:
+  recaptcha_enterprise_flutter: ^18.5.1
+  rflutter_alert: ^2.0.4
+  screenshot: ^3.0.0
+  share_plus: ^10.1.4
+  shared_preferences:
+  shimmer: ^3.0.0
+  # slider_button: ^2.1.0
+  smooth_page_indicator: ^1.0.0+2
+  sms_autofill:
+  sqflite: ^2.0.0
+  table_calendar: ^3.2.0
+  timeago: ^3.2.2
+  toggle_switch: ^2.3.0
+  url_launcher: ^6.1.11
+  video_player: ^2.10.0
+  webview_flutter: ^4.10.0
+  webview_flutter_plus: ^0.4.10
+  youtube_player_iframe: ^5.2.1
+  # material_floating_search_bar_2: ^0.5.0
+  place_picker_google: ^0.0.14
+  # record: ^5.2.0
+  # workmanager: ^0.5.2
+  sqflite_common_ffi_web: ^0.4.5+4
+  widget_zoom: ^0.0.4
+  google_mlkit_face_detection: ^0.13.1
+  google_mlkit_commons: ^0.11.0
+  camera_android_camerax: ^0.6.17
+  # google_ml_kit: ^0.20.0
+  firebase_dynamic_links: ^6.1.7
+  get_ip_address: ^0.0.7
+  motion_tab_bar_v2: ^0.4.0
+  vibration: ^3.1.3
+  
+dependency_overrides:
+  camera:
+    git:
+      url: https://github.com/bottlepay/plugins.git
+      path: packages/camera/camera
+      ref: e1a4dba770da9bc3cf9f858bac6837083f8b9059
+
+dev_dependencies:
+  build_runner:
+  flutter_launcher_icons: "^0.14.3"
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^2.0.1
+  flutter_lints: ^1.0.0
+  change_app_package_name: ^1.4.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/nsui/applogo/playstore.png"
+
+android:
+  useAndroidX: true
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/nsui/applogo/
+    - assets/nsui/banner/
+    - assets/nsui/images/
+    - assets/nsui/svg/
+    - assets/captcha.html
+    - assets/images/
+    - assets/images/newlogo/
+    - assets/images/newsvg/
+    - assets/images/newuisvg/
+    - assets/images/newbottomicon/
+    - assets/icons/
+    - assets/iyc_icons/
+    - assets/gif_images/
+    - assets/metadata_iyc_agg_010725.db
+    - assets/TBL_MASTER_STATE_IYC.json
+    - assets/images/img_election.svg
+    - assets/images/down-arrow.png
+    - assets/images/img_view_vote.png
+    - assets/emoji/
+
+  fonts:
+    - family: Be Vietnam Pro
+      fonts:
+        - asset: assets/fonts/BeVietnamProSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BeVietnamProRegular.ttf
+          weight: 400
+        - asset: assets/fonts/BeVietnamProMedium.ttf
+          weight: 500
+        - asset: assets/fonts/BeVietnamProBold.ttf
+          weight: 700
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/RubikRegular.ttf
+          weight: 400
+        - asset: assets/fonts/RubikMedium.ttf
+          weight: 500
+    - family: ABeeZee
+      fonts:
+        - asset: assets/fonts/ABeeZeeRegular.ttf
+          weight: 400
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/PoppinsRegular.ttf
+          weight: 400
+        - asset: assets/fonts/PoppinsSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PoppinsBold.ttf
+          weight: 700
+        - asset: assets/fonts/PoppinsMedium.ttf
+          weight: 500
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/NunitoExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NunitoBold.ttf
+          weight: 700
+    - family: CustomFont
+      fonts:
+        - asset: assets/font/Blankids - Morthena Regular.ttf

@@ -1,0 +1,55 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "proven-entropy-396604",
+          "appId": "1:621348065220:android:645d23331ca09e4896de91",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "proven-entropy-396604",
+          "appId": "1:621348065220:ios:4ccbc666be0acceb96de91",
+          "uploadDebugSymbols": true,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "proven-entropy-396604",
+          "appId": "1:621348065220:ios:757a4d6d87a3213496de91",
+          "uploadDebugSymbols": true,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "proven-entropy-396604",
+          "configurations": {
+            "android": "1:621348065220:android:645d23331ca09e4896de91",
+            "ios": "1:621348065220:ios:4ccbc666be0acceb96de91",
+            "macos": "1:621348065220:ios:757a4d6d87a3213496de91",
+            "web": "1:621348065220:web:9698c62aa8788c4d96de91",
+            "windows": "1:621348065220:web:3e24cc98b904122696de91"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
