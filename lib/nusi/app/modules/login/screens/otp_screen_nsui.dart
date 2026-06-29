@@ -20,6 +20,7 @@ class OtpScreenNSUI extends GetWidget<LoginNSUIController> {
           child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
         body: Container(
             height: double.infinity,
             width: double.infinity,

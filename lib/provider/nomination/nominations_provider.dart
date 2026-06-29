@@ -198,10 +198,8 @@ class NominationsProvider extends ChangeNotifier {
   ];
   List<DropdownItem> candidateLevelList = [
     DropdownItem("State President", "10"),
-    DropdownItem("State General Secretary", "20"),
     DropdownItem("District President", "30"),
-    // DropdownItem("University President", "40"),
-    // DropdownItem("College President", "50"),
+    DropdownItem("College President", "50"),
   ];
 
   // - PYC President
