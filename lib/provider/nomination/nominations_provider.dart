@@ -197,8 +197,10 @@ class NominationsProvider extends ChangeNotifier {
     DropdownItem("Unknown", "U"),
   ];
   List<DropdownItem> candidateLevelList = [
-    DropdownItem("State President", "10"),
-    DropdownItem("District President", "30"),
+    // First level of nomination happens only at University and College
+    // DropdownItem("State President", "10"),
+    // DropdownItem("District President", "30"),
+    DropdownItem("University President", "40"),
     DropdownItem("College President", "50"),
   ];
 
