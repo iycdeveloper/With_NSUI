@@ -7,7 +7,6 @@ import 'package:iyc/app/modules/membership/controllers/membership_member_create_
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/app_bar/custom_app_bar.dart';
-import 'package:iyc/app/widgets/custom_elevated_button.dart';
 import 'package:iyc/app/widgets/custom_floating_drop_down.dart';
 import 'package:iyc/app/widgets/custom_floating_drop_down_nsui.dart';
 import 'package:iyc/app/widgets/custom_floating_text_field.dart';
@@ -47,10 +46,18 @@ class MembershipMemberCreateScreen extends StatelessWidget {
               styleType: Style.standard,
             ),
             bottomNavigationBar: _buildBottomNavBar(logic, context),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildStepper(logic),
+            body: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFFF1F4FF), Color(0xFFF8FAFF)],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildStepper(logic),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
@@ -83,6 +90,7 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                   ),
                 ),
               ],
+              ),
             ),
           );
         },
@@ -144,63 +152,78 @@ class MembershipMemberCreateScreen extends StatelessWidget {
     );
   }
 
+  Widget _gradientButton(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 54,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1356BF), Color(0xFF2CC7E2)],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF1356BF).withOpacity(0.30),
+              blurRadius: 14,
+              offset: const Offset(0, 7),
+            ),
+          ],
+        ),
+        child: Text(text,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+
   Widget _buildBottomNavBar(
       MembershipMemberCreateController logic, BuildContext context) {
+    final bool isLast = logic.activeStep == 3;
+    final container = (Widget child) => Container(
+          padding:
+              EdgeInsets.only(left: 18.h, right: 18.h, bottom: 12.v, top: 12.v),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(top: BorderSide(color: Color(0xFFE7EDF9))),
+          ),
+          child: child,
+        );
+
     if (logic.activeStep == 0) {
-      return Container(
-        padding: EdgeInsets.only(
-          left: 20.h,
-          right: 20.h,
-          bottom: 10.v,
-          top: 10.v,
-        ),
-        decoration: AppDecoration.outlineBlue100011,
-        child: CustomElevatedButton(
-          
-          buttonStyle: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Color(0xFF0297F3))),
-          text: "NEXT",
-          onTap: () => logic.next(context),
-        ),
-      );
+      return container(_gradientButton("Next", () => logic.next(context)));
     }
-    return Container(
-      padding: EdgeInsets.only(
-        left: 20.h,
-        right: 20.h,
-        bottom: 10.v,
-        top: 10.v,
-      ),
-      decoration: AppDecoration.outlineBlue100011,
-      child: Row(
+    return container(
+      Row(
         children: [
-          InkWell(
-            onTap: logic.previous,
-            child: Container(
-              width: 158,
-              height: 54,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: const Color(0xFFC0D5F3),
-                  width: 1.0,
+          Expanded(
+            child: GestureDetector(
+              onTap: logic.previous,
+              child: Container(
+                height: 54,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFC0D5F3)),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Text("Previous".toUpperCase()),
+                child: const Text("Previous",
+                    style: TextStyle(
+                        color: Color(0xFF1356BF),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600)),
               ),
             ),
           ),
-          const Spacer(),
-          CustomElevatedButton(
-            buttonStyle: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Color(0xFF0297F3))),
-            width: 158,
-            text: logic.activeStep == 3 ? "SUBMIT" : "NEXT",
-            onTap: () => logic.activeStep == 3
-                ? logic.onSubmit(Get.context!)
-                : logic.next(context),
+          const SizedBox(width: 14),
+          Expanded(
+            child: _gradientButton(
+              isLast ? "Submit" : "Next",
+              () => isLast ? logic.onSubmit(Get.context!) : logic.next(context),
+            ),
           ),
         ],
       ),
@@ -915,26 +938,36 @@ class MembershipMemberCreateScreen extends StatelessWidget {
             //     ),
             //   ),
             // ),
+            // Hidden: first level of nomination happens only at University & College
+            // StateNominationPickerWidget(
+            //   lablecolor: theme.textTheme.bodyLarge!.color,
+            //   onChanged: (val) {
+            //     logic.changeStateNomination(val);
+            //   },
+            //   listValues: logic.statePresidentNominationsList,
+            //   labelText: "State President Candidate",
+            //   currentValue: logic.selectedStatePresidentNominations,
+            //   defaultValue: "Select State President Nomination",
+            // ),
+            // StateNominationPickerWidget(
+            //   lablecolor: theme.textTheme.bodyLarge!.color,
+            //   onChanged: (val) {
+            //     logic.changeStateGSNomination(val);
+            //   },
+            //   listValues: logic.stateGeneralSecretaryNominationsList,
+            //   labelText: "District President Candidate",
+            //   currentValue: logic.selectedStateGSNominations,
+            //   defaultValue: "Select District President Nomination",
+            // ),
             StateNominationPickerWidget(
               lablecolor: theme.textTheme.bodyLarge!.color,
               onChanged: (val) {
-                logic.changeStateNomination(val);
+                logic.changeAssemblyNomination(val);
               },
-              listValues: logic.statePresidentNominationsList,
-              labelText: "State President Candidate",
-              currentValue: logic.selectedStatePresidentNominations,
-              defaultValue: "Select State President Nomination",
-            ),
-            StateNominationPickerWidget(
-                            lablecolor: theme.textTheme.bodyLarge!.color,
-
-              onChanged: (val) {
-                logic.changeStateGSNomination(val);
-              },
-              listValues: logic.stateGeneralSecretaryNominationsList,
-              labelText: "District President Candidate",
-              currentValue: logic.selectedStateGSNominations,
-              defaultValue: "Select District President Nomination",
+              listValues: logic.assemblyNominationsList,
+              labelText: "University President Candidate",
+              currentValue: logic.selectedAssemblyNominations,
+              defaultValue: "Select University President Nomination",
             ),
             StateNominationPickerWidget(
               lablecolor: theme.textTheme.bodyLarge!.color,

@@ -41,6 +41,91 @@ class _NominationsMainState extends State<NominationsMain> {
     super.initState();
   }
 
+  // ===================== Redesign helpers =====================
+
+  Widget _heroHeader() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 8, bottom: 4),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF1356BF), Color(0xFF5B2EC4), Color(0xFF2CC7E2)],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1356BF).withOpacity(0.30),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.18),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(Icons.how_to_vote_rounded,
+                color: Colors.white, size: 26),
+          ),
+          const SizedBox(width: 14),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('File Your Nomination',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(height: 3),
+                Text('Complete all sections to submit 🗳️',
+                    style: TextStyle(color: Colors.white70, fontSize: 12.5)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionHeader(IconData icon, String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 2, left: 2),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(7),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1356BF).withOpacity(0.10),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, size: 16, color: const Color(0xFF1356BF)),
+          ),
+          const SizedBox(width: 10),
+          Text(title,
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1F2A44))),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              height: 1,
+              color: const Color(0xFF1356BF).withOpacity(0.12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // context.read<ScrutinyConstituencyInfoVM>().getStatesList();
@@ -111,36 +196,9 @@ class _NominationsMainState extends State<NominationsMain> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 14, left: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Candidate Details ✍️',
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFF1F2A44)),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Fill in your details to file the nomination',
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Colors.grey[600]),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      _heroHeader(),
+                                      _sectionHeader(Icons.badge_rounded,
+                                          'Personal Details'),
                                       DropDownPickerNSUI(
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
@@ -210,6 +268,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                           return null;
                                         },
                                       ),
+                                      _sectionHeader(Icons.fingerprint_rounded,
+                                          'Identity & Documents'),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
@@ -390,6 +450,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                         labelText: 'Upload DOB Proof',
                                         icon: Icons.event_available_outlined,
                                       ),
+                                      _sectionHeader(Icons.school_rounded,
+                                          'Academic & Constituency'),
                                       EducationDropdownNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
@@ -578,6 +640,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                       //     onTap: () {},
                                       //     selectedValue: model.selecteduniversity,
                                       //     lable: 'College'),
+                                      _sectionHeader(Icons.tune_rounded,
+                                          'Additional Details'),
                                       UploadButtonVideo(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
@@ -1527,6 +1591,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                       const SizedBox(
                                         height: 10,
                                       ),
+                                      _sectionHeader(Icons.verified_user_rounded,
+                                          'Declaration & Consent'),
                                       Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,

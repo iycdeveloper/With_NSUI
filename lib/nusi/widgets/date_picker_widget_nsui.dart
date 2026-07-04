@@ -33,12 +33,13 @@ class DatePickerWidgetNSUI extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFFE7EDF9)),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey[200]!,
-                          spreadRadius: 1.2,
-                          blurRadius: 0.6),
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4)),
                     ]),
                 //Constants.formItemDecoration,
                 child: Row(

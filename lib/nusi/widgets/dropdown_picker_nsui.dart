@@ -56,12 +56,13 @@ class DropDownPickerNSUI extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFE7EDF9)),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.grey[200]!,
-                            spreadRadius: 1.2,
-                            blurRadius: 0.6),
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4)),
                       ]),
                   //Constants.formItemDecoration,
                   child: Container(
@@ -89,10 +90,17 @@ class DropDownPickerNSUI extends StatelessWidget {
                             style: theme.textTheme.bodyMedium!
                                 .copyWith(color: Colors.grey),
                           ),
-                          icon: FaIcon(
-                            FontAwesomeIcons.angleDown,
-                            size: 18,
-                            color: theme.textTheme.bodyLarge!.color,
+                          icon: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1356BF).withOpacity(0.08),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const FaIcon(
+                              FontAwesomeIcons.angleDown,
+                              size: 14,
+                              color: Color(0xFF1356BF),
+                            ),
                           ),
                           value: currentValue,
                           isDense: true,

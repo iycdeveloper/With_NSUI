@@ -239,7 +239,7 @@ class MembershipMemberCreateController extends GetxController {
       "MANDALAM_CODE": selectedBooth,
       // "UNIVERSITY": selectedAssembly,
       // "COLLEGE": selectedBooth,
-      "CSN_SP": selectedStatePresidentNominations,
+      "CSN_SP": selectedStatePresidentNominations ?? '0',
       "CSN_SG": selectedStateGSNominations ?? '0',
       "CSN_DP": selectedDistrictNominations,
       "CSN_AP": selectedAssemblyNominations,
@@ -1452,7 +1452,19 @@ class MembershipMemberCreateController extends GetxController {
   List<Nomination> stateGeneralSecretaryNominationsList = [];
 
   List<Nomination> districtNominationsList = [];
-  List<Nomination> assemblyNominationsList = [];
+  // TODO: temporary dummy data for the University President dropdown
+  // (searchForAssemblyNominations is disabled in Step 4 load; remove this
+  // once the real "VS" ballot fetch is wired back in).
+  List<Nomination> assemblyNominationsList = [
+    Nomination(
+        id: 1, name: "Rahul Sharma", csn: 1, firstName: "Rahul", lastName: "Sharma"),
+    Nomination(
+        id: 2, name: "Priya Verma", csn: 2, firstName: "Priya", lastName: "Verma"),
+    Nomination(
+        id: 3, name: "Amit Kumar", csn: 3, firstName: "Amit", lastName: "Kumar"),
+    Nomination(
+        id: 4, name: "Sneha Reddy", csn: 4, firstName: "Sneha", lastName: "Reddy"),
+  ];
   List<Nomination> blockNominationsList = [];
   List<Nomination> boothNominationsList = [];
 
@@ -1957,42 +1969,23 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   bool validatePage(BuildContext context) {
-    if (selectedStatePresidentNominations == null) {
-      CustomSnackBar.showErrorSnackBar("Select State President Nomination");
-      return false;
-    }
-    if (selectedStateGSNominations == null) {
-      CustomSnackBar.showErrorSnackBar(
-          "Select State General Secretary Nomination");
+    // Step 4 now collects only University President + College President.
+    // State President / State GS candidates are hidden (first level of
+    // nomination happens at University & College only), so they are not
+    // validated here.
+    if (selectedAssemblyNominations == null) {
+      CustomSnackBar.showErrorSnackBar("Select University President Nomination");
       return false;
     }
     if (selectedDistrictNominations == null) {
-      CustomSnackBar.showErrorSnackBar("Select District President");
+      CustomSnackBar.showErrorSnackBar("Select College President Nomination");
       return false;
     }
     if (!declarationStatus) {
       CustomSnackBar.showErrorSnackBar("Kindly accept declaration to continue");
       return false;
     }
-
-    bool validated = true; // default value considering block is validated
-
-    // selectedAssemblyNominations == null
-    //     ? CustomSnackBar.showErrorSnackBar("Select University President")
-    //     : null;
-    // selectedBoothNominations == null
-    //     ? CustomSnackBar.showErrorSnackBar("Select College President")
-    //     : null;
-    // validated =
-    //     selectedAssemblyNominations != null && selectedBoothNominations != null;
-
-    final result = (selectedStatePresidentNominations != null &&
-        selectedStateGSNominations != null &&
-        selectedDistrictNominations != null &&
-        validated &&
-        declarationStatus);
-    return result;
-    // }
+    return true;
   }
 
   // String? selectedMandalam;
