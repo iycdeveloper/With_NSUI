@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
+
+import 'package:iyc/utils/dob_rules.dart';
 // import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -241,7 +243,7 @@ class MembershipMemberCreateController extends GetxController {
       // "COLLEGE": selectedBooth,
       "CSN_SP": selectedStatePresidentNominations ?? '0',
       "CSN_SG": selectedStateGSNominations ?? '0',
-      "CSN_DP": selectedDistrictNominations,
+      "CSN_DP": selectedDistrictNominations ?? '0',
       "CSN_AP": selectedAssemblyNominations,
       "CSN_BL": selectedBoothNominations,
       "AGGR_ID": aggrId,
@@ -623,10 +625,13 @@ class MembershipMemberCreateController extends GetxController {
   ];
   List<DropdownItem> category = [
     DropdownItem("General", "General"),
+    DropdownItem("MBC", "MBC"),
     DropdownItem("SC", "SC"),
     DropdownItem("ST", "ST"),
     DropdownItem("OBC", "OBC"),
     DropdownItem("Minority", "Minority"),
+    DropdownItem("Specially abled", "PH"),
+    DropdownItem("Transgender", "TG"),
     DropdownItem("Unknown", "Unknown"), //Minority
   ];
   List<DropdownItem> educationalDetailsList = [
@@ -634,7 +639,16 @@ class MembershipMemberCreateController extends GetxController {
     DropdownItem("Non Graduate", "NonGraduate")
   ];
 
+  String? dobError;
+
   void onChangeDate(DateTime timeData) {
+    if (!DobRules.isValid(timeData)) {
+      dobError = DobRules.errorText(timeData);
+      CustomSnackBar.showErrorSnackBar(dobError!);
+      update();
+      return;
+    }
+    dobError = null;
     selectedDate = "${timeData.day}-${timeData.month}-${timeData.year}";
     eventDate = timeData;
     dobController.text = selectedDate!;
@@ -830,15 +844,15 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   Future<void> saveVideo(File result) async {
-    print("save video function");
-    File image;
-    image = File(result.path);
     final Directory extDir = await getApplicationDocumentsDirectory();
     String dirPath = extDir.path;
-
     final String filePath = '$dirPath/${p.basename(result.path)}';
-    final File newImage = await image.copy(filePath);
-    File _image = newImage;
+
+    // Guard against a self-copy (src == dest), which would truncate the file
+    // to 0 bytes and corrupt the recording.
+    final File _image = (result.path == filePath)
+        ? result
+        : await File(result.path).copy(filePath);
 
     pickedVideoFile = _image;
     pickedVideoFilePath = _image.path;
@@ -1243,22 +1257,14 @@ class MembershipMemberCreateController extends GetxController {
 
   bool validateConsistencyForm() {
     if (selectedDistrict == null) {
-      CustomSnackBar.showErrorSnackBar(
-        "select a District",
-      );
+      CustomSnackBar.showErrorSnackBar("select a District");
+      return false;
     }
-    // ?
-    // : selectedBooth == null
-    //     ? CustomSnackBar.showErrorSnackBar("Select a College")
-    //     : null;
-
-    bool validated = true;
-    // selectedAssembly == null
-    //     ? CustomSnackBar.showErrorSnackBar("select a University")
-    //     : null;
-    // validated = selectedAssembly != null;
-// && selectedBooth != null
-    return selectedDistrict != null && validated;
+    if (selectedAssembly == null) {
+      CustomSnackBar.showErrorSnackBar("Select a University/College");
+      return false;
+    }
+    return true;
   }
 
   Future<void> checkForPrefillDataForConsistencyDetails() async {
@@ -1969,16 +1975,13 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   bool validatePage(BuildContext context) {
-    // Step 4 now collects only University President + College President.
-    // State President / State GS candidates are hidden (first level of
-    // nomination happens at University & College only), so they are not
-    // validated here.
+    // Step 4 now collects only the University/College President candidate.
+    // State/District/College President candidates are hidden (candidate
+    // selection happens at the University/College level only), so they are
+    // not validated here.
     if (selectedAssemblyNominations == null) {
-      CustomSnackBar.showErrorSnackBar("Select University President Nomination");
-      return false;
-    }
-    if (selectedDistrictNominations == null) {
-      CustomSnackBar.showErrorSnackBar("Select College President Nomination");
+      CustomSnackBar.showErrorSnackBar(
+          "Select University/College President Nomination");
       return false;
     }
     if (!declarationStatus) {

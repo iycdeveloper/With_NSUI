@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:iyc/utils/dob_rules.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iyc/app/core/app_export.dart';
@@ -66,6 +68,7 @@ class NominationsProvider extends ChangeNotifier {
   TextEditingController fatherNameController = TextEditingController();
   TextEditingController idCardNumberController = TextEditingController();
   TextEditingController studentidNumberController = TextEditingController();
+  TextEditingController courseController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
 
@@ -189,19 +192,19 @@ class NominationsProvider extends ChangeNotifier {
     DropdownItem("General", "G"),
     DropdownItem("MBC", "B"),
     DropdownItem("Minority", "M"),
-    DropdownItem("NT/VJNT", "V"),
     DropdownItem("OBC", "O"),
     DropdownItem("SC", "S"), //
     DropdownItem("ST", "T"), //
-    DropdownItem("Physically Handicapped", "PH"),
+    DropdownItem("Specially abled", "PH"),
+    DropdownItem("Transgender", "TG"),
     DropdownItem("Unknown", "U"),
   ];
   List<DropdownItem> candidateLevelList = [
     // First level of nomination happens only at University and College
     // DropdownItem("State President", "10"),
     // DropdownItem("District President", "30"),
-    DropdownItem("University President", "40"),
-    DropdownItem("College President", "50"),
+    //DropdownItem("University President", "40"),
+    DropdownItem("College/University President", "50"),
   ];
 
   // - PYC President
@@ -512,15 +515,14 @@ class NominationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Categories that require a supporting document / qualify for fee waiver:
+  // SC ("S"), ST ("T"), Specially abled ("PH"). Exact-match so multi-char
+  // codes like Transgender ("TG") don't accidentally collide via substring.
+  static const List<String> _docRequiredCategories = ["S", "T", "PH"];
+
   changeCategory(String val) {
     selectedCategory = val;
-    if (selectedCategory!.contains("S") ||
-        selectedCategory!.contains("T") ||
-        selectedCategory!.contains("PH")) {
-      isCategoryNeedDocuments = true;
-    } else {
-      isCategoryNeedDocuments = false;
-    }
+    isCategoryNeedDocuments = _docRequiredCategories.contains(selectedCategory);
     notifyListeners();
   }
 
@@ -534,7 +536,16 @@ class NominationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? dobError;
+
   changeDate(DateTime timeData) {
+    if (!DobRules.isValid(timeData)) {
+      dobError = DobRules.errorText(timeData);
+      CustomSnackBar.showErrorSnackBar(dobError!);
+      notifyListeners();
+      return;
+    }
+    dobError = null;
     selectedDate = "${timeData.day}/${timeData.month}/${timeData.year}";
     eventDate = timeData;
     notifyListeners();
@@ -868,17 +879,15 @@ class NominationsProvider extends ChangeNotifier {
   }
 
   saveVideo(File result) async {
-    File image;
-    image = File(result.path);
-    //  final myImagePath = '/storage/emulated/0/Download' ;
     final Directory extDir = await getApplicationDocumentsDirectory();
     String dirPath = extDir.path;
-    print("path=========");
-    print(p.basename(result.path));
     final String filePath = '$dirPath/${p.basename(result.path)}';
-    final File newImage = await image.copy(filePath);
 
-    File _image = newImage;
+    // Guard against a self-copy (src == dest), which would truncate the file
+    // to 0 bytes and corrupt the recording.
+    final File _image = (result.path == filePath)
+        ? result
+        : await File(result.path).copy(filePath);
 
     pickedVideoFile = _image;
     pickedVideoFilePath = _image.path;
@@ -1019,7 +1028,7 @@ class NominationsProvider extends ChangeNotifier {
     print("start uploading the document");
     final uploadResult = await Future.wait(
       [
-        if ((isSelectedFeeWaiverCategory || selectedCategory!.contains('O')) &&
+        if ((isSelectedFeeWaiverCategory || selectedCategory == 'O') &&
             pickedCategoryFilePath != null)
           uploadDocument(
               pickedCategoryFilePath,
@@ -1220,6 +1229,7 @@ class NominationsProvider extends ChangeNotifier {
       "ID_VALUE": idCardNumberController.text,
       "STUDENT_ID_VALUE": studentidNumberController.text,
       "EDUCATION": "$selectedEducation",
+      "COURSE": courseController.text,
       "AMOUNT": "$amountTobePayed"
     };
     showNetworkLoadingDialog(context, willPopScope: false);
@@ -1339,9 +1349,7 @@ class NominationsProvider extends ChangeNotifier {
       showCustomSnackBar("Kindly a select a category", context);
       validatedSuccess = false;
     } else {
-      if ((selectedCategory!.contains("S") ||
-          selectedCategory!.contains("T") ||
-          selectedCategory!.contains("PH"))) {
+      if (_docRequiredCategories.contains(selectedCategory)) {
         isSelectedFeeWaiverCategory = true;
         if (pickedCategoryFilePath == null) {
           showCustomSnackBar("Upload Category document", context);
@@ -1351,6 +1359,10 @@ class NominationsProvider extends ChangeNotifier {
     }
     if (selectedEducation == null) {
       showCustomSnackBar("Kindly a select Educational Qualification", context);
+      validatedSuccess = false;
+    }
+    if (courseController.text.trim().isEmpty) {
+      showCustomSnackBar("Kindly fill Course", context);
       validatedSuccess = false;
     }
     if (usernameController.text.trim().isEmpty) {
@@ -1384,14 +1396,16 @@ class NominationsProvider extends ChangeNotifier {
       validatedSuccess = false;
     }
     if (selectedAssembly == null) {
-      showCustomSnackBar("Kindly choose a University", context);
+      showCustomSnackBar("Kindly choose a University/College", context);
       validatedSuccess = false;
     }
 
-    if (selectedBooth == null) {
-      showCustomSnackBar("Kindly choose a College", context);
-      validatedSuccess = false;
-    }
+    // College selection is hidden (merged into University/College) — no longer
+    // a required field.
+    // if (selectedBooth == null) {
+    //   showCustomSnackBar("Kindly choose a College", context);
+    //   validatedSuccess = false;
+    // }
     // if ((isBlockModel) && (selectedBlock == null)) {
     //   showCustomSnackBar("Kindly choose a Block", context);
     //   validatedSuccess = false;
@@ -1400,6 +1414,13 @@ class NominationsProvider extends ChangeNotifier {
     //   showCustomSnackBar("Kindly choose a Mandalam", context);
     //   validatedSuccess = false;
     // }
+    if (selectedDate == null) {
+      showCustomSnackBar("Kindly select Date of Birth", context);
+      validatedSuccess = false;
+    } else if (!DobRules.isValid(eventDate)) {
+      showCustomSnackBar(DobRules.errorText(eventDate)!, context);
+      validatedSuccess = false;
+    }
     if (selectedGender == null) {
       showCustomSnackBar("Kindly choose a Gender", context);
       validatedSuccess = false;

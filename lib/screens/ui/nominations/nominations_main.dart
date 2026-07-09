@@ -20,6 +20,7 @@ import 'package:iyc/screens/widgets/dropdown/assembly_picker_dropdown_nsui.dart'
 import 'package:iyc/screens/widgets/dropdown/district_picker_dropdown_nsui.dart';
 import 'package:iyc/screens/widgets/network_loading.dart';
 import 'package:iyc/utils/constants.dart';
+import 'package:iyc/utils/dob_rules.dart';
 import 'package:provider/provider.dart';
 
 import 'nomination_help_page.dart';
@@ -379,29 +380,22 @@ class _NominationsMainState extends State<NominationsMain> {
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
                                           selectedDate: model.selectedDate,
+                                          errorText: model.dobError,
                                           onTap: () async {
                                             FocusScope.of(context).unfocus();
-                                            print("-------");
-                                            print(await LocalStorageServices()
-                                                .getDobEndRange());
+                                            // DOB restricted to the membership
+                                            // age band (see DobRules): only the
+                                            // 16-27 window as on the cut-off
+                                            // date is selectable.
                                             final datePick =
                                                 await showDatePicker(
                                               context: context,
-                                              initialDate: new DateTime.utc(
-                                                int.parse(
-                                                    await LocalStorageServices()
-                                                        .getDobEndRange()),
-                                              ),
-                                              firstDate: new DateTime(int.parse(
-                                                await LocalStorageServices()
-                                                    .getDobStartRange(),
-                                              )),
-                                              lastDate: new DateTime(
-                                                  int.parse(
-                                                      await LocalStorageServices()
-                                                          .getDobEndRange()),
-                                                  12,
-                                                  31),
+                                              initialDate:
+                                                  DobRules.latestAllowedDob(),
+                                              firstDate:
+                                                  DobRules.earliestAllowedDob(),
+                                              lastDate:
+                                                  DobRules.latestAllowedDob(),
                                               builder: (BuildContext? context,
                                                   Widget? child) {
                                                 return Theme(
@@ -469,6 +463,18 @@ class _NominationsMainState extends State<NominationsMain> {
                                         listValues:
                                             model.educationalDetailsList,
                                       ),
+                                      TextFieldWithLabelNSUI(
+                                        labelcolor:
+                                            theme.textTheme.bodyLarge!.color,
+                                        label: "Course",
+                                        icon: Icons.menu_book_outlined,
+                                        hintText: "Course",
+                                        keyBoardType: TextInputType.text,
+                                        controller: model.courseController,
+                                        validation: (value) => value.isEmpty
+                                            ? "Enter a Course"
+                                            : null,
+                                      ),
                                       StatePickerDropDownNSUI(
                                         icon: Icons.public,
                                         labelcolor:
@@ -515,7 +521,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                       AssemblyPickerDropDownNSUI(
                                           labelcolor:
                                               theme.textTheme.bodyLarge!.color,
-                                          title: 'University',
+                                          title: 'University/College',
                                           icon: Icons.account_balance_outlined,
                                           currentAssembly:
                                               model.selectedAssembly,
@@ -523,7 +529,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                           // viewOnly: !model.enableDistrictEdit&&model.disableFields,
                                           selectedAssembly:
                                               model.selectedAssemblyName ??
-                                                  "Select University",
+                                                  "Select University/College",
                                           onChanged: (value) {
                                             FocusScope.of(context).unfocus();
                                             context
@@ -535,7 +541,14 @@ class _NominationsMainState extends State<NominationsMain> {
                                                         element.assemblyCode ==
                                                         value));
                                           }),
-                                      IndexedStack(
+                                      // College selection hidden — nomination
+                                      // now happens at University/College level
+                                      // via the single "University/College"
+                                      // dropdown above.
+                                      Visibility(
+                                        visible: false,
+                                        maintainState: true,
+                                        child: IndexedStack(
                                         index:
                                             model.selectedBooth != null ? 0 : 1,
                                         children: [
@@ -632,7 +645,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                             hintText: "Select a College",
                                           )
                                         ],
-                                      ),
+                                      )),
                                       // CommonPickerDropDownNSUI(
                                       //     labelcolor: theme.textTheme.bodyLarge!.color,
                                       //     hinttext: 'Select College',

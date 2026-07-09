@@ -9,6 +9,7 @@ class DatePickerWidgetNSUI extends StatelessWidget {
   final String labelText;
   final Color? labelcolor;
   final IconData? icon;
+  final String? errorText;
 
   const DatePickerWidgetNSUI({
     Key? key,
@@ -16,6 +17,7 @@ class DatePickerWidgetNSUI extends StatelessWidget {
     this.labelcolor,
     this.icon,
     required this.onTap,
+    this.errorText,
     this.labelText = "DOB",
   }) : super(key: key);
 
@@ -63,6 +65,17 @@ class DatePickerWidgetNSUI extends StatelessWidget {
                 ),
               ),
               onTap: () => onTap()),
+          if (errorText != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorText!,
+                style: const TextStyle(
+                    color: Color(0xFFD32F2F),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
         ]));
   }
 }

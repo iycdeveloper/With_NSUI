@@ -20,6 +20,7 @@ import 'package:iyc/nusi/widgets/upload_button_nsui.dart';
 import 'package:iyc/screens/ui/membership/widgets/state_candidate_dropdown.dart';
 import 'package:iyc/screens/widgets/u_round_button.dart';
 import 'package:iyc/utils/constants.dart';
+import 'package:iyc/utils/dob_rules.dart';
 import 'package:pinput/pinput.dart';
 
 class MembershipMemberCreateScreen extends StatelessWidget {
@@ -261,8 +262,8 @@ class MembershipMemberCreateScreen extends StatelessWidget {
 
                 labelcolor: theme.textTheme.bodyLarge!.color,
 
-                label: "Father's Name",
-                hintText: "Father's Name",
+                label: "Father's Name/Mother's Name",
+                hintText: "Father's Name/Mother's Name",
                 // focusNode: model.usernameFocus,
                 // nextFocus: model.lastNameFocus,
 
@@ -271,7 +272,7 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                 controller: logic.fatherNameController,
                 validation: (value) {
                   if (value.isEmpty) {
-                    return "Enter a Father's Name";
+                    return "Enter Father's Name/Mother's Name";
                   }
                   return null;
                 },
@@ -291,7 +292,7 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                   // nextFocus: model.lastNameFocus,
 
                   // readOnly: model.disableFields,
-                  keyBoardType: TextInputType.name,
+                  keyBoardType: TextInputType.phone,
                   controller: logic.mobileController,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(10),
@@ -351,7 +352,7 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                 // nextFocus: model.lastNameFocus,
 
                 // readOnly: model.disableFields,
-                keyBoardType: TextInputType.name,
+                keyBoardType: TextInputType.emailAddress,
                 controller: logic.emailController,
                 validation: (input) =>
                     input.isValidEmail() ? null : "Enter a Valid Email Address",
@@ -360,29 +361,21 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                   labelcolor: theme.textTheme.bodyLarge!.color,
                   labelText: 'Date of Birth',
                   selectedDate: logic.selectedDate,
+                  errorText: logic.dobError,
                   onTap: () async {
                     if (logic.isUpdate) {
                       return;
                     }
 
                     FocusScope.of(context).unfocus();
-                    print("-------");
-                    print(await LocalStorageServices().getDobEndRange());
+                    // DOB restricted to the membership age band (see DobRules):
+                    // only ages within the 16-27 window as on the cut-off date
+                    // are selectable.
                     final datePick = await showDatePicker(
                       context: context,
-                      initialDate: new DateTime.utc(
-                        int.parse(
-                            await LocalStorageServices().getDobEndRange()),
-                      ),
-                      firstDate: new DateTime(int.parse(
-                        await LocalStorageServices().getDobStartRange(),
-                      )),
-                      lastDate: new DateTime(
-                          int.parse(
-                            await LocalStorageServices().getDobEndRange(),
-                          ),
-                          12,
-                          31),
+                      initialDate: DobRules.latestAllowedDob(),
+                      firstDate: DobRules.earliestAllowedDob(),
+                      lastDate: DobRules.latestAllowedDob(),
                       builder: (BuildContext? context, Widget? child) {
                         return Theme(
                           data: ThemeData.dark().copyWith(
@@ -779,6 +772,19 @@ class MembershipMemberCreateScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
+            UploadButtonVideo(
+              labelcolor: theme.textTheme.bodyLarge!.color,
+              buttonTextLabel:
+                  logic.showVideoFile ? "Change video" : "Upload Video",
+              onTap: (str) => logic.saveVideo(str),
+              pickedFile: logic.pickedVideoFile,
+              showImage: logic.showVideoFile,
+              lable: 'Upload Video',
+              icon: Icons.videocam_outlined,
+            ),
+            SizedBox(
+              height: 10,
+            ),
             UploadButtonImageNSUI(
               lablecolor: theme.textTheme.bodyLarge!.color,
 
@@ -855,18 +861,21 @@ class MembershipMemberCreateScreen extends StatelessWidget {
               defaultMargin: false,
               labelText: 'District',
             ),
-            // CustomFloatingDropDownNSUI(
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   readOnly: logic.isUpdate,
-            //   title: 'Select University',
-            //   value: logic.selectedAssembly,
-            //   listValues: logic.assemblyDropdownItems,
-            //   onChanged: (value) {
-            //     logic.onChangedAssembly(value);
-            //   },
-            //   defaultMargin: false,
-            //   labelText: 'University',
-            // ),
+            // University/College loads from the university ballots of the
+            // selected district (getAssemblyList() runs in onChangedDistrict),
+            // mirroring the nomination flow. College selection stays hidden.
+            CustomFloatingDropDownNSUI(
+              labelcolor: theme.textTheme.bodyLarge!.color,
+              readOnly: logic.isUpdate,
+              title: 'Select University/College',
+              value: logic.selectedAssembly,
+              listValues: logic.assemblyDropdownItems,
+              onChanged: (value) {
+                logic.onChangedAssembly(value);
+              },
+              defaultMargin: false,
+              labelText: 'University/College',
+            ),
             // CustomFloatingDropDownNSUI(
             //   labelcolor: theme.textTheme.bodyLarge!.color,
             //   readOnly: logic.isUpdate,
@@ -965,20 +974,22 @@ class MembershipMemberCreateScreen extends StatelessWidget {
                 logic.changeAssemblyNomination(val);
               },
               listValues: logic.assemblyNominationsList,
-              labelText: "University President Candidate",
+              labelText: "University/College President Candidate",
               currentValue: logic.selectedAssemblyNominations,
-              defaultValue: "Select University President Nomination",
+              defaultValue: "Select University/College President Nomination",
             ),
-            StateNominationPickerWidget(
-              lablecolor: theme.textTheme.bodyLarge!.color,
-              onChanged: (val) {
-                logic.changeDistrictNomination(val);
-              },
-              listValues: logic.districtNominationsList,
-              labelText: "College President Candidate",
-              currentValue: logic.selectedDistrictNominations,
-              defaultValue: "College President Candidate",
-            ),
+            // College President Candidate hidden — candidate selection now
+            // happens at the University/College President level only.
+            // StateNominationPickerWidget(
+            //   lablecolor: theme.textTheme.bodyLarge!.color,
+            //   onChanged: (val) {
+            //     logic.changeDistrictNomination(val);
+            //   },
+            //   listValues: logic.districtNominationsList,
+            //   labelText: "College President Candidate",
+            //   currentValue: logic.selectedDistrictNominations,
+            //   defaultValue: "College President Candidate",
+            // ),
             // StateNominationPickerWidget(
             //   lablecolor: theme.textTheme.bodyLarge!.color,
             //   onChanged: (val) {

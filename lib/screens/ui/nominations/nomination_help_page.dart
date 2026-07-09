@@ -101,47 +101,6 @@ class NominationHelpPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Committee levels card
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF1356BF), Color(0xFF5B2EC4)],
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF1356BF).withOpacity(0.3),
-                        blurRadius: 18,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Committee Levels',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 14),
-                      _CommitteeItem(index: 1, label: 'Assembly Committee'),
-                      _CommitteeItem(
-                          index: 2, label: 'District President Committee'),
-                      _CommitteeItem(index: 3, label: 'District GS Committee'),
-                      _CommitteeItem(index: 4, label: 'State GS Committee'),
-                      _CommitteeItem(
-                          index: 5, label: 'State President Committee'),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -215,47 +174,6 @@ class MembershipWelcomePageTextItem extends StatelessWidget {
                 height: 1.4,
                 color: Color(0xFF3A4357),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CommitteeItem extends StatelessWidget {
-  final int index;
-  final String label;
-
-  const _CommitteeItem({required this.index, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          Container(
-            height: 26,
-            width: 26,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              '$index',
-              style: const TextStyle(
-                  color: Color(0xFF1356BF),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ],
