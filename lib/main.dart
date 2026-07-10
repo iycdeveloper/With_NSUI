@@ -19,10 +19,6 @@ import 'package:iyc/di_container.dart' as di;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future<void> recordFlutterError(FlutterErrorDetails details) async {
-  FirebaseCrashlytics.instance.recordFlutterError;
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -32,11 +28,20 @@ Future<void> main() async {
   );
   // await DynamicLinkService().initDynamicLinks();
 
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
+
+  // Route synchronous Flutter framework errors to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // Route uncaught async/platform errors to Crashlytics.
+  WidgetsBinding.instance.platformDispatcher.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   HttpOverrides.global = MyHttpOverrides();
   await di.init();
   runApp(const MyApp());
-  await FirebaseCrashlytics.instance
-      .setCrashlyticsCollectionEnabled(!kDebugMode);
   try {
     await FirebaseMessaging.instance.requestPermission(
         provisional: true, sound: true, badge: true, alert: true);
@@ -45,8 +50,8 @@ Future<void> main() async {
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
     _getStoragePermission();
     // await IycDbServices.db.initDB();
-  } catch (e) {
-    FlutterError.onError = (e) => recordFlutterError(e);
+  } catch (e, stack) {
+    FirebaseCrashlytics.instance.recordError(e, stack);
   }
 }
 

@@ -2,7 +2,7 @@ name: iyc
 description: IYC Program Registration.
 publish_to: 'none' 
 
-version: 18.9.6+496
+version: 1.0.0+1
 
 environment:
   sdk: ">=3.4.0 <4.0.0"

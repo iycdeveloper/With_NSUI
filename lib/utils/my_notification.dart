@@ -166,6 +166,7 @@ class MyNotification {
   }
 }
 
+@pragma('vm:entry-point')
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print('background: ${message.data}');
 }
