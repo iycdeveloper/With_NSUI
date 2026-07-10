@@ -23,8 +23,21 @@ import 'package:iyc/utils/constants.dart';
 import 'package:iyc/utils/dob_rules.dart';
 import 'package:pinput/pinput.dart';
 
-class MembershipMemberCreateScreen extends StatelessWidget {
+class MembershipMemberCreateScreen extends StatefulWidget {
   const MembershipMemberCreateScreen();
+
+  @override
+  State<MembershipMemberCreateScreen> createState() => _MembershipMemberCreateScreenState();
+}
+
+class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScreen> {
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // print(Get.arguments);
+  }
 
   @override
   Widget build(BuildContext context) {

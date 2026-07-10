@@ -6,6 +6,7 @@ import 'package:iyc/app/routes/routes_management.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/app_bar/custom_app_bar.dart';
+import 'package:iyc/model/data_model/batch_member.dart';
 import 'package:iyc/screens/ui/payment/payment_select_batch.dart';
 import 'package:iyc/utils/utils.dart';
 import 'package:iyc/view_model/payment/payment_select_batch_vm.dart';
@@ -34,49 +35,52 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
           ? const MembershipLandingPage()
           : SafeArea(
               child: Scaffold(
-                backgroundColor: const Color(0xFFF1F4FF),
-                appBar: CustomAppBar(
-                    leadingWidth: 44.h,
-                    leading: AppbarImage(
-                        onTap: () {
-                          Get.back();
-                        },
-                        svgPath: ImageConstant.imgBiarrowleftIndigo800,
-                        margin: EdgeInsets.only(
-                            left: 20.h, top: 15.v, bottom: 15.v)),
-                    title: AppbarSubtitle1(
-                        text: "Membership",
-                        margin: EdgeInsets.only(left: 12.h)),
-                    styleType: Style.standard),
-                body: ListView(
-                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 28),
-                  children: [
-                    _buildHero(logic),
-                    const SizedBox(height: 18),
-                    _buildActions(context, logic),
-                    const SizedBox(height: 26),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Batch Data',
-                          style: TextStyle(
-                              color: _ink,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        _createBatchButton(context, logic),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-                    if (logic.membershipBatchList.isEmpty)
+              backgroundColor: const Color(0xFFF1F4FF),
+              appBar: CustomAppBar(
+                  leadingWidth: 44.h,
+                  leading: AppbarImage(
+                      onTap: () {
+                        Get.back();
+                      },
+                      svgPath: ImageConstant.imgBiarrowleftIndigo800,
+                      margin:
+                          EdgeInsets.only(left: 20.h, top: 15.v, bottom: 15.v)),
+                  title: AppbarSubtitle1(
+                      text: "Membership", margin: EdgeInsets.only(left: 12.h)),
+                  styleType: Style.standard),
+              body: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 10, 18, 28),
+                children: [
+                  _buildHero(logic),
+                  const SizedBox(height: 18),
+                  _buildActions(context, logic),
+                  const SizedBox(height: 26),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Batch Data',
+                        style: TextStyle(
+                            color: _ink,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      _createBatchButton(context, logic),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  // if (logic.membershipBatchList.isEmpty)
+                  if (logic.filtermemberList != null) ...[
+                    if (logic.filtermemberList!.isEmpty)
                       _emptyState()
                     else
-                      for (final batch in logic.membershipBatchList)
-                        _batchCard(context, batch),
-                  ],
-                ),
-              ));
+                      // for (final batch in logic.membershipBatchList)
+                      for (final member in logic.filtermemberList!)
+                        _batchCard(context, member),
+                  ]
+                ],
+              ),
+            ));
     });
   }
 
@@ -260,14 +264,14 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
     );
   }
 
-  Widget _batchCard(BuildContext context, dynamic batch) {
-    final bool synced = batch.syncStatus == "1";
-    final bool paid = batch.paymentStatus == "PAID";
+  Widget _batchCard(BuildContext context, BatchMember member) {
+    final bool synced = member.isSync == "1";
+    // final bool paid = member.paymentStatus == "PAID";
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
-        onTap: () => RoutesManagement.goToMembershipMemberListScreen(
-            batch.batchId),
+        // onTap: () =>
+        //     RoutesManagement.goToMembershipMemberListScreen(batch.batchId),
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -297,7 +301,7 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${batch.batchId}',
+                      '${member.memberId}',
                       style: const TextStyle(
                           color: _ink,
                           fontSize: 15,
@@ -308,11 +312,17 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
                       spacing: 6,
                       runSpacing: 6,
                       children: [
-                        _miniChip('${batch.countAM} AM', _indigo),
-                        _miniChip(synced ? 'Synced' : 'Pending',
-                            synced ? const Color(0xFF11998E) : const Color(0xFF6B8199)),
-                        _miniChip(paid ? 'Paid' : 'Unpaid',
-                            paid ? const Color(0xFF11998E) : Colors.orange),
+                        _miniChip('{batch.countAM} AM', _indigo),
+                        _miniChip(
+                            synced ? 'Synced' : 'Pending',
+                            synced
+                                ? const Color(0xFF11998E)
+                                : const Color(0xFF6B8199)),
+                        _miniChip(
+                          // paid ? 'Paid' : 
+                          'Unpaid',
+                            // paid ? const Color(0xFF11998E) : 
+                            Colors.orange),
                       ],
                     ),
                   ],
@@ -335,8 +345,8 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
       ),
       child: Text(
         text,
-        style: TextStyle(
-            color: color, fontSize: 11, fontWeight: FontWeight.w600),
+        style:
+            TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
       ),
     );
   }

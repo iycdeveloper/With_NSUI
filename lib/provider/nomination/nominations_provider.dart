@@ -71,6 +71,7 @@ class NominationsProvider extends ChangeNotifier {
   TextEditingController courseController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
+  TextEditingController socialMediaController = TextEditingController();
 
   GlobalKey _dropdownButtonKey = GlobalKey();
 
@@ -103,7 +104,7 @@ class NominationsProvider extends ChangeNotifier {
   List<DropdownItem> genders = [
     DropdownItem("Male", "M"),
     DropdownItem("Female", "F"),
-    DropdownItem("Others", "O")
+    DropdownItem("Transgender", "TG")
   ];
   List<DropdownItem> bloodGroups = [
     DropdownItem("A+", "A+"),
@@ -154,6 +155,7 @@ class NominationsProvider extends ChangeNotifier {
 
   File? pickedIdFile;
   File? pickedStudentIdFile;
+  File? pickedStudentIdBackFile;
 
   File? pickedIdBackFile;
   File? pickedCaseFile;
@@ -166,6 +168,7 @@ class NominationsProvider extends ChangeNotifier {
   bool showIdImage = false;
   bool showProfileImage = false;
   bool showStudentIdImage = false;
+  bool showStudentIdBackImage = false;
 
   bool showVideoFile = false;
   bool showBplImage = false;
@@ -176,6 +179,7 @@ class NominationsProvider extends ChangeNotifier {
   String? pickedVideoFilePath;
   String? pickedIDBackFilePath;
   String? pickedStudentIDFilePath;
+  String? pickedStudentIDBackFilePath;
 
   String? pickedCaseFilePath;
   String? pickedBPLFilePath;
@@ -190,13 +194,13 @@ class NominationsProvider extends ChangeNotifier {
   String? selectedCategory;
   List<DropdownItem> categoryList = [
     DropdownItem("General", "G"),
-    DropdownItem("MBC", "B"),
+    // DropdownItem("MBC", "B"),
     DropdownItem("Minority", "M"),
     DropdownItem("OBC", "O"),
     DropdownItem("SC", "S"), //
     DropdownItem("ST", "T"), //
     DropdownItem("Specially abled", "PH"),
-    DropdownItem("Transgender", "TG"),
+    // DropdownItem("Transgender", "TG"),
     DropdownItem("Unknown", "U"),
   ];
   List<DropdownItem> candidateLevelList = [
@@ -391,7 +395,8 @@ class NominationsProvider extends ChangeNotifier {
 
   pickDocument(ImageSource imageSource, String? pickedFilePath,
       DocumentType documentType) async {
-    final result = await ImageServices().pickImage(imageSource);
+    final result =
+        await ImageServices().pickImage(imageSource, cropimage: false);
     if (result != null) {
       var status = await Permission.storage.status;
       if (!status.isGranted) {
@@ -455,8 +460,11 @@ class NominationsProvider extends ChangeNotifier {
           // TODO: Handle this case.
           throw UnimplementedError();
         case DocumentType.evoderidBack:
-          // TODO: Handle this case.
-          throw UnimplementedError();
+          pickedStudentIdBackFile = _image;
+          pickedStudentIDBackFilePath = pickedStudentIdBackFile!.path;
+          showStudentIdBackImage = true;
+        // TODO: Handle this case.
+        // throw UnimplementedError();
         case DocumentType.adhaaridFront:
           // TODO: Handle this case.
           throw UnimplementedError();
@@ -901,9 +909,9 @@ class NominationsProvider extends ChangeNotifier {
   getNominationAmount(
     BuildContext context,
   ) async {
-    if (!validateForm(context)) {
-      return false;
-    }
+    // if (!validateForm(context)) {
+    //   return false;
+    // }
     showNetworkLoadingDialog(context, willPopScope: false);
     var testJsonData = '''[{
        "V":"${AppConstants.nominationVersion}",
@@ -942,7 +950,7 @@ class NominationsProvider extends ChangeNotifier {
           if (!await s3uploadAllMemberImages()) return;
           // checkS3Upload(context);
           Navigator.of(context).pop();
-          syncNomination(context);
+          // syncNomination(context);
         }
       } else {
         Navigator.of(context).pop();
@@ -1032,57 +1040,63 @@ class NominationsProvider extends ChangeNotifier {
             pickedCategoryFilePath != null)
           uploadDocument(
               pickedCategoryFilePath,
-              "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+              "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                   nominationBatchNumber +
                   "01",
               "${nominationBatchNumber + "01"}_CATEGORY_DOC.jpg"),
         uploadDocument(
             pickedProfileFilePath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}_P.jpg"),
         uploadDocument(
             pickedIdProofPath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}_ID_FRONT_DOC.jpg"),
         uploadDocument(
             pickedIDBackFilePath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}_ID_BACK_DOC.jpg"),
         uploadDocument(
             pickedStudentIDFilePath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}_STUDENT_ID_DOC.jpg"),
+        uploadDocument(
+            pickedStudentIDBackFilePath,
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+                nominationBatchNumber +
+                "01",
+            "${nominationBatchNumber + "01"}_STUDENT_ID_BACK_DOC.jpg"),
         if (pendingCaseValue)
           uploadDocument(
               pickedCaseFilePath,
-              "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+              "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                   nominationBatchNumber +
                   "01",
               "${nominationBatchNumber + "01"}_CASE_FILE_DOC.jpg"),
         if (bplStatusVal == 1)
           uploadDocument(
               pickedBPLFilePath,
-              "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+              "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                   nominationBatchNumber +
                   "01",
               "${nominationBatchNumber + "01"}_BPL_CARD_DOC.jpg"),
         uploadDocument(
             pickedVideoFilePath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}.mp4"),
         uploadDocument(
             pickedDobFilePath,
-            "MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
+            "NSUI/MEMBERSHIP/${await LocalStorageServices().getSTCode()}/OM/" +
                 nominationBatchNumber +
                 "01",
             "${nominationBatchNumber + "01"}_DOB.jpg"),
@@ -1183,6 +1197,7 @@ class NominationsProvider extends ChangeNotifier {
       "LAST_NAME": lastNameController.text,
       "MOBILE": mobileController.text,
       "EMAIL": emailController.text,
+      "SOCIAL": socialMediaController.text,
       "STATE_CODE": await LocalStorageServices().getSTCode(),
       "DISTRICT_CODE": selectedDistrict!.districtCode,
       "ASSEMBLY_CODE": selectedAssembly?.assemblyCode ?? "",
@@ -1220,6 +1235,8 @@ class NominationsProvider extends ChangeNotifier {
       "DECLARATION_STATUS": "${declarationStatus ? 1 : 0}",
       "ID_TYPE": selectedIdType,
       "STUDENT_ID_DOC": "${nominationBatchNumber}_STUDENT_D.jpg",
+      "STUDENT_ID_DOC_BACK": "${nominationBatchNumber}_STUDENT_D_BACK.jpg",
+
       "ID_DOC": "${nominationBatchNumber}_D.jpg",
       "ID_DOC_BACK": "${nominationBatchNumber}_D_BACK.jpg",
       "CATEGORY_DOC": isCategoryNeedDocuments
@@ -1236,7 +1253,9 @@ class NominationsProvider extends ChangeNotifier {
     String testJsonData = '''[${jsonEncode(nominationMap)}]''';
     String data = base64.encode(utf8.encode(testJsonData));
     log(data);
+    log(nominationMap.toString());
 
+    return;
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.syncNomination, jsonData: testJsonData);
 
@@ -1357,10 +1376,10 @@ class NominationsProvider extends ChangeNotifier {
         }
       }
     }
-    if (selectedEducation == null) {
-      showCustomSnackBar("Kindly a select Educational Qualification", context);
-      validatedSuccess = false;
-    }
+    // if (selectedEducation == null) {
+    //   showCustomSnackBar("Kindly a select Educational Qualification", context);
+    //   validatedSuccess = false;
+    // }
     if (courseController.text.trim().isEmpty) {
       showCustomSnackBar("Kindly fill Course", context);
       validatedSuccess = false;
@@ -1372,6 +1391,11 @@ class NominationsProvider extends ChangeNotifier {
 
     if (emailController.text.trim().isEmpty) {
       showCustomSnackBar("Kindly fill email", context);
+      validatedSuccess = false;
+    }
+
+    if (socialMediaController.text.trim().isEmpty) {
+      showCustomSnackBar("Kindly fill social media handles", context);
       validatedSuccess = false;
     }
     // if (lastNameController.text.trim().isEmpty) {
@@ -1439,7 +1463,8 @@ class NominationsProvider extends ChangeNotifier {
             pickedIDBackFilePath == null ||
             pickedVideoFilePath == null ||
             pickedDobFilePath == null ||
-            pickedStudentIDFilePath == null)
+            pickedStudentIDFilePath == null ||
+            pickedStudentIDBackFilePath == null)
         ? showCustomSnackBar("Upload all documents", context)
         : null;
     if (!(pickedProfileFilePath != null &&
@@ -1447,7 +1472,8 @@ class NominationsProvider extends ChangeNotifier {
         pickedIDBackFilePath != null &&
         pickedVideoFilePath != null &&
         pickedDobFilePath != null &&
-        pickedStudentIdFile != null)) {
+        pickedStudentIdFile != null &&
+        pickedStudentIdBackFile != null)) {
       validatedSuccess = false;
     }
 

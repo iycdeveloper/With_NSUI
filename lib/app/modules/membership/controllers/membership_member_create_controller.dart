@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' hide log;
 
 import 'package:iyc/utils/dob_rules.dart';
 // import 'dart:io';
@@ -59,10 +59,10 @@ class MembershipMemberCreateController extends GetxController {
   String? userState;
   ApiConfig? apiConfig;
 
-  bool isUpdate = Get.arguments[0];
-  bool isLegalCell = Get.arguments[1] ?? false;
-  BatchMember member = Get.arguments[2];
-  bool isUpdateToDB = Get.arguments[3] ?? false;
+  bool isUpdate = false;
+  bool isLegalCell = false;
+  BatchMember member = BatchMember();
+  bool isUpdateToDB = false;
 
   late PageController pageController;
   int pageNumber = 0;
@@ -95,6 +95,21 @@ class MembershipMemberCreateController extends GetxController {
 
   @override
   void onInit() {
+    final args = Get.arguments ?? Get.routing.args;
+
+    if (args != null && args is List && args.length >= 4) {
+      isUpdate = args[0] ?? false;
+      isLegalCell = args[1] ?? false;
+      member = args[2];
+      isUpdateToDB = args[3] ?? false;
+    } else {
+      isUpdate = false;
+      isLegalCell = false;
+      isUpdateToDB = false;
+      // Prevent late initialization crashes by setting a fallback object if needed
+      member = BatchMember(
+          memberId: '', batchId: '', isSync: '0', aggrId: '', stateCode: '');
+    }
     apiConfig = sl();
     if (homeController.profileController.userDetail != null) {
       userState = homeController.profileController.userDetail!.stateCode;
@@ -304,7 +319,7 @@ class MembershipMemberCreateController extends GetxController {
     "BATCH_NO":"${currentMember!.batchId}",
     "AGGR_ID":"$aggrId",
     "MEMBER_DATA":${memberData}}]''';
-
+    log(testJsonData);
     ApiResponse apiResponse = await apiConfig!
         .postData(endpointUrl: Urls.syncMembership, jsonData: testJsonData);
     if (apiResponse.response != null &&
@@ -318,14 +333,15 @@ class MembershipMemberCreateController extends GetxController {
         await BatchDBRepo(sl()).updateAMCount(
             BatchDataModel(batchId: currentMember.batchId!, countAM: count));
 
-        MembershipMemberListController memberListController =
-            Get.find<MembershipMemberListController>();
-        await memberListController.getMembershipList(
-            Get.context!, memberListController.batchId);
+        // MembershipMemberListController memberListController =
+        //     Get.find<MembershipMemberListController>();
+        // await memberListController.getMembershipList(
+        //     Get.context!, memberListController.batchId);
         MembershipBatchController membershipBatchController =
             Get.find<MembershipBatchController>();
         await membershipBatchController.getMembershipBatchList(Get.context!);
-//
+        await membershipBatchController.downloadMemberList(
+            context: Get.context!);
         await sl<BatchDBRepo>().updateData(BatchDataModel(
             batchId: currentMember.batchId!,
             countAM: memberData.length,
@@ -334,18 +350,18 @@ class MembershipMemberCreateController extends GetxController {
         currentMember.isSync = '1';
         await membershipDbRepo.updateMembershipTable(currentMember);
         // });
-        MembershipMemberListController membershipListController =
-            Get.find<MembershipMemberListController>();
+        // MembershipMemberListController membershipListController =
+        //     Get.find<MembershipMemberListController>();
 
-        membershipListController.isSyncMembers = true;
-        membershipListController.showAddOption = false;
+        // membershipListController.isSyncMembers = true;
+        // membershipListController.showAddOption = false;
         update();
         Navigator.of(context).pop();
 
         var result = await membershipNSUISuccessBottomSheet(context);
         if (result == null) {
-          membershipListController
-              .getMembershipList(context, currentMember.batchId!, reload: true);
+          // membershipListController
+          //     .getMembershipList(context, currentMember.batchId!, reload: true);
           // MembershipBatchController membershipBatchController =
           //     Get.find<MembershipBatchController>();
           // membershipBatchController.downloadExistingBatch(context: context);
@@ -1463,13 +1479,29 @@ class MembershipMemberCreateController extends GetxController {
   // once the real "VS" ballot fetch is wired back in).
   List<Nomination> assemblyNominationsList = [
     Nomination(
-        id: 1, name: "Rahul Sharma", csn: 1, firstName: "Rahul", lastName: "Sharma"),
+        id: 1,
+        name: "Rahul Sharma",
+        csn: 1,
+        firstName: "Rahul",
+        lastName: "Sharma"),
     Nomination(
-        id: 2, name: "Priya Verma", csn: 2, firstName: "Priya", lastName: "Verma"),
+        id: 2,
+        name: "Priya Verma",
+        csn: 2,
+        firstName: "Priya",
+        lastName: "Verma"),
     Nomination(
-        id: 3, name: "Amit Kumar", csn: 3, firstName: "Amit", lastName: "Kumar"),
+        id: 3,
+        name: "Amit Kumar",
+        csn: 3,
+        firstName: "Amit",
+        lastName: "Kumar"),
     Nomination(
-        id: 4, name: "Sneha Reddy", csn: 4, firstName: "Sneha", lastName: "Reddy"),
+        id: 4,
+        name: "Sneha Reddy",
+        csn: 4,
+        firstName: "Sneha",
+        lastName: "Reddy"),
   ];
   List<Nomination> blockNominationsList = [];
   List<Nomination> boothNominationsList = [];
@@ -1552,11 +1584,11 @@ class MembershipMemberCreateController extends GetxController {
     // }
     if (stateGeneralSecretaryNominationsList.isEmpty) {
       stateGeneralSecretaryNominationsList.add(Nomination(
-            id: 123456789,
-            name: "NO Nomination",
-            csn: 999,
-            firstName: "No Nomination",
-            lastName: ""));
+          id: 123456789,
+          name: "NO Nomination",
+          csn: 999,
+          firstName: "No Nomination",
+          lastName: ""));
     } else {
       stateGeneralSecretaryNominationsList.add(Nomination(
           id: 123456789,

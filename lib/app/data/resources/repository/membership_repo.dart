@@ -44,6 +44,37 @@ class MembershipRepo {
     }
   }
 
+  Future downloadMembersNew(String batchId) async {
+//"AGGR_ID":"${await LocalStorageServices().getAgrID()}",
+    var data = '''[{
+    "AGGR_ID":"${await LocalStorageServices().getAgrIDMembership()}",
+    "V":"${AppConstants.membershipVersion}",
+    "CHANNEL":"${AppConstants.channel}",
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
+    "STATE_CODE":"${await LocalStorageServices().getSTCode()}",
+    "USER_ID":"${await LocalStorageServices().getUserId()}",
+         "ORG":"${AppConstants.orgName}"
+
+    }]''';
+    // "BATCH_NO":"$batchId",
+
+    //"TS902000007" batch id
+    try {
+      var base64encoded = base64.encode(utf8.encode(data));
+      Response result = await dioClient.post(Urls.agrDownloadMembersNew,
+          options: Options(
+            contentType: Headers.textPlainContentType,
+            responseType: ResponseType.plain,
+            receiveDataWhenStatusError: true,
+          ),
+          data: base64encoded);
+      return ApiResponse.withSuccess(result);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   Future<NewApiResponse> getINCUserDetails(String memberId) async {
     var testJsonData =
         '''[{"V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}","DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}","LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","INC_MEMBER_ID":"$memberId"}]''';

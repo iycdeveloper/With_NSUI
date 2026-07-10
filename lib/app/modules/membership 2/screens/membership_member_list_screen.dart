@@ -75,6 +75,7 @@ class MembershipMemberListScreen extends StatelessWidget {
                                   return;
                                 }
                                 RoutesManagement.goToMembershipMemberCreateScreen(
+                                  
                                     BatchMember(
                                         memberId: (logic.membershipRequestList
                                                             .length +

@@ -42,7 +42,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.bif.nsui"
     compileSdk = 36
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         coreLibraryDesugaringEnabled true

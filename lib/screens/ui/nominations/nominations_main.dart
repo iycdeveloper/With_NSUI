@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/app/core/utils/image_constant.dart';
@@ -210,7 +211,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                             model.changeCandidateLevel(val);
                                           },
                                           labelText: "Level Of Candidate",
-                                          icon: Icons.workspace_premium_outlined,
+                                          icon:
+                                              Icons.workspace_premium_outlined,
                                           hintText: "Select Candidate level"),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
@@ -251,6 +253,7 @@ class _NominationsMainState extends State<NominationsMain> {
                                         showImage: model.showProfileImage,
                                         labelText: 'Upload Photo',
                                         icon: Icons.add_a_photo_outlined,
+                                        onlyCamera: true,
                                       ),
 
                                       TextFieldWithLabelNSUI(
@@ -268,6 +271,30 @@ class _NominationsMainState extends State<NominationsMain> {
                                           }
                                           return null;
                                         },
+                                      ),
+                                      TextFieldWithLabelNSUI(
+                                        labelcolor:
+                                            theme.textTheme.bodyLarge!.color,
+
+                                        label:
+                                            "Share Your Social Media Handles",
+                                        icon: Icons.link,
+                                        hintText:
+                                            "Share Your Social Media Handles",
+
+                                        // focusNode: model.emailFocus,
+                                        inputAction: TextInputAction.done,
+                                        keyBoardType: TextInputType.url,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(r'[a-zA-Z0-9:/?&=._\-#%+~]'),
+                                          ),
+                                        ],
+                                        controller: model.socialMediaController,
+                                        // validation: (input) =>
+                                        //     input.isValidEmail()
+                                        //         ? null
+                                        //         : "Enter a Valid Email Address",
                                       ),
                                       _sectionHeader(Icons.fingerprint_rounded,
                                           'Identity & Documents'),
@@ -297,8 +324,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                             theme.textTheme.bodyLarge!.color,
                                         buttonTextLabel:
                                             model.showStudentIdImage
-                                                ? "Change Student ID"
-                                                : "Upload Student ID",
+                                                ? "Change Student ID Front"
+                                                : "Upload Student ID Front",
                                         onTap: (str) {
                                           context
                                               .read<NominationsProvider>()
@@ -310,7 +337,32 @@ class _NominationsMainState extends State<NominationsMain> {
                                         },
                                         pickedFile: model.pickedStudentIdFile,
                                         showImage: model.showStudentIdImage,
-                                        labelText: 'Upload Student ID Card',
+                                        labelText:
+                                            'Upload Student ID Card Front',
+                                        icon: Icons.assignment_ind_outlined,
+                                      ),
+                                      UploadButtonImageNSUI(
+                                        lablecolor:
+                                            theme.textTheme.bodyLarge!.color,
+                                        buttonTextLabel:
+                                            model.showStudentIdBackImage
+                                                ? "Change Student ID Back"
+                                                : "Upload Student ID Back",
+                                        onTap: (str) {
+                                          context
+                                              .read<NominationsProvider>()
+                                              .pickDocument(
+                                                  str,
+                                                  model
+                                                      .pickedStudentIDBackFilePath,
+                                                  upload.DocumentType
+                                                      .evoderidBack);
+                                        },
+                                        pickedFile:
+                                            model.pickedStudentIdBackFile,
+                                        showImage: model.showStudentIdBackImage,
+                                        labelText:
+                                            'Upload Student ID Card Back',
                                         icon: Icons.assignment_ind_outlined,
                                       ),
                                       DropDownPickerNSUI(
@@ -354,7 +406,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                                 upload.DocumentType.idFront),
                                         pickedFile: model.pickedIdFile,
                                         showImage: model.showIdImage,
-                                        labelText: 'Upload Aadhaar Card (Front)',
+                                        labelText:
+                                            'Upload Aadhaar Card (Front)',
                                         icon: Icons.image_outlined,
                                       ),
                                       UploadButtonImageNSUI(
@@ -446,23 +499,23 @@ class _NominationsMainState extends State<NominationsMain> {
                                       ),
                                       _sectionHeader(Icons.school_rounded,
                                           'Academic & Constituency'),
-                                      EducationDropdownNSUI(
-                                        labelcolor:
-                                            theme.textTheme.bodyLarge!.color,
+                                      // EducationDropdownNSUI(
+                                      //   labelcolor:
+                                      //       theme.textTheme.bodyLarge!.color,
 
-                                        labelText: "Education",
-                                        icon: Icons.school_outlined,
-                                        hintText: "Select highest Education",
-                                        // viewOnly: model.disableFields,
-                                        currentValue: model.selectedEducation,
-                                        onChanged: (val) {
-                                          model.changeEducation(
-                                            val,
-                                          );
-                                        },
-                                        listValues:
-                                            model.educationalDetailsList,
-                                      ),
+                                      //   labelText: "Education",
+                                      //   icon: Icons.school_outlined,
+                                      //   hintText: "Select highest Education",
+                                      //   // viewOnly: model.disableFields,
+                                      //   currentValue: model.selectedEducation,
+                                      //   onChanged: (val) {
+                                      //     model.changeEducation(
+                                      //       val,
+                                      //     );
+                                      //   },
+                                      //   listValues:
+                                      //       model.educationalDetailsList,
+                                      // ),
                                       TextFieldWithLabelNSUI(
                                         labelcolor:
                                             theme.textTheme.bodyLarge!.color,
@@ -546,106 +599,116 @@ class _NominationsMainState extends State<NominationsMain> {
                                       // via the single "University/College"
                                       // dropdown above.
                                       Visibility(
-                                        visible: false,
-                                        maintainState: true,
-                                        child: IndexedStack(
-                                        index:
-                                            model.selectedBooth != null ? 0 : 1,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                FieldLabelNSUI(
-                                                  icon: Icons.apartment_outlined,
-                                                  label: "College",
-                                                  color: theme.textTheme
-                                                      .bodyLarge!.color,
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              14),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                            color: Colors.black
-                                                                .withOpacity(
-                                                                    0.06),
-                                                            blurRadius: 12,
-                                                            offset:
-                                                                const Offset(
-                                                                    0, 4)),
-                                                      ]),
-
-                                                  //  Constants
-                                                  //     .formItemDecoration,
-                                                  constraints: BoxConstraints(
-                                                      minHeight:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.065),
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 5),
-                                                  child: GestureDetector(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          " ${model.selectedBooth?.boothName ?? ""}",
-                                                          style: theme.textTheme
-                                                              .bodyLarge!
-                                                              .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down,
-                                                          color: theme.textTheme
-                                                              .bodyLarge!.color,
-                                                          size: 30,
-                                                        )
-                                                      ],
+                                          visible: false,
+                                          maintainState: true,
+                                          child: IndexedStack(
+                                            index: model.selectedBooth != null
+                                                ? 0
+                                                : 1,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 5, vertical: 5),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    FieldLabelNSUI(
+                                                      icon: Icons
+                                                          .apartment_outlined,
+                                                      label: "College",
+                                                      color: theme.textTheme
+                                                          .bodyLarge!.color,
                                                     ),
-                                                    onTap: context
-                                                        .read<
-                                                            NominationsProvider>()
-                                                        .openDropdown,
-                                                  ),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(14),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.06),
+                                                                blurRadius: 12,
+                                                                offset:
+                                                                    const Offset(
+                                                                        0, 4)),
+                                                          ]),
+
+                                                      //  Constants
+                                                      //     .formItemDecoration,
+                                                      constraints: BoxConstraints(
+                                                          minHeight:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.065),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10,
+                                                              horizontal: 5),
+                                                      child: GestureDetector(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              " ${model.selectedBooth?.boothName ?? ""}",
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .bodyLarge!
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .keyboard_arrow_down,
+                                                              color: theme
+                                                                  .textTheme
+                                                                  .bodyLarge!
+                                                                  .color,
+                                                              size: 30,
+                                                            )
+                                                          ],
+                                                        ),
+                                                        onTap: context
+                                                            .read<
+                                                                NominationsProvider>()
+                                                            .openDropdown,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          DropDownPickerNSUI(
-                                            currentValue:
-                                                model.selectedBooth?.boothCode,
-                                            listValues: model.boothListDropDown,
-                                            // refKey: context
-                                            //     .read<NominationsProvider>()
-                                            //     .dropdownButtonKey,
-                                            onChanged: (value) {
-                                              context
-                                                  .read<NominationsProvider>()
-                                                  .changeBooth(value);
-                                            },
-                                            labelText: "College",
-                                            icon: Icons.apartment_outlined,
-                                            labelcolor: theme
-                                                .textTheme.bodyLarge!.color,
-                                            hintText: "Select a College",
-                                          )
-                                        ],
-                                      )),
+                                              ),
+                                              DropDownPickerNSUI(
+                                                currentValue: model
+                                                    .selectedBooth?.boothCode,
+                                                listValues:
+                                                    model.boothListDropDown,
+                                                // refKey: context
+                                                //     .read<NominationsProvider>()
+                                                //     .dropdownButtonKey,
+                                                onChanged: (value) {
+                                                  context
+                                                      .read<
+                                                          NominationsProvider>()
+                                                      .changeBooth(value);
+                                                },
+                                                labelText: "College",
+                                                icon: Icons.apartment_outlined,
+                                                labelcolor: theme
+                                                    .textTheme.bodyLarge!.color,
+                                                hintText: "Select a College",
+                                              )
+                                            ],
+                                          )),
                                       // CommonPickerDropDownNSUI(
                                       //     labelcolor: theme.textTheme.bodyLarge!.color,
                                       //     hinttext: 'Select College',
@@ -1604,7 +1667,8 @@ class _NominationsMainState extends State<NominationsMain> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      _sectionHeader(Icons.verified_user_rounded,
+                                      _sectionHeader(
+                                          Icons.verified_user_rounded,
                                           'Declaration & Consent'),
                                       Column(
                                           mainAxisAlignment:

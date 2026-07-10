@@ -85,6 +85,9 @@ class Urls {
       _baseUrl + "aggregator/AggrDownloadBatches.php";
   static const agrDownloadMembers =
       _baseUrl + "aggregator/AggrDownloadMembers.php";
+        static const agrDownloadMembersNew =
+      _baseUrl + "aggregator/AggrDownloadMembersNew.php";
+
   static const DOBRange = _baseUrl + "aggregator/DOBRange.php";
   static const syncMembership = _baseUrl + "aggregator/sync.php";
   static const checkAMMobile = _baseUrl + "aggregator/checkAMMobile.php";
