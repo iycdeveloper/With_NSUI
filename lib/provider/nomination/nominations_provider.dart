@@ -206,9 +206,9 @@ class NominationsProvider extends ChangeNotifier {
   List<DropdownItem> candidateLevelList = [
     // First level of nomination happens only at University and College
     // DropdownItem("State President", "10"),
-    // DropdownItem("District President", "30"),
+    // DropdownItem("District President", "20"),
     //DropdownItem("University President", "40"),
-    DropdownItem("College/University President", "50"),
+    DropdownItem("College/University President", "30"),
   ];
 
   // - PYC President
@@ -518,7 +518,7 @@ class NominationsProvider extends ChangeNotifier {
   }
 
   getInitData() async {
-    getStatesList();
+   await getStatesList();
     loadingInitData = false;
     notifyListeners();
   }
@@ -673,15 +673,15 @@ class NominationsProvider extends ChangeNotifier {
       if (responseDecoded['status'] == "SUCCESS") {
         return responseDecoded["response"];
       } else {
-        CustomSnackBar.showErrorSnackBar(
-          "No data Found : College",
-        );
+        // CustomSnackBar.showErrorSnackBar(
+        //   "No data Found : College",
+        // );
         return null;
       }
     }
-    CustomSnackBar.showErrorSnackBar(
-      "No data Found : College",
-    );
+    // CustomSnackBar.showErrorSnackBar(
+    //   "No data Found : College",
+    // );
     return null;
   }
 
@@ -835,10 +835,10 @@ class NominationsProvider extends ChangeNotifier {
         assemblyList!.add(Assembly(
             id: 0,
             districtCode: selectedDistrict!.districtCode,
-            name: i['university'],
+            name: i['college_name'],
             stateCode: selectedState!.stateCode,
             isEnabled: '',
-            assemblyCode: i['university_code']));
+            assemblyCode: i['college_code']));
       }
     }
     notifyListeners();
@@ -909,9 +909,9 @@ class NominationsProvider extends ChangeNotifier {
   getNominationAmount(
     BuildContext context,
   ) async {
-    // if (!validateForm(context)) {
-    //   return false;
-    // }
+    if (!validateForm(context)) {
+      return false;
+    }
     showNetworkLoadingDialog(context, willPopScope: false);
     var testJsonData = '''[{
        "V":"${AppConstants.nominationVersion}",
@@ -950,7 +950,7 @@ class NominationsProvider extends ChangeNotifier {
           if (!await s3uploadAllMemberImages()) return;
           // checkS3Upload(context);
           Navigator.of(context).pop();
-          // syncNomination(context);
+          syncNomination(context);
         }
       } else {
         Navigator.of(context).pop();
@@ -1202,7 +1202,7 @@ class NominationsProvider extends ChangeNotifier {
       "DISTRICT_CODE": selectedDistrict!.districtCode,
       "ASSEMBLY_CODE": selectedAssembly?.assemblyCode ?? "",
       "MANDALAM_CODE": selectedBooth?.boothCode ?? "", //selectedMandalam ?? "",
-      "UNIVERSITY": selectedAssembly?.name ?? "",
+      "UNIVERSITY": selectedAssembly?.assemblyCode ?? "",
       "COLLEGE": selectedBooth?.boothName ?? "",
       "MEMBER_ID": nominationBatchNumber + "01",
       "LEVEL": "$selectedCandidateLevel",
@@ -1255,7 +1255,7 @@ class NominationsProvider extends ChangeNotifier {
     log(data);
     log(nominationMap.toString());
 
-    return;
+    // return;
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.syncNomination, jsonData: testJsonData);
 

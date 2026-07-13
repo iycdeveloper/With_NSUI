@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iyc/utils/app_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:iyc/app/core/app_export.dart';
@@ -32,34 +34,76 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _initWebViewController() {
-    final paymentUrl = "${widget.source == "LC"
-        ? "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/legalCell/initiateLegalCellPayment.php?"
-        : "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php?"}SOURCE=${widget.source}&ORDER_NUMBER=${widget.transactionId}&AMOUNT=1";
-print(paymentUrl);
+    final paymentUrl =
+        "${widget.source == "LC" ? "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/legalCell/initiateLegalCellPayment.php?" : "https://api.iyc.in/ycea/ycea-api/service/nsui/api/v1.0/aggregator/ccavenue/initiateAggrPayment.php?"}SOURCE=${widget.source}&ORDER_NUMBER=${widget.transactionId}&AMOUNT=${widget.amount}&ORG=NSUI"; //${widget.amount}
+    print(paymentUrl);
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) async {
+            final url = request.url;
+            print("Intercepted URL: $url");
+
+            // 🔥 Handle all payment deep links (Android + iOS)
+            if (url.startsWith("upi://") ||
+                url.startsWith("phonepe://") ||
+                url.startsWith("paytmmp://") ||
+                url.startsWith("tez://") ||
+                url.startsWith("intent://")) {
+              try {
+                // 🔥 Handle intent:// (Android special case)
+                if (url.startsWith("intent://")) {
+                  final intentUrl = Uri.parse(url);
+
+                  await launchUrl(
+                    intentUrl,
+                    mode: LaunchMode.externalApplication,
+                  );
+                } else {
+                  final uri = Uri.parse(url);
+
+                  await launchUrl(
+                    uri,
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
+              } catch (e) {
+                print("Payment app launch error: $e");
+              }
+
+              return NavigationDecision.prevent;
+            }
+
+            return NavigationDecision.navigate;
+          },
           onPageFinished: (String url) {
-            if (url.contains("/ccavResponseHandler.php") || url.contains("/yikbPaymentHandler.php")) {
+            if (url.contains("/ccavResponseHandler.php") ||
+                url.contains("/yikbPaymentHandler.php")) {
               _controller.runJavaScript(
-                  "ProcessHTML.postMessage(document.getElementsByTagName('html')[0].innerHTML)"
-              );
+                  "ProcessHTML.postMessage(document.getElementsByTagName('html')[0].innerHTML)");
             }
           },
         ),
       )
       //TODO
-      // ..addJavaScriptChannel(
-      //   JavaScriptChannel(
-      //     name: 'ProcessHTML',
-      //     onMessageReceived: (JavascriptMessage message) {
-      //       TransactionStatus transactionStatus = _determineTransactionStatus(message.message);
-      //       Navigator.of(context).pop(transactionStatus);
-      //     },
-      //   ),
-      // )
+      ..addJavaScriptChannel(
+        'ProcessHTML',
+        // JavaScriptChannel(
+        //   name: 'ProcessHTML',
+        //   onMessageReceived: (JavascriptMessage message) {
+        //     TransactionStatus transactionStatus = _determineTransactionStatus(message.message);
+        //     Navigator.of(context).pop(transactionStatus);
+        //   },
+        // ),
+        onMessageReceived: (JavaScriptMessage p1) {
+          TransactionStatus transactionStatus =
+              _determineTransactionStatus(p1.message);
+          Navigator.of(context).pop(transactionStatus);
+        },
+      )
       ..loadRequest(Uri.parse(paymentUrl));
+    print(paymentUrl);
   }
 
   TransactionStatus _determineTransactionStatus(String html) {
