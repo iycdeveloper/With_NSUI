@@ -1094,10 +1094,10 @@ class MembershipMemberCreateController extends GetxController {
         assemblyList.add(Assembly(
             id: 0,
             districtCode: selectedDistrict,
-            name: i['university'],
+            name: i['college_name'],
             stateCode: selectedState!.stateCode,
             isEnabled: '',
-            assemblyCode: i['university_code']));
+            assemblyCode: i['college_code']));
       }
     }
     Log.printILog('${assemblyList.length}, ${selectedDistrict}');

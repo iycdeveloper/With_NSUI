@@ -43,12 +43,12 @@ class ViewNominationVm extends ChangeNotifier {
         "Physically Handicapped", "PH"), //  need to upload category docment
     DropdownItem("Unknown", "U"),
   ];
-  late List<Districts> districtList;
-  late List<Assembly> assemblyList;
-  late List<States> stateList;
-  late List<Blocks> blocksList;
-  late List<Mandalam>? mandalamList;
-  late List<Booth> boothsList;
+  List<Districts> districtList = [];
+  List<Assembly> assemblyList = [];
+  List<States> stateList = [];
+  List<Blocks> blocksList = [];
+  List<Mandalam>? mandalamList;
+  List<Booth> boothsList = [];
 
   bool isLoading = false;
   late String orderId;
@@ -60,14 +60,21 @@ class ViewNominationVm extends ChangeNotifier {
       nominationMember = member;
       Log.printILog(nominationMember.stateCode);
       // stateList = await DbServices.db.getAllStates(true);
-      stateList = await getStatesList();
+      try {
+        // stateList = 
+        await getStatesList();
+      } catch (e) {
+        Log.printELog(e);
+      }
       //
       // districtList = await DbServices.db.getDistrict(stateList.firstWhere(
       //     (element) => element.stateCode == nominationMember.stateCode));
-      districtList = await getDistrictList(nominationMember.stateCode);
+      // districtList =
+       await getDistrictList(nominationMember.stateCode);
 
       if (nominationMember.assemblyCode != null) {
-        assemblyList = await getAssemblyList(
+        // assemblyList = 
+        await getAssemblyList(
             nominationMember.stateCode!, nominationMember.districtCode!);
         // assemblyList = await DbServices.db.getAllAssembly(
         //     districtList.firstWhere((element) =>
@@ -154,13 +161,13 @@ class ViewNominationVm extends ChangeNotifier {
     } else {
       assemblyList = [];
       for (var i in result) {
-        assemblyList!.add(Assembly(
+        assemblyList.add(Assembly(
             id: 0,
             districtCode: district,
-            name: i['university'],
+            name: i['college_name'],
             stateCode: statecode,
             isEnabled: '',
-            assemblyCode: i['university_code']));
+            assemblyCode: i['college_code']));
       }
     }
     notifyListeners();
@@ -268,15 +275,15 @@ class ViewNominationVm extends ChangeNotifier {
       if (responseDecoded['status'] == "SUCCESS") {
         return responseDecoded["response"];
       } else {
-        CustomSnackBar.showErrorSnackBar(
-          "No data Found : College",
-        );
+        // CustomSnackBar.showErrorSnackBar(
+        //   "No data Found : College",
+        // );
         return null;
       }
     }
-    CustomSnackBar.showErrorSnackBar(
-      "No data Found : College",
-    );
+    // CustomSnackBar.showErrorSnackBar(
+    //   "No data Found : College",
+    // );
     return null;
   }
 

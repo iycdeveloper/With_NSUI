@@ -745,10 +745,10 @@ class MembershipMemberViewController extends GetxController {
         assemblyList!.add(Assembly(
             id: 0,
             districtCode: district,
-            name: i['university'],
+            name: i['college_name'],
             stateCode: state,
             isEnabled: '',
-            assemblyCode: i['university_code']));
+            assemblyCode: i['college_code']));
       }
     }
 
