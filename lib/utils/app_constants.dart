@@ -11,7 +11,7 @@ class AppConstants {
   static String membershipVersion = "1.0"; //
   static String iycVersion = "1.0";
   static String channel = "M";
-  static String nominationVersion = "1.0";
+  static String nominationVersion = "1.1";
   static final String unitManagementVersion = "1.0";
   static String reportsVersion = "1.0";
   static String scrutinyVersion = "1.0";

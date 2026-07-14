@@ -40,7 +40,6 @@
         "flutter_keyboard_visibility",
         "flutter_local_notifications",
         "flutter_parsed_text",
-        "flutter_pdfview",
         "flutter_rating_bar",
         "flutter_spinkit",
         "flutter_stepindicator",
@@ -786,13 +785,6 @@
     {
       "name": "flutter_rating_bar",
       "version": "4.0.1",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
-      "name": "flutter_pdfview",
-      "version": "1.4.1+1",
       "dependencies": [
         "flutter"
       ]

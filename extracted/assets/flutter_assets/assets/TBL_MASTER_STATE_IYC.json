@@ -1,0 +1,289 @@
+[
+    {
+        "ID": 1,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "AN",
+        "STATE_NAME": "Andaman and Nicobar"
+    },
+    {
+        "ID": 2,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "AP",
+        "STATE_NAME": "Andhra Pradesh"
+    },
+    {
+        "ID": 3,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "AS",
+        "STATE_NAME": "Assam"
+    },
+    {
+        "ID": 4,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "BR",
+        "STATE_NAME": "Bihar"
+    },
+    {
+        "ID": 5,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "CH",
+        "STATE_NAME": "Chandigarh"
+    },
+    {
+        "ID": 6,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "CG",
+        "STATE_NAME": "Chattisgarh"
+    },
+    {
+        "ID": 7,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "DD",
+        "STATE_NAME": "Daman and Diu"
+    },
+    {
+        "ID": 8,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "DL",
+        "STATE_NAME": "Delhi"
+    },
+    {
+        "ID": 9,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "DN",
+        "STATE_NAME": "Dadar and Nagar Haveli"
+    },
+    {
+        "ID": 10,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "GA",
+        "STATE_NAME": "Goa"
+    },
+    {
+        "ID": 11,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "GJ",
+        "STATE_NAME": "Gujarat"
+    },
+    {
+        "ID": 12,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "HR",
+        "STATE_NAME": "Haryana"
+    },
+    {
+        "ID": 13,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "JH",
+        "STATE_NAME": "Jharkhand"
+    },
+    {
+        "ID": 14,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "JK",
+        "STATE_NAME": "Jammu and Kashmir"
+    },
+    {
+        "ID": 15,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "KA",
+        "STATE_NAME": "Karnataka"
+    },
+    {
+        "ID": 16,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "KL",
+        "STATE_NAME": "Kerala"
+    },
+    {
+        "ID": 17,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "MB",
+        "STATE_NAME": "Mumbai"
+    },
+    {
+        "ID": 18,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "MH",
+        "STATE_NAME": "Maharashtra"
+    },
+    {
+        "ID": 19,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "ML",
+        "STATE_NAME": "Meghalaya"
+    },
+    {
+        "ID": 20,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "MN",
+        "STATE_NAME": "Manipur"
+    },
+    {
+        "ID": 21,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "MP",
+        "STATE_NAME": "Madhya Pradesh"
+    },
+    {
+        "ID": 22,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "MZ",
+        "STATE_NAME": "Mizoram"
+    },
+    {
+        "ID": 23,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "OR",
+        "STATE_NAME": "Orrisa"
+    },
+    {
+        "ID": 24,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "PB",
+        "STATE_NAME": "Punjab"
+    },
+    {
+        "ID": 25,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "PY",
+        "STATE_NAME": "Pondicherry"
+    },
+    {
+        "ID": 26,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "RJ",
+        "STATE_NAME": "Rajasthan"
+    },
+    {
+        "ID": 27,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "TN",
+        "STATE_NAME": "Tamil Nadu"
+    },
+    {
+        "ID": 28,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "TR",
+        "STATE_NAME": "Tripura"
+    },
+    {
+        "ID": 29,
+        "IS_ENABLED": "0",
+        "IS_PRIMARY": "1",
+        "MASTER_STATE_CODE": "TS",
+        "STATE_NAME": "Training State"
+    },
+    {
+        "ID": 30,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "UP",
+        "STATE_NAME": "Uttar Pradesh"
+    },
+    {
+        "ID": 31,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "UK",
+        "STATE_NAME": "Uttarakhand"
+    },
+    {
+        "ID": 32,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "WB",
+        "STATE_NAME": "West Bengal"
+    },
+    {
+        "ID": 33,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "HP",
+        "STATE_NAME": "Himachal Pradesh"
+    },
+    {
+        "ID": 34,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "TL",
+        "STATE_NAME": "Telangana"
+    },
+    {
+        "ID": 35,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "AR",
+        "STATE_NAME": "Arunachal Pradesh"
+    },
+    {
+        "ID": 36,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "U3",
+        "STATE_NAME": "Uttar Pradesh Central"
+    },
+    {
+        "ID": 37,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "U2",
+        "STATE_NAME": "Uttar Pradesh West"
+    },
+    {
+        "ID": 38,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "U1",
+        "STATE_NAME": "Uttar Pradesh East"
+    },
+    {
+        "ID": 39,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "NL",
+        "STATE_NAME": "Nagaland"
+    },
+    {
+        "ID": 40,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "LA",
+        "STATE_NAME": "Ladakh"
+    },
+    {
+        "ID": 41,
+        "IS_ENABLED": "1",
+        "IS_PRIMARY": null,
+        "MASTER_STATE_CODE": "LK",
+        "STATE_NAME": "Lakshadweep"
+    }
+]
