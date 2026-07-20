@@ -77,7 +77,7 @@ class AuthRepo {
 
   Future<ApiResponse> login({required LoginModel loginModel}) async {
     var testJsonData = '''[{
-    "ORG":"IYC",
+    "ORG":"NSUI",
         "MOBILE":"${loginModel.mobile}",
         "V":"${AppConstants.iycVersion}",
         "CHANNEL":"${AppConstants.channel}",

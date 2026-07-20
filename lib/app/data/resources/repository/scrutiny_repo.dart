@@ -19,7 +19,7 @@ class ScrutinyRepo {
   Future<ApiResponse> checkScrutinyStatus() async {
     Map<String, String> jsonData = {
       "V": "${AppConstants.scrutinyVersion}",
-      "ORG": "IYC",
+      "ORG": "NSUI",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",

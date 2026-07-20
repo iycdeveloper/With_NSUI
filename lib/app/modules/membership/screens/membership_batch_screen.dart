@@ -56,15 +56,15 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
                   _buildActions(context, logic),
                   const SizedBox(height: 26),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Text(
-                        'Batch Data',
-                        style: TextStyle(
-                            color: _ink,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      // const Text(
+                      //   'Batch Data',
+                      //   style: TextStyle(
+                      //       color: _ink,
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.bold),
+                      // ),
                       _createBatchButton(context, logic),
                     ],
                   ),
@@ -106,17 +106,17 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Membership Batch',
-            style: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Pay batch members or download batch details',
-            style: TextStyle(color: Colors.white70, fontSize: 13),
-          ),
-          const SizedBox(height: 18),
+          // const Text(
+          //   'Membership Batch',
+          //   style: TextStyle(
+          //       color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          // ),
+          // const SizedBox(height: 4),
+          // const Text(
+          //   'Pay batch members or download batch details',
+          //   style: TextStyle(color: Colors.white70, fontSize: 13),
+          // ),
+          // const SizedBox(height: 18),
           Row(
             children: [
               _statChip('Total AM', '${logic.totalCount}'),
@@ -251,7 +251,7 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
         ),
         child: const Row(
           children: [
-            Text('Create Batch',
+            Text('Create Membership',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -359,13 +359,13 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
         children: [
           Icon(Icons.inbox_rounded, size: 48, color: Colors.grey[400]),
           const SizedBox(height: 10),
-          Text('No batches yet',
+          Text('No Membership yet',
               style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 14,
                   fontWeight: FontWeight.w600)),
           const SizedBox(height: 4),
-          Text('Tap "Create Batch" to get started',
+          Text('Tap "Create Membership" to get started',
               style: TextStyle(color: Colors.grey[500], fontSize: 12)),
         ],
       ),

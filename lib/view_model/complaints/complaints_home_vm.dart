@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iyc/app/core/utils/snackbar.dart';
 import 'package:iyc/model/api_model/base/api_response.dart';
 import 'package:iyc/model/data_model/dropdown_item.dart';
 import 'package:iyc/app/data/resources/repository/complaints_repo.dart';
@@ -23,6 +25,15 @@ class ComplaintsHomeVM extends ChangeNotifier {
   //     // DropdownItem("Female", "F"),
   //   ];
 
+  Completer<void>? updateDialogCompleter;
+
+  // void handleUpdateBox() {
+  //   if (updateDialogCompleter != null) return;
+
+  //   updateDialogCompleter = Completer();
+  //   CustomSnackBar.showUpdateAppBox();
+  // }
+
   bool loadingPage = false;
   String? selectedLevel;
   String? selectedCandidate;
@@ -43,9 +54,17 @@ class ComplaintsHomeVM extends ChangeNotifier {
     getCandidatesNomination(context);
   }
 
-  changeSelectedCandidate(String candidate, BuildContext context) {
-    selectedCandidate = candidate;
-    notifyListeners();
+  submit(BuildContext context) {
+    if (selectedCandidate == null) {
+      CustomSnackBar.showErrorSnackBar("Select Candidate");
+
+      return;
+    }
+    if (selectedLevel == null) {
+      CustomSnackBar.showErrorSnackBar("Select Level of Candidature");
+
+      return;
+    }
     toPage(
         context,
         ChangeNotifierProvider(
@@ -59,6 +78,11 @@ class ComplaintsHomeVM extends ChangeNotifier {
             userMemberState: userState!,
           ),
         ));
+  }
+
+  changeSelectedCandidate(String candidate, BuildContext context) {
+    selectedCandidate = candidate;
+    notifyListeners();
   }
 
   getCandidatureLevel(BuildContext context) async {
@@ -82,10 +106,14 @@ class ComplaintsHomeVM extends ChangeNotifier {
         loadingPage = false;
         showError = true;
         notifyListeners();
+        if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text(" ERROR.  no nomination found")));
+        } else {}
 
         /// payment failed status display
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(" ERROR.  no nomination found")));
       }
     }
   }
@@ -114,8 +142,13 @@ class ComplaintsHomeVM extends ChangeNotifier {
         notifyListeners();
       } else {
         /// payment failed status display
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(" Candidates not available")));
+
+        if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text(" Candidates not available")));
+        } else {}
       }
     }
   }
@@ -140,8 +173,12 @@ class ComplaintsHomeVM extends ChangeNotifier {
         showError = true;
         loadingPage = false;
         notifyListeners();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(responseDecoded['response'])));
+        if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseDecoded['response'])));
+        } else {}
       }
     }
   }

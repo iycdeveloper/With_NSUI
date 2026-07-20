@@ -403,6 +403,8 @@ class MembershipBatchController extends GetxController {
         await LocalStorageServices()
             .setAggrIDForMembership(responseDecoded["response"]["AGGR_ID"]);
         await LocalStorageServices().setInitMemberStatus("false");
+            await downloadMemberList(context: Get.context!);
+
         isFirstTimeMembership = false;
         update();
         Navigator.of(context).pop(); // pop loading

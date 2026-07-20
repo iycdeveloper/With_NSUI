@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "iyc",
-      "version": "18.9.6+496",
+      "version": "1.0.1+4",
       "dependencies": [
         "amazon_cognito_identity_dart_2",
         "another_stepper",

@@ -8,8 +8,6 @@ import 'package:iyc/app/core/utils/validation_functions.dart';
 import 'package:iyc/app/modules/profile/profile_controller.dart';
 import 'package:iyc/app/modules/profile/widgets/profile_photo_change_view_buttom_sheet..dart';
 import 'package:iyc/app/routes/routes_management.dart';
-import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
-import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/custom_elevated_button.dart';
 import 'package:iyc/app/widgets/custom_floating_text_field.dart';
 import 'package:iyc/app/widgets/custom_rating_bar.dart';

@@ -95,7 +95,7 @@ class YuvaBoothRepo {
   initiateOutboundCall(String mobile, String randomNumber) async {
     var testJsonData = '''[{
     "V":"${AppConstants.iycVersion}",
-    "ORG":"IYC",
+    "ORG":"NSUI",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
@@ -118,7 +118,7 @@ class YuvaBoothRepo {
   verifyOutboundCall(String mobile) async {
     var testJsonData = '''[{
     "V":"${AppConstants.iycVersion}",
-    "ORG":"IYC",
+    "ORG":"NSUI",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",

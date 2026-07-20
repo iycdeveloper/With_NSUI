@@ -1191,7 +1191,7 @@ class NominationsProvider extends ChangeNotifier {
   ) async {
     var nominationMap = {
       "V": AppConstants.nominationVersion,
-      "ORG": "IYC",
+      "ORG": "NSUI",
       "DEVICE_ID": await getDeviceIdentifier(),
       "FIRST_NAME": usernameController.text,
       "LAST_NAME": lastNameController.text,

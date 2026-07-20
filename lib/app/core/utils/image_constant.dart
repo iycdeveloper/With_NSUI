@@ -3,6 +3,8 @@ import 'package:iyc/app/modules/login/login_screen.dart';
 
 class ImageConstant {
   static String imagePath = 'assets/images';
+  static String imagePathNew = 'assets/newui';
+
 
   static String imgMembershipLogo = '$imagePath/img_membership_logo.png';
   static String imgBoldArrow = '$imagePath/img_bold_arrow.svg';

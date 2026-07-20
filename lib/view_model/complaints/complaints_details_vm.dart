@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:iyc/app/core/utils/snackbar.dart';
+import 'package:iyc/app/widgets/bottom_sheet/new_success_bottomshhet.dart';
 import 'package:iyc/model/api_model/base/api_response.dart';
 import 'package:iyc/app/data/resources/repository/complaints_repo.dart';
 import 'package:iyc/app/data/resources/services/aws_upload_services.dart';
@@ -48,13 +51,22 @@ class ComplaintDetailsVm extends ChangeNotifier {
   void init(BuildContext context, Map candidateData, String userMemberId,
       String userMemberState) async {
     this.userMemberId = userMemberId;
-    this.userStateCode = userMemberState;
+    userStateCode = userMemberState;
     isLoadingPage = true;
     complaintBy = await LocalStorageServices().getUserProfileName();
     this.candidateData = candidateData;
     isLoadingPage = false;
     notifyListeners();
   }
+
+  Completer<void>? updateDialogCompleter;
+
+  // void handleUpdateBox() {
+  //   if (updateDialogCompleter != null) return;
+
+  //   updateDialogCompleter = Completer();
+  //   CustomSnackBar.showUpdateAppBox();
+  // }
 
   pickSupportingDocument(
       ImageSource imageSource, String? pickedFilePath) async {
@@ -131,18 +143,19 @@ class ComplaintDetailsVm extends ChangeNotifier {
         destDir: destinationDirectory,
         filename: fileName);
 
-    if (result is String)
+    if (result is String) {
       return true;
-    else
+    } else {
       return false;
+    }
   }
 
   addComplaint(BuildContext context, String candidatePost) async {
     FocusScope.of(context).unfocus();
 
     if (detailsController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(" Kindly fill complaint")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(" Kindly fill complaint")));
       return false;
     }
     showNetworkLoadingDialog(context);
@@ -166,9 +179,14 @@ class ComplaintDetailsVm extends ChangeNotifier {
         Navigator.of(context).pop();
 
         /// payment failed status display
+        
+         if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
                 " ERROR.  ${responseDecoded["response"] ?? "add complaint failed"}")));
+        } else {}
       }
     }
   }
@@ -205,41 +223,55 @@ class ComplaintDetailsVm extends ChangeNotifier {
             jsonDecode(utf8.decode(base64Decode(apiResponse.response!.data)));
         print(responseDecoded);
         if (responseDecoded['status'] == "SUCCESS") {
-          await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => AlertDialog(
-                    title: Text("Thank you. Your Complaints is successful"),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.of(context).popUntil(
-                              (route) => route.settings.name == "/home"),
-                          child: Text("Okay"))
-                    ],
-                  ));
+          await newSuccessBotttomSheet('Complaints',
+              'Thank you. Your Complaints is successful', '', 'Ok', onTap: () {
+            Navigator.of(context)
+                .popUntil((route) => route.settings.name == "/home");
+          });
+          // await showDialog(
+          //     context: context,
+          //     barrierDismissible: false,
+          //     builder: (context) => AlertDialog(
+          //           title: Text("Thank you. Your Complaints is successful"),
+          //           actions: [
+          //             TextButton(
+          //                 onPressed: () => Navigator.of(context).popUntil(
+          //                     (route) => route.settings.name == "/home"),
+          //                 child: Text("Okay"))
+          //           ],
+          //         ));
         } else {
           /// payment failed status display
-          await Alert(
-            context: context,
-            style: const AlertStyle(backgroundColor: Colors.white),
-            type: AlertType.error,
-            title: "Error",
-            desc: "Complaint failed to submit",
-            buttons: [
-              DialogButton(
-                
-                color: Constants.themeGradients[0],
-                child: Text(
-                  "OKAY",
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                ),
-                onPressed: () async {
-                  Navigator.pop(context);
-                },
-                width: 120,
-              )
-            ],
-          ).show();
+
+          if (responseDecoded['error_code'] == 1001) {
+            // handleUpdateBox();
+          } else if (responseDecoded['error_code'] == 9999) {
+            await newSuccessBotttomSheet(
+                'Error', 'Complaint failed to submit', '', 'Ok', onTap: () {
+              Navigator.pop(context);
+            }, failed: true, buttonicon: false);
+          } else {}
+          // await Alert(
+          //   context: context,
+          //   style: const AlertStyle(backgroundColor: Colors.white),
+          //   type: AlertType.error,
+          //   title: "Error",
+          //   desc: "Complaint failed to submit",
+          //   buttons: [
+          //     DialogButton(
+
+          //       color: Constants.themeGradients[0],
+          //       child: Text(
+          //         "OKAY",
+          //         style: TextStyle(color: Colors.black, fontSize: 20),
+          //       ),
+          //       onPressed: () async {
+          //         Navigator.pop(context);
+          //       },
+          //       width: 120,
+          //     )
+          //   ],
+          // ).show();
         }
       }
     }

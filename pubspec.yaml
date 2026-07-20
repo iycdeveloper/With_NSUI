@@ -162,6 +162,13 @@ flutter:
     - assets/images/down-arrow.png
     - assets/images/img_view_vote.png
     - assets/emoji/
+    # 
+    - assets/newui/images/
+    - assets/newui/newImages/
+    - assets/newui/newImages2/
+    - assets/newui/images/youthjodo/
+    - assets/newui/images/shakticlub/
+    - assets/newui/video/logovideo.mp4
 
   fonts:
     - family: Be Vietnam Pro

@@ -102,7 +102,7 @@ class BatchMember {
       this.stateGSCandidate,
       this.statePresidentCandidate,
       this.aggrId,
-      this.organizationCode = "IYC",
+      this.organizationCode = "NSUI",
       this.city,
       this.blockCode,
       this.boothCode,
@@ -331,7 +331,7 @@ class BatchMember {
         "CITY": education ?? "",
         "MANDALAM_CODE": mandalamCode ?? "",
         "BLOCK_CODE": blockCode ?? "",
-        "ORGANIZATION_CODE": "IYC",
+        "ORGANIZATION_CODE": "NSUI",
         "AADHAR": adhaarNumber ?? ''
       };
 

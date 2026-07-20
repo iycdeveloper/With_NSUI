@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iyc/app/core/app_export.dart';
+import 'package:iyc/nusi/app/modules/profile/widgets/delete_profile_webview.dart';
 import 'package:iyc/app/modules/profile/widgets/profile_photo_change_view_buttom_sheet..dart';
 import 'package:iyc/app/routes/routes_management.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
@@ -10,6 +11,7 @@ import 'package:iyc/app/widgets/loading_widget.dart';
 import 'package:iyc/nusi/app/modules/profile/screens/profile_controller_nsui.dart';
 import 'package:iyc/nusi/widgets/custom_elevated_button_nsui.dart';
 import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
+import 'package:iyc/utils/utils.dart';
 
 class ProfilescreenNSUI extends StatefulWidget {
   const ProfilescreenNSUI({super.key});
@@ -146,6 +148,16 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                               },
                               icon: Icon(
                                 Icons.edit_square,
+                                color: theme.textTheme.bodyLarge!.color,
+                                size: 30,
+                              )),
+                          IconButton(
+                              onPressed: () {
+                                // RoutesManagement.goToEditProfileScreenNSUI();
+                                toPage(context, DeleteAccountScreen());
+                              },
+                              icon: Icon(
+                                Icons.delete,
                                 color: theme.textTheme.bodyLarge!.color,
                                 size: 30,
                               ))
