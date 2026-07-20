@@ -748,7 +748,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                   svgname: 'scrutiny',
                   colors: const [Color(0xFF7B2FF7), Color(0xFFB14BF4)],
                   onTap: () =>
-                      CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+                      CustomSnackBar.showAlertSnackBar('Coming Soon..'),
                 ),
               ],
             ),
@@ -758,7 +758,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
               subtitle: 'Coming soon',
               svgname: 'roaccess',
               colors: const [Color(0xFF11998E), Color(0xFF38EF7D)],
-              onTap: () => CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+              onTap: () => CustomSnackBar.showAlertSnackBar('Coming Soon..'),
             ),
             const SizedBox(height: 14),
             _wideTile(
@@ -766,7 +766,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
               subtitle: 'Live results & winners',
               svgname: 'result',
               colors: const [Color(0xFFFFB300), Color(0xFFFF7043)],
-              onTap: () => CustomSnackBar.showAlertSnackBar('Comming Soon..'),
+              onTap: () => CustomSnackBar.showAlertSnackBar('Coming Soon..'),
             ),
           ],
         ),
