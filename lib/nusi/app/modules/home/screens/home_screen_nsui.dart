@@ -14,8 +14,10 @@ import 'package:iyc/nusi/app/modules/social/screens/social_controller_nsui.dart'
 import 'package:iyc/nusi/widgets/custom_elevated_button_nsui.dart';
 import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
 import 'package:iyc/provider/nomination/nominations_provider.dart';
+import 'package:iyc/screens/ui/complaints/complaints_home.dart';
 import 'package:iyc/screens/ui/nominations/nominations_main.dart';
 import 'package:iyc/utils/utils.dart';
+import 'package:iyc/view_model/complaints/complaints_home_vm.dart';
 import 'package:iyc/view_model/nomination/view_nomination_vm.dart';
 import 'dart:math' as math;
 import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
@@ -723,6 +725,24 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
             Row(
               children: [
                 _bentoTile(
+                  title: 'Complaints',
+                  subtitle: 'Raise & track',
+                  svgname: 'complaints',
+                  colors: const [Color(0xFFE0245E), Color(0xFFFF6B6B)],
+                  onTap: () {
+                    toPage(
+                      context,
+                      MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                                create: (context) => ComplaintsHomeVM())
+                          ],
+                          child: const ComplaintsHome()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 14),
+                _bentoTile(
                   title: 'Scrutiny',
                   subtitle: 'Coming soon',
                   svgname: 'scrutiny',
@@ -730,16 +750,15 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                   onTap: () =>
                       CustomSnackBar.showAlertSnackBar('Comming Soon..'),
                 ),
-                const SizedBox(width: 14),
-                _bentoTile(
-                  title: 'RO Access',
-                  subtitle: 'Coming soon',
-                  svgname: 'roaccess',
-                  colors: const [Color(0xFF11998E), Color(0xFF38EF7D)],
-                  onTap: () =>
-                      CustomSnackBar.showAlertSnackBar('Comming Soon..'),
-                ),
               ],
+            ),
+            const SizedBox(height: 14),
+            _wideTile(
+              title: 'RO Access',
+              subtitle: 'Coming soon',
+              svgname: 'roaccess',
+              colors: const [Color(0xFF11998E), Color(0xFF38EF7D)],
+              onTap: () => CustomSnackBar.showAlertSnackBar('Comming Soon..'),
             ),
             const SizedBox(height: 14),
             _wideTile(

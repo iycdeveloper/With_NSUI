@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key></key>
-	<string></string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -35,15 +33,16 @@
 	<key>NSCameraUsageDescription</key>
 	<string>With Iyc App needs access to your camera to allow you to take photos for your profile picture, Door to Door Campaigns, Booth Jodo module, and various types of forms.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>With IYC App wants to access your location for Check-IN, Door to Door Campaigns and Booth Jodo module of the App to track activities.</string>
+    <string>With IYC App wants to access your location for Check-IN, Door to Door Campaigns and Booth Jodo module of the App to track activities.</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>With IYC App wants to access your location for Check-IN, Door to Door Campaigns and Booth Jodo module of the App to track activities.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>With Iyc App wants to access your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>With Iyc App wants to access your photo library</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>With Iyc App wants to save photos and recorded videos to your photo library.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -68,5 +67,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
