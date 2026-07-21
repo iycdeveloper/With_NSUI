@@ -697,4 +697,14 @@ abstract class RoutesManagement {
       arguments: [isUpdate, isLegalCell, member, isUpdateToDB],
     );
   }
+
+   // Go to the [PaymentHistory] screen.
+  static void goToPaymentHistory() {
+    Get.toNamed<void>(AppRoutes.paymentHistory);
+  }
+
+  // Go to the [PaymentHistory] screen.
+  static void goToPaymentHistoryDetails(dynamic data) {
+    Get.toNamed<void>(AppRoutes.paymentHistoryDetails, arguments: data);
+  }
 }

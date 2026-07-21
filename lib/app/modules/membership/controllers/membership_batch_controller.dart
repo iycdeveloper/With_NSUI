@@ -300,6 +300,8 @@ class MembershipBatchController extends GetxController {
     totalCount = await countAm();
     totalUnpaidAmCount = await countAmUnPaid(_membershipBatchList);
     totalPaidAmCount = totalCount - totalUnpaidAmCount;
+    _filtermembershipBatchList = _membershipBatchList;
+
     Log.printILog(totalUnpaidAmCount);
     loading = false;
     update();
@@ -403,6 +405,8 @@ class MembershipBatchController extends GetxController {
         await LocalStorageServices()
             .setAggrIDForMembership(responseDecoded["response"]["AGGR_ID"]);
         await LocalStorageServices().setInitMemberStatus("false");
+        await downloadExistingBatch(context: context);
+
             await downloadMemberList(context: Get.context!);
 
         isFirstTimeMembership = false;
@@ -418,6 +422,10 @@ class MembershipBatchController extends GetxController {
     }
     return true;
   }
+  List<BatchDataModel> _filtermembershipBatchList = [];
+
+  List<BatchDataModel> get filtermembershipBatchList =>
+      _filtermembershipBatchList;
 
   downloadExistingBatch({
     required BuildContext context,

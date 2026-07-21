@@ -84,6 +84,25 @@ class PaymentRepo {
     }
   }
 
+  paymentHistory(String aggrId) async {
+    var data = '''[{
+    "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
+    "USER_ID":"${await LocalStorageServices().getUserId()}",
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+   "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","AGGR_ID":"$aggrId","STATE_CODE":"${await LocalStorageServices().getSTCode()}" }]''';
+
+    try {
+      var base64encoded = base64.encode(utf8.encode(data));
+
+      final result = await dioClient.post(Urls.getMembershipPaymentHistory,
+          data: base64encoded);
+      return ApiResponse.withSuccess(result);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+
   checkPaymentStatusAggregator(String transactionId) async {
     var data =
         '''[{"V":"${AppConstants.membershipVersion}","AGGR_ID":"${await LocalStorageServices().getAgrIDMembership()}",

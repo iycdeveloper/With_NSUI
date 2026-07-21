@@ -6,6 +6,7 @@ import 'package:iyc/app/routes/routes_management.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/app_bar/custom_app_bar.dart';
+import 'package:iyc/model/api_model/batch/batch_data_model.dart';
 import 'package:iyc/model/data_model/batch_member.dart';
 import 'package:iyc/screens/ui/payment/payment_select_batch.dart';
 import 'package:iyc/utils/utils.dart';
@@ -38,6 +39,36 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
               backgroundColor: const Color(0xFFF1F4FF),
               appBar: CustomAppBar(
                   leadingWidth: 44.h,
+                  actions: [
+
+                    GestureDetector(
+                      onTap: () {
+                        RoutesManagement.goToPaymentHistory();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _indigo
+                        ),
+                        child: const Icon(Icons.history,
+                        color: Colors.white,
+                        )),
+                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     RoutesManagement.goToPaymentHistory();
+                    //   },
+                    //   child: Image.asset(
+                    //     'assets/newui/images/PaymentHistory2.png',
+                    //     scale: 2.5,
+                    //     // color: _indigo,
+                    //   ),
+                    // ),
+                    const SizedBox(
+                      width: 10,
+                    )
+                  ],
                   leading: AppbarImage(
                       onTap: () {
                         Get.back();
@@ -74,9 +105,23 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
                     if (logic.filtermemberList!.isEmpty)
                       _emptyState()
                     else
-                      // for (final batch in logic.membershipBatchList)
                       for (final member in logic.filtermemberList!)
-                        _batchCard(context, member),
+                        Builder(
+                          builder: (context) {
+                            final batch = logic.filtermembershipBatchList
+                                .cast<dynamic>()
+                                .firstWhere(
+                                  (b) => b.batchId == member.batchId,
+                                  orElse: () => null,
+                                );
+
+                            if (batch == null) {
+                              return const SizedBox.shrink();
+                            }
+// print(logic.filtermemberList!.length);
+                            return _batchCard(context, member, batch);
+                          },
+                        ),
                   ]
                 ],
               ),
@@ -178,6 +223,7 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
           color: const Color(0xFF7B2FF7),
           onTap: () {
             logic.downloadExistingBatch(context: context);
+            logic.downloadMemberList(context: context);
           },
         ),
       ],
@@ -251,26 +297,31 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
         ),
         child: const Row(
           children: [
-            Text('Create Membership',
+            Icon(Icons.add_rounded, color: Colors.white, size: 18),
+            SizedBox(width: 6),
+            Text('New Member',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w600)),
-            SizedBox(width: 6),
-            Icon(Icons.add_rounded, color: Colors.white, size: 18),
           ],
         ),
       ),
     );
   }
 
-  Widget _batchCard(BuildContext context, BatchMember member) {
+  Widget _batchCard(
+      BuildContext context, BatchMember member, BatchDataModel batch) {
     final bool synced = member.isSync == "1";
-    // final bool paid = member.paymentStatus == "PAID";
+    final bool paid = batch.paymentStatus == "PAID";
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
-        // onTap: () =>
+        onTap: () => RoutesManagement.goToMembershipMemberViewScreen(
+          member,
+          isUpdate: (member.isSync == "1"),
+          isUpdateToDB: true,
+        ),
         //     RoutesManagement.goToMembershipMemberListScreen(batch.batchId),
         child: Container(
           padding: const EdgeInsets.all(14),
@@ -312,17 +363,14 @@ class _MembershipBatchScreenState extends State<MembershipBatchScreen> {
                       spacing: 6,
                       runSpacing: 6,
                       children: [
-                        _miniChip('{batch.countAM} AM', _indigo),
+                        // _miniChip('{batch.countAM} AM', _indigo),
                         _miniChip(
                             synced ? 'Synced' : 'Pending',
                             synced
                                 ? const Color(0xFF11998E)
                                 : const Color(0xFF6B8199)),
-                        _miniChip(
-                          // paid ? 'Paid' : 
-                          'Unpaid',
-                            // paid ? const Color(0xFF11998E) : 
-                            Colors.orange),
+                        _miniChip(paid ? 'Paid' : 'Unpaid',
+                            paid ? const Color(0xFF11998E) : Colors.orange),
                       ],
                     ),
                   ],

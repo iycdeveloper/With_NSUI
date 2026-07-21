@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/model/api_model/batch/batch_data_model.dart';
 import 'package:iyc/utils/constants.dart';
 import 'package:iyc/view_model/payment/payment_amount_vm.dart';
@@ -26,20 +27,35 @@ class _PaymentAmountPageState extends State<PaymentAmountPage> {
     print(widget.amount);
     super.initState();
   }
+  static const Color _indigo = Color(0xFF1356BF);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(onWillPop: ()async=>false,
+    return WillPopScope(
+      onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Payment Batches"),leading: Container(),centerTitle: true,
-          backgroundColor: Constants.themeGradients[0],
+          title: Text(
+            "Payment Batches",
+            style: theme.textTheme.bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: theme.textTheme.bodyLarge!.color,
+              )),
+          centerTitle: true,
+          backgroundColor: Colors.white,
         ),
         bottomNavigationBar: Container(
           margin: EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.lightBlueAccent.shade200,
+            color: _indigo,
           ),
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           width: double.infinity,
@@ -51,7 +67,7 @@ class _PaymentAmountPageState extends State<PaymentAmountPage> {
                   child: Text(
                     "Cancel",
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 16),
                   )),
@@ -65,7 +81,7 @@ class _PaymentAmountPageState extends State<PaymentAmountPage> {
                   child: Text(
                     "Submit",
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 16),
                   ))
@@ -80,13 +96,20 @@ class _PaymentAmountPageState extends State<PaymentAmountPage> {
             ),
             Text(
               "TOTAL AMOUNT",
+              style: theme.textTheme.bodyLarge!.copyWith(
+                color: _indigo
+              ),
             ),
             Container(
               margin: EdgeInsets.all(20),
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Center(child: Text(widget.amount.toString())),
+              child: Center(child: Text(widget.amount.toString(),
+              style:  theme.textTheme.bodyMedium!.copyWith(
+                color: _indigo,
+              ),
+              )),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue.shade300),
+                  border: Border.all(color: _indigo.withOpacity(0.4)),
                   borderRadius: BorderRadius.circular(5)),
             ),
             SizedBox(
@@ -94,13 +117,20 @@ class _PaymentAmountPageState extends State<PaymentAmountPage> {
             ),
             Text(
               "TRANSACTION ID",
+              style:  theme.textTheme.bodyLarge!.copyWith(
+                color: _indigo
+              ),
             ),
             Container(
               margin: EdgeInsets.all(20),
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Center(child: Text(widget.transactionId)),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Center(child: Text(widget.transactionId,
+               style:  theme.textTheme.bodyMedium!.copyWith(
+                color: _indigo
+              ),
+              )),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue.shade300),
+                  border: Border.all(color: _indigo.withOpacity(0.4)),
                   borderRadius: BorderRadius.circular(5)),
             ),
             SizedBox(

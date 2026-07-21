@@ -1146,15 +1146,15 @@ class MembershipMemberCreateController extends GetxController {
       if (responseDecoded['status'] == "SUCCESS") {
         return responseDecoded["response"];
       } else {
-        CustomSnackBar.showErrorSnackBar(
-          "No data Found : College",
-        );
+        // CustomSnackBar.showErrorSnackBar(
+        //   "No data Found : College",
+        // );
         return null;
       }
     }
-    CustomSnackBar.showErrorSnackBar(
-      "No data Found : College",
-    );
+    // CustomSnackBar.showErrorSnackBar(
+    //   "No data Found : College",
+    // );
     return null;
   }
 

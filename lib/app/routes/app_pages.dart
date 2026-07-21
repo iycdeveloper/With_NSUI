@@ -207,6 +207,9 @@ import 'package:iyc/nusi/app/modules/social/screens/social_binding_nsui.dart';
 import 'package:iyc/nusi/app/modules/social/screens/social_screen_nsui.dart';
 import 'package:iyc/nusi/app/modules/splash/screens/splash_binding_nsui.dart';
 import 'package:iyc/nusi/app/modules/splash/screens/splash_screen_nsui.dart';
+import 'package:iyc/screens/ui/payment/payment_history/payment_history_binding.dart';
+import 'package:iyc/screens/ui/payment/payment_history/payment_history_details_screen.dart';
+import 'package:iyc/screens/ui/payment/payment_history/payment_history_screen.dart';
 
 /// Contains the list of pages or routes taken across the whole application.
 /// This will prevent us in using context for navigation. And also providing
@@ -1111,6 +1114,22 @@ abstract class AppPages {
       name: AppRoutes.membershipMemberView,
       page: () => const MembershipMemberviewScreen(),
       binding: MembershipMemberViewBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+
+
+     GetPage(
+      name: AppRoutes.paymentHistory,
+      page: () => const PaymentHistoryScreen(),
+      binding: PaymentHistoryBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: AppRoutes.paymentHistoryDetails,
+      page: () => const PaymentHistoryDetailsScreen(),
+      binding: PaymentHistoryBinding(),
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),

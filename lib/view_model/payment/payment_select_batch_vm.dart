@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/app/core/utils/progress_dialog_utils.dart';
 import 'package:iyc/app/data/resources/repository/batch_repo.dart';
+import 'package:iyc/app/modules/membership/controllers/membership_batch_controller.dart';
 import 'package:iyc/di_container.dart';
 import 'package:iyc/model/api_model/base/api_response.dart';
 import 'package:iyc/model/api_model/batch/batch_data_model.dart';
 import 'package:iyc/app/data/resources/db_provider/membership/batch_db_repo.dart';
 import 'package:iyc/app/data/resources/repository/payment_repo.dart';
 import 'package:iyc/model/api_model/batch/batch_download_model.dart';
+import 'package:iyc/model/data_model/batch_member.dart';
 import 'package:iyc/screens/ui/payment/payment_amount_page.dart';
 import 'package:iyc/screens/ui/payment/payment_screen.dart';
 import 'package:iyc/screens/widgets/network_loading_dialog_box.dart';
@@ -125,17 +127,52 @@ class PaymentSelectBatchVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getMembershipBatchList(BuildContext context, {bool? reload}) async {
+  // Future getMembershipBatchList(BuildContext context, {bool? reload}) async {
+  //   isLoading = true;
+  //   await downloadExistingBatch(context: context);
+  //   if (reload != null && reload) {
+  //     notifyListeners();
+  //   }
+
+  //   // membershipBatchList = await sl<BatchDBRepo>().getData();
+  //   membershipBatchList = membershipBatchList
+  //       .where((element) => element.paymentStatus != "PAID")
+  //       .toList();
+  //   paymentFee = paymentFee ?? await getAllBatchFees(context);
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
+  List<BatchMember>? memberList = [];
+  Future getMembershipBatchList(BuildContext context,
+      {bool? reload, BatchDataModel? data}) async {
     isLoading = true;
-    await downloadExistingBatch(context: context);
     if (reload != null && reload) {
       notifyListeners();
     }
-
-    // membershipBatchList = await sl<BatchDBRepo>().getData();
+    // if (data != null) {
+    //   membershipBatchList.add(data);
+    // } else {
+    membershipBatchList = await sl<BatchDBRepo>().getData();
     membershipBatchList = membershipBatchList
         .where((element) => element.paymentStatus != "PAID")
         .toList();
+    // print(membershipBatchList.length);
+    final allMembers = Get.find<MembershipBatchController>().memberList!;
+
+    memberList = membershipBatchList
+        .expand(
+          (batch) => allMembers.where(
+            (member) => member.batchId == batch.batchId,
+          ),
+        )
+        .toList();
+    print(membershipBatchList.length);
+
+    print(memberList!.length);
+    print(Get.find<MembershipBatchController>().memberList!.length);
+
+    // }
+
     paymentFee = paymentFee ?? await getAllBatchFees(context);
     isLoading = false;
     notifyListeners();

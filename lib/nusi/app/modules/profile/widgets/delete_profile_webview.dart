@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:iyc/app/core/app_export.dart';
+import 'package:iyc/app/core/utils/image_constant.dart';
+import 'package:iyc/app/theme/theme_helper.dart';
+import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
@@ -44,6 +49,19 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     return PopScope(
       canPop: true,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text('Account Deletion Form',
+              style: theme.textTheme.titleLarge!.copyWith(
+                  color: appTheme.indigo800, fontWeight: FontWeight.bold)),
+          elevation: 0,
+          leading: AppbarImage(
+              onTap: () {
+                Get.back();
+              },
+              svgPath: ImageConstant.imgBiarrowleftIndigo800,
+              margin: EdgeInsets.only(left: 20.h, top: 15.v, bottom: 15.v)),
+        ),
         body: SafeArea(
           child: Stack(
             children: [

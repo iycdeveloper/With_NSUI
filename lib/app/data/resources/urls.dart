@@ -272,4 +272,11 @@ class Urls {
   static const getDistrictLisNSUI = _baseUrl + "auth/getDistrict.php";
   static const getUniversityLisNSUI = _baseUrl + "auth/getUniversity.php";
   static const getCollegeLisNSUI = _baseUrl + "auth/getCollege.php";
+
+//Payment history
+
+  static const getMembershipPaymentHistory =
+      _baseUrl + "aggregator/AggrPaymentHistory.php";
+  static const getNominationPaymentHistory =
+      _baseUrl + "selfnomination_1/getNominationPaymentHistory.php";
 }

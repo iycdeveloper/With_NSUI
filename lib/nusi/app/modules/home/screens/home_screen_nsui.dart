@@ -729,7 +729,9 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                   subtitle: 'Raise & track',
                   svgname: 'complaints',
                   colors: const [Color(0xFFE0245E), Color(0xFFFF6B6B)],
-                  onTap: () {
+                  onTap: () 
+                  // =>CustomSnackBar.showAlertSnackBar('Coming Soon..')
+                  {
                     toPage(
                       context,
                       MultiProvider(

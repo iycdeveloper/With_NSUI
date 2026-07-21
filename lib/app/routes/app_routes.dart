@@ -138,6 +138,10 @@ abstract class AppRoutes {
   static const String registerOtpScreenNSUI = '/register_otp_screenNSUI';
 
     static const String membershipMemberView = '/membership_member_view';
+  static const String paymentHistory = '/paymentHistory';
+    static const String paymentHistoryDetails = '/paymentHistoryDetails';
+        static const String paymentHistoryNomination = '/paymentHistoryNomination';
+    static const String paymentHistoryNominationDetails = '/paymentHistoryNominationDetails';
 
 
 }

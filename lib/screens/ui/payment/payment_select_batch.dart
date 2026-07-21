@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/screens/widgets/button/next_prev_button.dart';
 import 'package:iyc/screens/widgets/network_loading.dart';
 import 'package:iyc/utils/constants.dart';
@@ -20,16 +21,32 @@ class _PaymentSelectBatchState extends State<PaymentSelectBatch> {
     super.initState();
   }
 
+  static const Color _indigo = Color(0xFF1356BF);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Payment Batches"),
-        backgroundColor: Constants.themeGradients[0],
+        title: Text(
+          "Payment Membership",
+          style:
+              theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+          // _indigo.withOpacity(0.10)
+        ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: theme.textTheme.bodyLarge!.color,
+            )),
+        backgroundColor: Colors.white,
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: NextPrevButton(
+            color: _indigo,
             title: "Submit",
             onTap: () {
               final checkSelectedBatch = context
@@ -53,41 +70,79 @@ class _PaymentSelectBatchState extends State<PaymentSelectBatch> {
                       children: [
                         ListTile(
                           leading: Checkbox(
+                              activeColor: _indigo,
                               value: model.isSelectedAll,
+                              checkColor: Colors.white,
                               onChanged: (val) {
                                 context
                                     .read<PaymentSelectBatchVM>()
                                     .toggleSelectAll();
                               }),
-                          title: const Text("Select All Batches", style: TextStyle(color: Colors.black),),
+                          title: const Text(
+                            "Select All Membership",
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                         Expanded(
                             child: ListView.builder(
                                 itemCount: model.membershipBatchList
-                                    .where(
-                                        (element) => element.syncStatus == "1")
+                                    .where((element) =>
+                                        element.syncStatus == "1" &&
+                                        element.paymentStatus == 'Pending')
                                     .toList()
                                     .length,
-                                itemBuilder: (context, index) => ListTile(
-                                      leading: Checkbox(
-                                          value: model.membershipBatchList
-                                              .where((element) =>
-                                                  element.syncStatus == "1")
-                                              .toList()[index]
-                                              .selected,
-                                          onChanged: (val) {
-                                            context
-                                                .read<PaymentSelectBatchVM>()
-                                                .changeCheckBox(index);
-                                          }),
-                                      title: Text(model.membershipBatchList
-                                          .where((element) =>
-                                              element.syncStatus == "1")
-                                          .toList()[index]
-                                          .batchId, style: const TextStyle(color: Colors.black),),
-                                      trailing: Text(
-                                          "₹ : ${model.paymentFee! * model.membershipBatchList.where((element) => element.syncStatus == "1").toList()[index].countAM}"),
-                                    )))
+                                itemBuilder: (context, index) {
+                                  final batch = model.membershipBatchList
+                                      .where((e) =>
+                                          e.syncStatus == "1" &&
+                                          e.paymentStatus == "Pending")
+                                      .toList()[index];
+
+                                  final members = model.memberList!
+                                      .where((m) => m.batchId == batch.batchId)
+                                      .toList();
+
+                                  if (members.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return ListTile(
+                                    leading: Checkbox(
+                                        activeColor: _indigo,
+                                        checkColor: Colors.white,
+                                        value: model.membershipBatchList
+                                            .where((element) =>
+                                                element.syncStatus == "1" &&
+                                                element.paymentStatus ==
+                                                    'Pending')
+                                            .toList()[index]
+                                            .selected,
+                                        onChanged: (val) {
+                                          context
+                                              .read<PaymentSelectBatchVM>()
+                                              .changeCheckBox(index);
+                                        }),
+                                    title: Text(
+                                      members.first.memberId ?? "",
+                                      // model.memberList!
+                                      //     .where((test) =>
+                                      //         test.batchId ==
+                                      //         (model.membershipBatchList
+                                      //             .where((element) =>
+                                      //                 element.syncStatus ==
+                                      //                     "1" &&
+                                      //                 element.paymentStatus ==
+                                      //                     'Pending')
+                                      //             .toList()[index]
+                                      //             .batchId))
+                                      //     .first
+                                      //     .memberId!,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                    trailing: Text(
+                                        "₹ : ${model.paymentFee! * model.membershipBatchList.where((element) => element.syncStatus == "1").toList()[index].countAM}"),
+                                  );
+                                }))
                       ],
                     )
                   : const Center(
