@@ -121,8 +121,8 @@ class MembershipMemberViewController extends GetxController {
     currentMember = membershipRequestModel;
     await getStatesList();
     await getDistrictList(currentMember!.stateCode ?? '');
-    // await getAssemblyList(
-    //     currentMember!.stateCode ?? '', currentMember!.districtCode ?? '');
+    await getAssemblyList(
+        currentMember!.stateCode ?? '', currentMember!.districtCode ?? '');
     // await createBoothList(currentMember!.stateCode ?? '',
     //     currentMember!.districtCode ?? '', currentMember!.assemblyCode ?? '');
 
@@ -139,6 +139,15 @@ class MembershipMemberViewController extends GetxController {
             : currentMember!.gender!.contains('F')
                 ? 'Female'
                 : 'Others');
+    var caste = category
+        .where((test) => test.value == currentMember!.category)
+        .toList();
+    if (caste.isNotEmpty) {
+      categoryController.text = caste.first.name;
+    }
+
+    // currentMember!.category??'';
+
     courseController.text = currentMember!.education ?? '';
     addressController.text = currentMember!.address ?? '';
 
@@ -155,12 +164,12 @@ class MembershipMemberViewController extends GetxController {
       districtController.text = data2.first.name;
     }
 
-    // List<Assembly>? data3 = assemblyList!
-    //     .where((test) => test.assemblyCode == currentMember!.assemblyCode)
-    //     .toList();
-    // if (data3.isNotEmpty) {
-    //   universityController.text = data3.first.name;
-    // }
+    List<Assembly>? data3 = assemblyList!
+        .where((test) => test.assemblyCode == currentMember!.assemblyCode)
+        .toList();
+    if (data3.isNotEmpty) {
+      universityController.text = data3.first.name;
+    }
 
     // List<Booth>? data4 = _boothList
     //     .where((test) => test.boothCode == currentMember!.mandalamCode)
@@ -416,6 +425,7 @@ class MembershipMemberViewController extends GetxController {
   TextEditingController professionController = TextEditingController();
   TextEditingController fatherNameController = TextEditingController();
   TextEditingController genderController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
 
   TextEditingController stateController = TextEditingController();
   TextEditingController districtController = TextEditingController();
@@ -474,12 +484,15 @@ class MembershipMemberViewController extends GetxController {
     DropdownItem("Other", "O"),
   ];
   List<DropdownItem> category = [
-    DropdownItem("General", "General"),
-    DropdownItem("SC", "SC"),
-    DropdownItem("ST", "ST"),
-    DropdownItem("OBC", "OBC"),
-    DropdownItem("Minority", "Minority"),
-    DropdownItem("Unknown", "Unknown"), //Minority
+    DropdownItem("General", "G"),
+    // DropdownItem("MBC", "B"),
+    DropdownItem("Minority", "M"),
+    DropdownItem("OBC", "O"),
+    DropdownItem("SC", "S"), //
+    DropdownItem("ST", "T"), //
+    DropdownItem("Specially abled", "PH"),
+    // DropdownItem("Transgender", "TG"),
+    DropdownItem("Unknown", "U"),
   ];
   List<DropdownItem> educationalDetailsList = [
     DropdownItem("Graduate", "Graduate"),

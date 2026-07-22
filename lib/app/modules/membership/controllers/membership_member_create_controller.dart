@@ -78,6 +78,7 @@ class MembershipMemberCreateController extends GetxController {
     '3': 'Upload Documents',
     '4': 'Candidate Selection',
   };
+
   // Map<String, String> steps = {
   //   '1': 'Basic Details',
   //   '2': 'Personal Details',
@@ -248,6 +249,7 @@ class MembershipMemberCreateController extends GetxController {
       "EMAIL": emailController.text,
       "DATE_OF_BIRTH": dobController.text,
       "SEX_CODE": selectedGender,
+      "CATEGORY_CODE": selectedCategory,
       "EDUCATION": courseController.text,
       "ADDRESS": addressController.text,
       "STATE_CODE": selectedState!.stateCode,
@@ -263,9 +265,19 @@ class MembershipMemberCreateController extends GetxController {
       "CSN_BL": selectedBoothNominations,
       "AGGR_ID": aggrId,
       "VERIFICATION_CODE": verificationCodeController.text,
-      "ID_DOCUMENT": pickedIdProofPath,
-      "AM_PHOTO": pickedAMFilePath,
-      "DOCUMENT_BACK_PATH": pickedDocumentBackFilePath,
+      "ID_DOCUMENT":
+          '${currentMember!.memberId}_D.${pickedIdProofPath?.split(".").last}',
+      "ID_DOCUMENT_BACK":
+          '${currentMember!.memberId}_D_BACK.${pickedIdProofPathBack?.split(".").last}',
+      "AM_PHOTO":
+          '${currentMember!.memberId}_P.${pickedAMFilePath?.split(".").last}',
+      "VIDEO_FILE_PATH":
+          '${currentMember!.memberId}.${pickedVideoFilePath?.split(".").last}',
+      // "DOCUMENT_BACK_PATH": pickedDocumentAadhaarFilePath,
+      "AADHAR_FRONT_PATH":
+          '${currentMember!.memberId}_A.${member.adhaarIdFrontPath?.split(".").last}',
+      "AADHAR_BACK_PATH":
+          '${currentMember!.memberId}_A_BACK.${member.adhaarIdBackPath?.split(".").last}',
       "CHANNEL": "M",
       "RELATION_CODE": "F",
       "ORGANIZATION_CODE": "NSUI"
@@ -357,6 +369,7 @@ class MembershipMemberCreateController extends GetxController {
         // membershipListController.showAddOption = false;
         update();
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
 
         var result = await membershipNSUISuccessBottomSheet(context);
         if (result == null) {
@@ -390,11 +403,18 @@ class MembershipMemberCreateController extends GetxController {
       [
         if (pickedIdProofPath != null && pickedIdProofPath != '')
           uploadDocumentFrontImage(member),
-        if (pickedDocumentBackFilePath != null &&
-            pickedDocumentBackFilePath != '')
+        if (pickedIdProofPathBack != null && pickedIdProofPathBack != '')
           uploadDocumentBackImage(member),
+        if (pickedDocumentAadhaarFilePath != null &&
+            pickedDocumentAadhaarFilePath != '')
+          uploadDocumentAAdharIDFrontImage(member),
+        if (pickedDocumentAadhaarBackFilePath != null &&
+            pickedDocumentAadhaarBackFilePath != '')
+          uploadDocumentAAdharIDBackImage(member),
         if (pickedAMFilePath != null && pickedAMFilePath != '')
           uploadDocumentAmPhoto(member),
+        if (pickedVideoFile != null && pickedVideoFilePath != '')
+          uploadProfileVideo(member),
       ],
     );
     if (uploadResult.contains(false)) {
@@ -410,7 +430,7 @@ class MembershipMemberCreateController extends GetxController {
   Future<bool> uploadDocumentFrontImage(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(pickedIdProofPath!),
-        destDir: "MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
         filename: "${member.memberId}_D.${pickedIdProofPath?.split(".").last}");
 
     if (result is String) {
@@ -422,10 +442,38 @@ class MembershipMemberCreateController extends GetxController {
 
   Future<bool> uploadDocumentBackImage(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
-        file: File(pickedDocumentBackFilePath!),
-        destDir: "MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        file: File(pickedIdProofPathBack!),
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
         filename:
-            "${member.memberId}_D_BACK.${pickedDocumentBackFilePath?.split(".").last}");
+            "${member.memberId}_D_BACK.${pickedIdProofPathBack?.split(".").last}");
+
+    if (result is String) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> uploadDocumentAAdharIDFrontImage(BatchMember member) async {
+    String? result = await AwsUploadServices().uploadFile(
+        file: File(member.adhaarIdFrontPath!),
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        filename:
+            "${member.memberId}_A.${member.adhaarIdFrontPath?.split(".").last}");
+
+    if (result is String) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> uploadDocumentAAdharIDBackImage(BatchMember member) async {
+    String? result = await AwsUploadServices().uploadFile(
+        file: File(member.adhaarIdBackPath!),
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        filename:
+            "${member.memberId}_A_BACK.${member.adhaarIdBackPath?.split(".").last}");
 
     if (result is String) {
       return true;
@@ -437,8 +485,22 @@ class MembershipMemberCreateController extends GetxController {
   Future<bool> uploadDocumentAmPhoto(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(pickedAMFilePath!),
-        destDir: "MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
         filename: "${member.memberId}_P.${pickedAMFilePath?.split(".").last}");
+
+    if (result is String) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> uploadProfileVideo(BatchMember member) async {
+    String? result = await AwsUploadServices().uploadFile(
+        file: File(member.videoFilePath!),
+        destDir: "NSUI/MEMBERSHIP/${member.stateCode}/OM/${member.memberId}",
+        filename:
+            "${member.memberId}.${member.videoFilePath?.split(".").last}");
 
     if (result is String) {
       return true;
@@ -479,8 +541,11 @@ class MembershipMemberCreateController extends GetxController {
       ..isSync = "0"
       ..isEditedScrutiny = "0"
       ..idDocumentFilePath = pickedIdProofPath
+      ..documentBackPath = pickedIdProofPathBack
       ..videoFilePath = pickedVideoFilePath
-      ..documentBackPath = pickedDocumentBackFilePath
+      ..documentBackPath = pickedDocumentAadhaarFilePath //old pass
+      ..adhaarIdFrontPath = pickedDocumentAadhaarFilePath
+      ..adhaarIdBackPath = pickedDocumentAadhaarBackFilePath
       ..idValue = idController.text
       ..referrerId = ""
       //
@@ -555,18 +620,23 @@ class MembershipMemberCreateController extends GetxController {
     }
     selectedGender == null
         ? CustomSnackBar.showErrorSnackBar('Select Gender')
-        : selectedDate == null
-            ? CustomSnackBar.showErrorSnackBar(
-                "Select a date",
-              )
-            : null;
+        : selectedCategory == null
+            ? CustomSnackBar.showErrorSnackBar('Select Category')
+            : selectedDate == null
+                ? CustomSnackBar.showErrorSnackBar(
+                    "Select a date",
+                  )
+                : null;
+
     if (await validateOtpPage(context)) {
       isFieldsValid = true;
     } else {
       isFieldsValid = false;
     }
-    bool isValid =
-        (selectedGender != null && selectedDate != null && isFieldsValid);
+    bool isValid = (selectedGender != null &&
+        selectedDate != null &&
+        selectedCategory != null &&
+        isFieldsValid);
     return isValid;
   }
 
@@ -640,15 +710,15 @@ class MembershipMemberCreateController extends GetxController {
     DropdownItem("Other", "Other"),
   ];
   List<DropdownItem> category = [
-    DropdownItem("General", "General"),
-    DropdownItem("MBC", "MBC"),
-    DropdownItem("SC", "SC"),
-    DropdownItem("ST", "ST"),
-    DropdownItem("OBC", "OBC"),
-    DropdownItem("Minority", "Minority"),
+    DropdownItem("General", "G"),
+    // DropdownItem("MBC", "B"),
+    DropdownItem("Minority", "M"),
+    DropdownItem("OBC", "O"),
+    DropdownItem("SC", "S"), //
+    DropdownItem("ST", "T"), //
     DropdownItem("Specially abled", "PH"),
-    DropdownItem("Transgender", "TG"),
-    DropdownItem("Unknown", "Unknown"), //Minority
+    // DropdownItem("Transgender", "TG"),
+    DropdownItem("Unknown", "U"),
   ];
   List<DropdownItem> educationalDetailsList = [
     DropdownItem("Graduate", "Graduate"),
@@ -762,17 +832,28 @@ class MembershipMemberCreateController extends GetxController {
   ];
   String? pickedAMFilePath;
   String? pickedIdProofPath;
-  String? pickedDocumentBackFilePath;
+  String? pickedIdProofPathBack;
+
+  String? pickedDocumentAadhaarFilePath;
+  String? pickedDocumentAadhaarBackFilePath;
+
   String? pickedVideoFilePath;
 
   File? pickedAMFile;
   File? pickedIdFile;
-  File? pickedDocumentBack;
+  File? pickedIdFileBack;
+
+  File? pickedAadhaarDocument;
+  File? pickedAadhaarDocumentBack;
   File? pickedVideoFile;
 
   bool showIdImage = false;
+  bool showIdImageBack = false;
+
   bool showAMImage = false;
-  bool showDocumentBack = false;
+  bool showDocumentAadhaarBack = false;
+  bool showDocumentAadhaar = false;
+
   List<String> scrutinyCodeList = [];
 
   bool showVideoFile = false;
@@ -788,7 +869,11 @@ class MembershipMemberCreateController extends GetxController {
     selectedIdProof = membershipRequestModel.idType ?? "EI";
     idController.text = membershipRequestModel.idValue ?? "";
     pickedIdProofPath = membershipRequestModel.idDocumentFilePath;
-    pickedDocumentBackFilePath = membershipRequestModel.documentBackPath;
+    pickedIdProofPathBack = membershipRequestModel.documentBackPath;
+
+    pickedDocumentAadhaarFilePath = membershipRequestModel.adhaarIdFrontPath;
+    pickedDocumentAadhaarBackFilePath = membershipRequestModel.adhaarIdBackPath;
+
     pickedAMFilePath = membershipRequestModel.amPhotoFilePath;
     pickedVideoFilePath = membershipRequestModel.videoFilePath;
 
@@ -796,13 +881,22 @@ class MembershipMemberCreateController extends GetxController {
       pickedIdFile = File(membershipRequestModel.idDocumentFilePath!);
       showIdImage = true;
     }
+    if (membershipRequestModel.documentBackPath != null) {
+      pickedIdFileBack = File(membershipRequestModel.documentBackPath!);
+      showIdImageBack = true;
+    }
     if (membershipRequestModel.amPhotoFilePath != null) {
       pickedAMFile = File(membershipRequestModel.amPhotoFilePath!);
       showAMImage = true;
     }
-    if (membershipRequestModel.documentBackPath != null) {
-      pickedDocumentBack = File(membershipRequestModel.documentBackPath!);
-      showDocumentBack = true;
+    if (membershipRequestModel.adhaarIdFrontPath != null) {
+      pickedAadhaarDocument = File(membershipRequestModel.adhaarIdFrontPath!);
+      showDocumentAadhaar = true;
+    }
+    if (membershipRequestModel.adhaarIdBackPath != null) {
+      pickedAadhaarDocumentBack =
+          File(membershipRequestModel.adhaarIdBackPath!);
+      showDocumentAadhaarBack = true;
     }
     if (membershipRequestModel.videoFilePath != null) {
       pickedVideoFile = File(membershipRequestModel.videoFilePath!);
@@ -860,18 +954,19 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   Future<void> saveVideo(File result) async {
+    File image;
+    image = File(result.path);
     final Directory extDir = await getApplicationDocumentsDirectory();
     String dirPath = extDir.path;
-    final String filePath = '$dirPath/${p.basename(result.path)}';
 
-    // Guard against a self-copy (src == dest), which would truncate the file
-    // to 0 bytes and corrupt the recording.
-    final File _image = (result.path == filePath)
-        ? result
-        : await File(result.path).copy(filePath);
+    final String filePath =
+        '$dirPath/${p.basenameWithoutExtension(result.path)}.mp4';
+    final File newImage = await image.copy(filePath);
+    File _image = newImage;
 
     pickedVideoFile = _image;
     pickedVideoFilePath = _image.path;
+    Log.printELog(pickedVideoFilePath);
     showVideoFile = true;
     update();
   }
@@ -910,15 +1005,19 @@ class MembershipMemberCreateController extends GetxController {
           showIdImage = true;
           break;
         case DocumentType.idBack:
-          pickedDocumentBack = _image;
-          pickedDocumentBackFilePath = pickedDocumentBack!.path;
-          showDocumentBack = true;
+          pickedIdFileBack = _image;
+          pickedIdProofPathBack = pickedIdFileBack!.path;
+          showIdImageBack = true;
           break;
         case DocumentType.amVideo:
-          // TODO: Handle this case.
+          pickedAadhaarDocument = _image;
+          pickedDocumentAadhaarFilePath = pickedAadhaarDocument!.path;
+          showDocumentAadhaarBack = true;
           break;
         case DocumentType.category:
-          // TODO: Handle this case.
+          pickedAadhaarDocumentBack = _image;
+          pickedDocumentAadhaarBackFilePath = pickedAadhaarDocumentBack!.path;
+          showDocumentAadhaarBack = true;
           break;
         case DocumentType.bpl:
           // TODO: Handle this case.
@@ -973,10 +1072,11 @@ class MembershipMemberCreateController extends GetxController {
     //   return false;
     // }
     if (pickedIdProofPath == null ||
+            pickedIdProofPathBack == null ||
             pickedAMFilePath == null ||
-            pickedDocumentBackFilePath == null
-        // ||
-        // pickedVideoFilePath == null//new
+            pickedDocumentAadhaarFilePath == null ||
+            pickedDocumentAadhaarBackFilePath == null ||
+            pickedVideoFilePath == null //new
         ) {
       CustomSnackBar.showErrorSnackBar("Upload all documents");
       return false;
@@ -985,9 +1085,10 @@ class MembershipMemberCreateController extends GetxController {
         //  selectedIdProof != null &&
         pickedAMFilePath != null &&
             pickedIdProofPath != null &&
-            pickedDocumentBackFilePath != null
-        // &&
-        // pickedVideoFilePath != null//new
+            pickedIdProofPathBack != null &&
+            pickedDocumentAadhaarFilePath != null &&
+            pickedDocumentAadhaarBackFilePath != null &&
+            pickedVideoFilePath != null //new
         ;
   }
 
@@ -1478,30 +1579,30 @@ class MembershipMemberCreateController extends GetxController {
   // (searchForAssemblyNominations is disabled in Step 4 load; remove this
   // once the real "VS" ballot fetch is wired back in).
   List<Nomination> assemblyNominationsList = [
-    Nomination(
-        id: 1,
-        name: "Rahul Sharma",
-        csn: 1,
-        firstName: "Rahul",
-        lastName: "Sharma"),
-    Nomination(
-        id: 2,
-        name: "Priya Verma",
-        csn: 2,
-        firstName: "Priya",
-        lastName: "Verma"),
-    Nomination(
-        id: 3,
-        name: "Amit Kumar",
-        csn: 3,
-        firstName: "Amit",
-        lastName: "Kumar"),
-    Nomination(
-        id: 4,
-        name: "Sneha Reddy",
-        csn: 4,
-        firstName: "Sneha",
-        lastName: "Reddy"),
+    // Nomination(
+    //     id: 1,
+    //     name: "Rahul Sharma",
+    //     csn: 1,
+    //     firstName: "Rahul",
+    //     lastName: "Sharma"),
+    // Nomination(
+    //     id: 2,
+    //     name: "Priya Verma",
+    //     csn: 2,
+    //     firstName: "Priya",
+    //     lastName: "Verma"),
+    // Nomination(
+    //     id: 3,
+    //     name: "Amit Kumar",
+    //     csn: 3,
+    //     firstName: "Amit",
+    //     lastName: "Kumar"),
+    // Nomination(
+    //     id: 4,
+    //     name: "Sneha Reddy",
+    //     csn: 4,
+    //     firstName: "Sneha",
+    //     lastName: "Reddy"),
   ];
   List<Nomination> blockNominationsList = [];
   List<Nomination> boothNominationsList = [];
@@ -1716,7 +1817,7 @@ class MembershipMemberCreateController extends GetxController {
   Future searchForAssemblyNominations(BuildContext context) async {
     assemblyNominationsList = [];
     List<dynamic>? result = await getNominationBallotList(
-        ballot: "VS",
+        ballot: "CP",
         state: selectedState == null ? '' : selectedState!.stateCode,
         assembly: selectedAssembly ?? '',
         district: selectedDistrict ?? '',
@@ -2036,14 +2137,14 @@ class MembershipMemberCreateController extends GetxController {
     selectedMandalam = selectedMandalam;
 
     final result = await Future.wait<dynamic>([
-      searchForStatePresidentNominations(context),
-      searchForStateGeneralSecreNominations(context),
-      searchForDistrictNominations(context),
+      // searchForStatePresidentNominations(context),
+      // searchForStateGeneralSecreNominations(context),
+      // searchForDistrictNominations(context),
       // searchForDistrictGsNominations(context),
       // if (["KL", "TL", "KA", "DL", "HP", "LA"]
       //     .contains(selectedState!.stateCode))
       //   searchFormandalamNominations(context),
-      // searchForAssemblyNominations(context),
+      searchForAssemblyNominations(context),
       // searchForBoothNominations(context),
     ]);
     isLoading = false;

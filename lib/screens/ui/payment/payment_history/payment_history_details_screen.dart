@@ -26,6 +26,9 @@ class _PaymentHistoryDetailsScreenState
     return formatted;
   }
 
+      Color _indigo = const Color(0xFF1356BF);
+
+
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -50,27 +53,21 @@ class _PaymentHistoryDetailsScreenState
             backgroundColor: Colors.white,
             leadingWidth: mediaQueryData.size.width * 0.12,
             // leadingWidth: 44.h,
-            leading: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: theme.primaryColor),
-              child: IconButton(
-                  padding: const EdgeInsets.only(left: 10),
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  )),
-            ),
+            leading: IconButton(
+                padding: const EdgeInsets.only(left: 10),
+                onPressed: () {
+                  Get.back();
+                },
+                icon:  Icon(
+                  Icons.arrow_back,
+                  color: theme.textTheme.bodyLarge!.color,
+                )),
             centerTitle: true,
             title: Text(
               // lan: Get.find<HomeController>().language,
               'Transaction Checkout',
-              style: theme.textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold, color: theme.primaryColor),
+              style: theme.textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.bold, ),
             ),
           ),
           body: Container(
@@ -91,7 +88,7 @@ class _PaymentHistoryDetailsScreenState
                           height: mediaQueryData.size.height * 0.08,
                           alignment: Alignment.centerLeft,
                           decoration: BoxDecoration(
-                              color: theme.primaryColor,
+                              color: _indigo,
                               borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(15),
                                   topRight: Radius.circular(15))),

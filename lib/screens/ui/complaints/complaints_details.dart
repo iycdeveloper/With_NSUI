@@ -10,6 +10,7 @@ import 'package:iyc/app/theme/theme_helper.dart';
 import 'package:iyc/app/widgets/custom_elevated_button.dart';
 import 'package:iyc/app/widgets/custom_floating_text_field.dart';
 import 'package:iyc/app/widgets/custom_text_form_field.dart';
+import 'package:iyc/nusi/widgets/upload_button_nsui.dart';
 import 'package:iyc/screens/widgets/button/upload_button.dart';
 import 'package:iyc/screens/widgets/button/next_prev_button.dart';
 import 'package:iyc/screens/widgets/network_loading.dart';
@@ -44,6 +45,8 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
     super.initState();
   }
 
+  static const Color _indigo = Color(0xFF1356BF);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,26 +55,21 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
         backgroundColor: Colors.white,
         leadingWidth: mediaQueryData.size.width * 0.12,
         // leadingWidth: 44.h,
-        leading: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(left: 10),
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: theme.primaryColor),
-          child: IconButton(
-              padding: const EdgeInsets.only(left: 10),
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-              )),
-        ),
+        leading: IconButton(
+            padding: const EdgeInsets.only(left: 10),
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: theme.textTheme.bodyLarge!.color,
+            )),
         centerTitle: true,
         title: Text(
           'Complaints Details',
-          style: theme.textTheme.titleLarge!
-              .copyWith(fontWeight: FontWeight.bold, color: theme.primaryColor),
+          style: theme.textTheme.bodyLarge!.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -80,6 +78,8 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
           // decoration: AppDecoration.outlineBlue100011,
           child: CustomElevatedButton(
             text: 'Submit',
+            buttonStyle:
+                ButtonStyle(backgroundColor: WidgetStateProperty.all(_indigo)),
             onTap: () => context
                 .read<ComplaintDetailsVm>()
                 .addComplaint(context, widget.candidatePost),
@@ -103,7 +103,7 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
                         child: Text(
                           "Complaint Details",
                           style: theme.textTheme.bodyMedium!
-                              .copyWith(color: theme.primaryColor),
+                              .copyWith(color: _indigo),
                         ),
                         // color: Colors.red,
                       ),
@@ -130,7 +130,7 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
                         child: Text(
                           "Candidate Details",
                           style: theme.textTheme.bodyMedium!
-                              .copyWith(color: theme.primaryColor),
+                              .copyWith(color: _indigo),
                         ),
                         // color: Colors.red,
                       ),
@@ -161,122 +161,143 @@ class _ComplaintsDetailsState extends State<ComplaintsDetails> {
                         maxLines: 4,
                         controller: model.detailsController,
                       ),
-                      p.UploadButtonImage(
-                        showImage: model.showPickedSupportingDocument1,
-                        pickedFile: model.pickedSupportingDocument1,
-                        buttonTextLabel: "Upload  Document (optional)",
-                        titleText: model.showPickedSupportingDocument1
-                            ? "Change Document "
-                            : "Upload  Document (optional)",
-                        onTap: (str) async {
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (context) => CupertinoAlertDialog(
-                          //           actions: [
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.gallery);
-                          //                 },
-                          //                 child: const Text("gallery")),
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.camera);
-                          //                 },
-                          //                 child: const Text("Camera"))
-                          //           ],
-                          //         )).then((value) async {
-                          //   if (value != null) {
-                          context
-                              .read<ComplaintDetailsVm>()
-                              .pickSupportingDocument(
-                                str,
-                                context
-                                    .read<ComplaintDetailsVm>()
-                                    .pickedSupportingDocument1Path,
-                              );
-                          //   }
-                          // });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: UploadButtonImageNSUI(
+                          showImage: model.showPickedSupportingDocument1,
+                          pickedFile: model.pickedSupportingDocument1,
+                          // buttonTextLabel: "Upload  Document (optional)",
+                          buttonTextLabel: model.showPickedSupportingDocument1
+                              ? "Change Document "
+                              : "Upload  Document (optional)",
+                          onTap: (str) async {
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) => CupertinoAlertDialog(
+                            //           actions: [
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.gallery);
+                            //                 },
+                            //                 child: const Text("gallery")),
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.camera);
+                            //                 },
+                            //                 child: const Text("Camera"))
+                            //           ],
+                            //         )).then((value) async {
+                            //   if (value != null) {
+                            context
+                                .read<ComplaintDetailsVm>()
+                                .pickSupportingDocument(
+                                  str,
+                                  context
+                                      .read<ComplaintDetailsVm>()
+                                      .pickedSupportingDocument1Path,
+                                );
+                            //   }
+                            // });
+                          },
+                          labelText: 'Upload  Document (optional)',
+                        ),
                       ),
-                      p.UploadButtonImage(
-                        showImage: model.showPickedSupportingDocument2,
-                        pickedFile: model.pickedSupportingDocument2,
-                        buttonTextLabel: "Upload  Document (optional)",
-                        titleText: model.showPickedSupportingDocument2
-                            ? "Change Document "
-                            : "Upload  Document (optional)",
-                        onTap: (str) async {
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (context) => CupertinoAlertDialog(
-                          //           actions: [
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.gallery);
-                          //                 },
-                          //                 child: const Text("gallery")),
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.camera);
-                          //                 },
-                          //                 child: const Text("Camera"))
-                          //           ],
-                          //         )).then((value) async {
-                          //   if (value != null) {
-                          context
-                              .read<ComplaintDetailsVm>()
-                              .pickSupportingDocument(
-                                str,
-                                context
-                                    .read<ComplaintDetailsVm>()
-                                    .pickedSupportingDocument2Path,
-                              );
-                          //   }
-                          // });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: UploadButtonImageNSUI(
+                          showImage: model.showPickedSupportingDocument2,
+                          pickedFile: model.pickedSupportingDocument2,
+                          // buttonTextLabel: "Upload  Document (optional)",
+                          buttonTextLabel: model.showPickedSupportingDocument2
+                              ? "Change Document "
+                              : "Upload  Document (optional)",
+                          labelText: 'Upload  Document (optional)',
+                          onTap: (str) async {
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) => CupertinoAlertDialog(
+                            //           actions: [
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.gallery);
+                            //                 },
+                            //                 child: const Text("gallery")),
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.camera);
+                            //                 },
+                            //                 child: const Text("Camera"))
+                            //           ],
+                            //         )).then((value) async {
+                            //   if (value != null) {
+                            context
+                                .read<ComplaintDetailsVm>()
+                                .pickSupportingDocument(
+                                  str,
+                                  context
+                                      .read<ComplaintDetailsVm>()
+                                      .pickedSupportingDocument2Path,
+                                );
+                            //   }
+                            // });
+                          },
+                        ),
                       ),
-                      p.UploadButtonImage(
-                        showImage: model.showPickedSupportingDocument3,
-                        buttonTextLabel: "Upload  Document (optional)",
-                        titleText: model.showPickedSupportingDocument3
-                            ? "Change Document "
-                            : "Upload  Document (optional)",
-                        pickedFile: model.pickedSupportingDocument3,
-                        onTap: (str) async {
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (context) => CupertinoAlertDialog(
-                          //           actions: [
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.gallery);
-                          //                 },
-                          //                 child: const Text("gallery")),
-                          //             TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context)
-                          //                       .pop(ImageSource.camera);
-                          //                 },
-                          //                 child: const Text("Camera"))
-                          //           ],
-                          //         )).then((value) async {
-                          //   if (value != null) {
-                          context
-                              .read<ComplaintDetailsVm>()
-                              .pickSupportingDocument(
-                                str,
-                                context
-                                    .read<ComplaintDetailsVm>()
-                                    .pickedSupportingDocument3Path,
-                              );
-                          //   }
-                          // });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: UploadButtonImageNSUI(
+                          showImage: model.showPickedSupportingDocument3,
+                          // buttonTextLabel: "Upload  Document (optional)",
+                          buttonTextLabel: model.showPickedSupportingDocument3
+                              ? "Change Document "
+                              : "Upload  Document (optional)",
+                          labelText: 'Upload  Document (optional)',
+                          pickedFile: model.pickedSupportingDocument3,
+                          onTap: (str) async {
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) => CupertinoAlertDialog(
+                            //           actions: [
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.gallery);
+                            //                 },
+                            //                 child: const Text("gallery")),
+                            //             TextButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context)
+                            //                       .pop(ImageSource.camera);
+                            //                 },
+                            //                 child: const Text("Camera"))
+                            //           ],
+                            //         )).then((value) async {
+                            //   if (value != null) {
+                            context
+                                .read<ComplaintDetailsVm>()
+                                .pickSupportingDocument(
+                                  str,
+                                  context
+                                      .read<ComplaintDetailsVm>()
+                                      .pickedSupportingDocument3Path,
+                                );
+                            //   }
+                            // });
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 20,

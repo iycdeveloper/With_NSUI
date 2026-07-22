@@ -19,6 +19,7 @@ newSuccessBotttomSheet(
 }) async {
   return Get.bottomSheet(
     // barrierDismissible: false,
+    // Color _indigo = const Color(0xFF1356BF);
 
     Container(
       decoration: const BoxDecoration(
@@ -36,7 +37,7 @@ newSuccessBotttomSheet(
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-                color: theme.primaryColor,
+                color: Color(0xFF1356BF),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24))),
@@ -83,12 +84,12 @@ newSuccessBotttomSheet(
             child: failed
                 ? Icon(
                     Icons.warning_amber,
-                    color: theme.primaryColor,
+                    color: Color(0xFF1356BF),
                     size: mediaQueryData.size.height * 0.06,
                   )
                 : Icon(
                     Icons.check,
-                    color: theme.primaryColor,
+                    color: Color(0xFF1356BF),
                     size: mediaQueryData.size.height * 0.06,
                   ),
           ),
@@ -126,6 +127,9 @@ newSuccessBotttomSheet(
           ),
           // const Spacer(),
           CustomElevatedButton(
+            buttonStyle: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Color(0xFF1356BF))
+            ),
               margin: const EdgeInsets.only(left: 20, right: 20),
               leftIcon: buttonicon
                   ? const Icon(

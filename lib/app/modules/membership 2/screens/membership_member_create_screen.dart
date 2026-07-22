@@ -774,21 +774,21 @@ class MembershipMemberCreateScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            UploadButtonImageNSUI(
-              lablecolor: theme.textTheme.bodyLarge!.color,
-              // readOnly: logic.isUpdate,
-              // titleText: 'Document',
-              // defaultPadding: true,
-              onlyCamera: true,
-              buttonTextLabel: "Upload Photo",
-              onTap: (str) {
-                logic.pickDocument(str, logic.pickedDocumentBackFilePath,
-                    upload.DocumentType.idBack, Get.context!);
-              },
-              pickedFile: logic.pickedDocumentBack,
-              showImage: logic.pickedDocumentBackFilePath != null,
-              labelText: 'Upload Government ID',
-            ),
+            // UploadButtonImageNSUI(
+            //   lablecolor: theme.textTheme.bodyLarge!.color,
+            //   // readOnly: logic.isUpdate,
+            //   // titleText: 'Document',
+            //   // defaultPadding: true,
+            //   onlyCamera: true,
+            //   buttonTextLabel: "Upload Photo",
+            //   onTap: (str) {
+            //     logic.pickDocument(str, logic.pickedDocumentBackFilePath,
+            //         upload.DocumentType.idBack, Get.context!);
+            //   },
+            //   pickedFile: logic.pickedDocumentBack,
+            //   showImage: logic.pickedDocumentBackFilePath != null,
+            //   labelText: 'Upload Government ID',
+            // ),
             SizedBox(
               height: 10,
             ),

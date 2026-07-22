@@ -34,8 +34,8 @@ class CustomFloatingDropDownNSUI extends StatelessWidget {
                 Center(
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 20),
-                    constraints: BoxConstraints(maxHeight: 326),
-                    height: 47.0 * listValues!.length + 2,
+                    constraints: BoxConstraints(maxHeight: 320),
+                    height: 49.0 * listValues!.length + 2,
                     width: double.maxFinite,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -55,9 +55,9 @@ class CustomFloatingDropDownNSUI extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: 20.h,
+                        left: 18.h,
                         top: 13.v,
-                        bottom: 13.v,
+                        bottom: 10.v,
                       ),
                       child: ListView(
                         // mainAxisAlignment: MainAxisAlignment.start,

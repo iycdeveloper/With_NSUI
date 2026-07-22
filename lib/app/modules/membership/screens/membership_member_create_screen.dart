@@ -27,12 +27,13 @@ class MembershipMemberCreateScreen extends StatefulWidget {
   const MembershipMemberCreateScreen();
 
   @override
-  State<MembershipMemberCreateScreen> createState() => _MembershipMemberCreateScreenState();
+  State<MembershipMemberCreateScreen> createState() =>
+      _MembershipMemberCreateScreenState();
 }
 
-class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScreen> {
-
-@override
+class _MembershipMemberCreateScreenState
+    extends State<MembershipMemberCreateScreen> {
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -72,38 +73,38 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildStepper(logic),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Step ${logic.activeStep + 1} - ${logic.steps['${logic.activeStep + 1}']}',
-                    style: const TextStyle(
-                      color: Color(0xFF244974),
-                      fontFamily: 'Be Vietnam Pro',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      height: 1.4,
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Step ${logic.activeStep + 1} - ${logic.steps['${logic.activeStep + 1}']}',
+                      style: const TextStyle(
+                        color: Color(0xFF244974),
+                        fontFamily: 'Be Vietnam Pro',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        height: 1.4,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: PageView(
-                    pageSnapping: true,
-                    controller: logic.pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (page) {
-                      logic.pageNumberChange(page);
-                    },
-                    children: [
-                      _basicDetails(logic, context),
-                      _consistencyDetails(logic),
-                      // _personalDetail(logic),
-                      // _contactDetails(logic),
-                      _identityDetails(logic, context),
-                      _candidateDetails(logic)
-                    ],
+                  Expanded(
+                    child: PageView(
+                      pageSnapping: true,
+                      controller: logic.pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (page) {
+                        logic.pageNumberChange(page);
+                      },
+                      children: [
+                        _basicDetails(logic, context),
+                        _consistencyDetails(logic),
+                        // _personalDetail(logic),
+                        // _contactDetails(logic),
+                        _identityDetails(logic, context),
+                        _candidateDetails(logic)
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
               ),
             ),
           );
@@ -426,6 +427,17 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
                 },
                 labelText: "Gender",
                 hintText: "Select a Gender",
+              ),
+               DropDownPickerNSUI(
+                // readOnly: logic.isUpdate,
+                labelText: 'Category',
+                currentValue: logic.selectedCategory,
+                listValues: logic.category,
+                onChanged: (value) {
+                  logic.onChangeCategory(value);
+                },
+                hintText: "Select a Category",
+                // defaultMargin: false,
               ),
               TextFieldWithLabelNSUI(
                 readOnly: logic.isUpdate,
@@ -765,7 +777,6 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
               height: 10,
             ),
             UploadButtonImageNSUI(
-            
               lablecolor: theme.textTheme.bodyLarge!.color,
               onlyCamera: true,
               // disableGallery: true,
@@ -804,7 +815,7 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
               // readOnly: logic.isUpdate,
               // titleText: 'Document',
               // defaultPadding: true,
-              onlyCamera: true,
+              // onlyCamera: true,
               buttonTextLabel: "Upload Photo",
               onTap: (str) {
                 logic.pickDocument(str, logic.pickedIdProofPath,
@@ -812,7 +823,26 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
               },
               pickedFile: logic.pickedIdFile,
               showImage: logic.pickedIdProofPath != null,
-              labelText: 'Upload College ID',
+              labelText: 'Upload College ID (Front)',
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            UploadButtonImageNSUI(
+              lablecolor: theme.textTheme.bodyLarge!.color,
+
+              // readOnly: logic.isUpdate,
+              // titleText: 'Document',
+              // defaultPadding: true,
+              // onlyCamera: true,
+              buttonTextLabel: "Upload Photo",
+              onTap: (str) {
+                logic.pickDocument(str, logic.pickedIdProofPathBack,
+                    upload.DocumentType.idBack, Get.context!);
+              },
+              pickedFile: logic.pickedIdFileBack,
+              showImage: logic.pickedIdProofPathBack != null,
+              labelText: 'Upload College ID (Back)',
             ),
             SizedBox(
               height: 10,
@@ -822,15 +852,33 @@ class _MembershipMemberCreateScreenState extends State<MembershipMemberCreateScr
               // readOnly: logic.isUpdate,
               // titleText: 'Document',
               // defaultPadding: true,
-              onlyCamera: true,
-              buttonTextLabel: "Upload Aadhaar Card Photo",
+              // onlyCamera: true,
+              buttonTextLabel: "Upload Aadhaar Card Photo ",
               onTap: (str) {
-                logic.pickDocument(str, logic.pickedDocumentBackFilePath,
-                    upload.DocumentType.idBack, Get.context!);
+                logic.pickDocument(str, logic.pickedDocumentAadhaarFilePath,
+                    upload.DocumentType.amVideo, Get.context!);
               },
-              pickedFile: logic.pickedDocumentBack,
-              showImage: logic.pickedDocumentBackFilePath != null,
-              labelText: 'Upload Aadhaar Card Photo',
+              pickedFile: logic.pickedAadhaarDocument,
+              showImage: logic.pickedDocumentAadhaarFilePath != null,
+              labelText: 'Upload Aadhaar Card Photo (Front)',
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            UploadButtonImageNSUI(
+              lablecolor: theme.textTheme.bodyLarge!.color,
+              // readOnly: logic.isUpdate,
+              // titleText: 'Document',
+              // defaultPadding: true,
+              // onlyCamera: true,
+              buttonTextLabel: "Upload Aadhaar Card Photo ",
+              onTap: (str) {
+                logic.pickDocument(str, logic.pickedDocumentAadhaarBackFilePath,
+                    upload.DocumentType.category, Get.context!);
+              },
+              pickedFile: logic.pickedAadhaarDocumentBack,
+              showImage: logic.pickedDocumentAadhaarBackFilePath != null,
+              labelText: 'Upload Aadhaar Card Photo (Back)',
             ),
             SizedBox(
               height: 10,

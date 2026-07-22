@@ -215,7 +215,7 @@ class MembershipBatchController extends GetxController {
             //   Get.find<MembershipMemberListController>().getMembershipList(
             //       context, responseDecoded['response']['BATCH_NO']);
             //   // Get.find<MembershipMemberListController>().manualSync(context);
-            await downloadExistingBatch(context: context);
+            await downloadExistingBatch(context: context, islodaing: false);
             await downloadMemberList(context: context);
             //   // Navigator.of(context).pop();
             // }
@@ -250,10 +250,11 @@ class MembershipBatchController extends GetxController {
   List<BatchMember>? filtermemberList = [];
   MembershipRepo membershipRepo = MembershipRepo(dioClient: sl());
 
-  Future<bool> downloadMemberList({
-    //new one
-    required BuildContext context,
-  }) async {
+  Future<bool> downloadMemberList(
+      {
+      //new one
+      required BuildContext context,
+      bool isloading = true}) async {
     bool returnValue = false;
     ApiResponse apiResponse = await membershipRepo.downloadMembersNew('');
     if (apiResponse.response != null &&
@@ -407,7 +408,7 @@ class MembershipBatchController extends GetxController {
         await LocalStorageServices().setInitMemberStatus("false");
         await downloadExistingBatch(context: context);
 
-            await downloadMemberList(context: Get.context!);
+        await downloadMemberList(context: Get.context!);
 
         isFirstTimeMembership = false;
         update();
@@ -422,15 +423,17 @@ class MembershipBatchController extends GetxController {
     }
     return true;
   }
+
   List<BatchDataModel> _filtermembershipBatchList = [];
 
   List<BatchDataModel> get filtermembershipBatchList =>
       _filtermembershipBatchList;
 
-  downloadExistingBatch({
-    required BuildContext context,
-  }) async {
-    ProgressDialogUtils.showProgressIndicator();
+  downloadExistingBatch(
+      {required BuildContext context, bool islodaing = true}) async {
+    if (islodaing) {
+      ProgressDialogUtils.showProgressIndicator();
+    }
     ApiResponse apiResponse = await sl<BatchRepo>().downloadExistingBatch();
     if (apiResponse.response != null &&
         apiResponse.response!.statusCode == 200) {
@@ -480,15 +483,21 @@ class MembershipBatchController extends GetxController {
 
         /// to refresh batch list
         await getMembershipBatchList(context);
-        ProgressDialogUtils.closeDialog();
+        if (islodaing) {
+          ProgressDialogUtils.closeDialog();
+        }
       } else {
-        ProgressDialogUtils.closeDialog();
+        if (islodaing) {
+          ProgressDialogUtils.closeDialog();
+        }
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(responseDecoded["response"])));
       }
       update();
     } else {
-      Navigator.of(context).pop();
+      if (islodaing) {
+        Navigator.of(context).pop();
+      }
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(apiResponse.error.toString())));
     }

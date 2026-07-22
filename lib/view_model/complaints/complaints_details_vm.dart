@@ -70,7 +70,7 @@ class ComplaintDetailsVm extends ChangeNotifier {
 
   pickSupportingDocument(
       ImageSource imageSource, String? pickedFilePath) async {
-    final result = await ImageServices().pickImage(imageSource);
+    final result = await ImageServices().pickImage(imageSource,cropimage: false);
     if (result != null) {
       var status = await Permission.storage.status;
       if (!status.isGranted) {

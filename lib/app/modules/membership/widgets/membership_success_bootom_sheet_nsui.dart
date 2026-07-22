@@ -71,8 +71,8 @@ membershipNSUISuccessBottomSheet(BuildContext context, {String? message}) {
           // Okay button (app gradient)
           GestureDetector(
             onTap: () {
-              Get.back();
-              Navigator.of(context).pop();
+              // Get.back();
+              Navigator.of(context).pop(true);
             },
             child: Container(
               width: mediaQueryData.size.width * 0.7,
