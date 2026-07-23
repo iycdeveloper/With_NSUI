@@ -193,9 +193,9 @@ class MembershipMemberCreateController extends GetxController {
         break;
       case 3:
         Log.printILog('Initial Candidate detail form');
-        // if (isUpdate) {
-        //   checkForPrefill(Get.context!);
-        // }
+        if (isUpdate) {
+          checkForPrefill(Get.context!);
+        }
         initialize(Get.context!);
 
         break;
@@ -618,6 +618,8 @@ class MembershipMemberCreateController extends GetxController {
       isFieldsValid = true;
       // return true;
     }
+    final bool dobRangeValid =
+        selectedDate != null && DobRules.isValid(eventDate);
     selectedGender == null
         ? CustomSnackBar.showErrorSnackBar('Select Gender')
         : selectedCategory == null
@@ -626,7 +628,10 @@ class MembershipMemberCreateController extends GetxController {
                 ? CustomSnackBar.showErrorSnackBar(
                     "Select a date",
                   )
-                : null;
+                : !dobRangeValid
+                    ? CustomSnackBar.showErrorSnackBar(
+                        DobRules.errorText(eventDate)!)
+                    : null;
 
     if (await validateOtpPage(context)) {
       isFieldsValid = true;
@@ -636,6 +641,7 @@ class MembershipMemberCreateController extends GetxController {
     bool isValid = (selectedGender != null &&
         selectedDate != null &&
         selectedCategory != null &&
+        dobRangeValid &&
         isFieldsValid);
     return isValid;
   }
@@ -705,9 +711,9 @@ class MembershipMemberCreateController extends GetxController {
   DateTime eventDate = DateTime.now();
 
   List<DropdownItem> gender = [
-    DropdownItem("Male", "Male"),
-    DropdownItem("Female", "Female"),
-    DropdownItem("Other", "Other"),
+    DropdownItem("Male", "M"),
+    DropdownItem("Female", "F"),
+    DropdownItem("Transgender", "TG"),
   ];
   List<DropdownItem> category = [
     DropdownItem("General", "G"),
@@ -1439,24 +1445,17 @@ class MembershipMemberCreateController extends GetxController {
 
   bool otpSend = false;
   bool otpVerified = false;
+  String? otpError;
   final FocusNode otpCodeFocus = FocusNode();
   changePhoneNumberStatus() {
     print("calledd");
     otpSend = false;
     otpVerified = false;
+    otpError = null;
     update();
   }
 
   Future<bool> validateOtpPage(BuildContext context) async {
-    // return true;
-    /// bypass otp verification for test state
-    var stateCode = Get.find<HomeNSUIController>()
-            .profileController
-            .userDetail
-            ?.stateCode ??
-        '';
-    if (stateCode == 'TS') return true;
-
     if (!otpVerified) await verifyOtpForMember(context);
     return otpVerified;
   }
@@ -1491,6 +1490,7 @@ class MembershipMemberCreateController extends GetxController {
       if (responseDecoded['status'] == "SUCCESS") {
         Navigator.of(context).pop();
         otpSend = true;
+        otpError = null;
         update();
       } else {
         Navigator.of(context).pop();
@@ -1507,14 +1507,18 @@ class MembershipMemberCreateController extends GetxController {
 
   verifyOtpForMember(BuildContext context) async {
     if (!otpSend) {
-      CustomSnackBar.showErrorSnackBar("kindly get OTP and then verify it");
+      otpError = "kindly get OTP and then verify it";
+      CustomSnackBar.showErrorSnackBar(otpError!);
+      update();
       return false;
     }
     if (verificationCodeController.text.isEmpty) {
-      CustomSnackBar.showErrorSnackBar(
-          "kindly fill verification code send to your mobile");
+      otpError = "Please enter the verification code sent to your mobile";
+      CustomSnackBar.showErrorSnackBar(otpError!);
+      update();
       return false;
     }
+    otpError = null;
     showNetworkLoadingDialog(context);
     Map d = {
       "ST_CODE": "${await LocalStorageServices().getSTCode()}",
@@ -1546,15 +1550,18 @@ class MembershipMemberCreateController extends GetxController {
       if (responseDecoded['status'] == "SUCCESS") {
         Navigator.of(context).pop();
         otpVerified = true;
+        otpError = null;
         update();
       } else {
         otpVerified = false;
+        otpError = responseDecoded["response"];
         Navigator.of(context).pop();
         CustomSnackBar.showErrorSnackBar(responseDecoded["response"]);
       }
       update();
     } else {
       otpVerified = false;
+      otpError = apiResponse.error.message.toString();
       Navigator.of(context).pop();
       CustomSnackBar.showErrorSnackBar(apiResponse.error.message.toString());
     }

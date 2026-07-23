@@ -481,7 +481,7 @@ class MembershipMemberViewController extends GetxController {
   List<DropdownItem> gender = [
     DropdownItem("Male", "M"),
     DropdownItem("Female", "F"),
-    DropdownItem("Other", "O"),
+    DropdownItem("Transgender", "TG"),
   ];
   List<DropdownItem> category = [
     DropdownItem("General", "G"),

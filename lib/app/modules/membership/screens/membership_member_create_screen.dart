@@ -294,7 +294,7 @@ class _MembershipMemberCreateScreenState
               Form(
                 key: logic.mobileFormKey,
                 child: TextFieldWithLabelNSUI(
-                  readOnly: logic.isUpdate,
+                  readOnly: logic.isUpdate || logic.otpVerified,
 
                   labelcolor: theme.textTheme.bodyLarge!.color,
 
@@ -320,7 +320,7 @@ class _MembershipMemberCreateScreenState
                   },
                 ),
               ),
-              if (!logic.isUpdate) ...[
+              if (!logic.isUpdate && !logic.otpVerified) ...[
                 Align(
                   alignment: Alignment.centerRight,
                   child: Container(
@@ -340,9 +340,21 @@ class _MembershipMemberCreateScreenState
                         }),
                   ),
                 ),
+                if (!logic.otpSend && logic.otpError != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25, bottom: 10),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        logic.otpError!,
+                        style:
+                            const TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+                  ),
               ],
 
-              if (logic.otpSend && !logic.otpVerified)
+              if (logic.otpSend && !logic.otpVerified) ...[
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   child: Pinput(
@@ -355,6 +367,15 @@ class _MembershipMemberCreateScreenState
                     pinAnimationType: PinAnimationType.fade,
                   ),
                 ),
+                if (logic.otpError != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, bottom: 10),
+                    child: Text(
+                      logic.otpError!,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+              ],
               TextFieldWithLabelNSUI(
                 readOnly: logic.isUpdate,
 
