@@ -17,7 +17,7 @@ class ConstantApiRepo {
   ConstantApiRepo({required this.dioClient});
 
   getStateBallotApi() async {
-    var data = '''[{"V":"${AppConstants.membershipVersion}",
+    var data = '''[{"V":"${AppConstants.iycVersion}",
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
@@ -46,7 +46,7 @@ class ConstantApiRepo {
   getDistrictBallotApi(
     String? state,
   ) async {
-    var data = '''[{"V":"${AppConstants.membershipVersion}",
+    var data = '''[{"V":"${AppConstants.iycVersion}",
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
@@ -77,7 +77,7 @@ class ConstantApiRepo {
     String? state,
     String? district,
   ) async {
-    var data = '''[{"V":"${AppConstants.membershipVersion}",
+    var data = '''[{"V":"${AppConstants.iycVersion}",
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
@@ -110,7 +110,7 @@ class ConstantApiRepo {
     String? district,
     String? university,
   ) async {
-    var data = '''[{"V":"${AppConstants.membershipVersion}",
+    var data = '''[{"V":"${AppConstants.iycVersion}",
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",

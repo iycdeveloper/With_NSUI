@@ -9,6 +9,7 @@ import 'package:iyc/app/core/service/auth_service.dart';
 import 'package:iyc/app/core/utils/snackbar.dart';
 import 'package:iyc/app/data/resources/db_provider/membership/batch_db_repo.dart';
 import 'package:iyc/app/data/resources/db_provider/membership/membership_db_repo.dart';
+import 'package:iyc/app/data/resources/repository/batch_repo.dart';
 import 'package:iyc/app/data/resources/repository/constant_repo.dart';
 import 'package:iyc/app/data/resources/services/aws_upload_services.dart';
 import 'package:iyc/app/data/resources/services/local_storage_services.dart';
@@ -53,6 +54,8 @@ class MembershipMemberViewController extends GetxController {
     update();
   }
 
+  TextEditingController assemblyCandidateController = TextEditingController();
+
   int activeStep = 0;
   Map<String, String> steps = {
     '1': 'Basic Details',
@@ -90,6 +93,110 @@ class MembershipMemberViewController extends GetxController {
     super.onInit();
   }
 
+  TextEditingController otpCodeController = TextEditingController();
+  bool otpSent = false;
+  bool otpVerified = false;
+
+  Map<String, dynamic> csnDetails = {};
+
+  validateCSNOTP(BuildContext context, String memberID, String otp) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+    ApiResponse apiResponse =
+        await BatchRepo(dioClient: sl()).validateCSNOTP(memberID, otp);
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
+      final responseDecoded =
+          jsonDecode(utf8.decode(base64Decode(apiResponse.response!.data)));
+      print(responseDecoded);
+      if (responseDecoded['status'] == "SUCCESS") {
+        // statePresidentCandidateController.text =
+        //     responseDecoded["response"][0]['CSN_SP'];
+        // stateGsCandidateController.text =
+        //     responseDecoded["response"][0]['CSN_SG'];
+        // districtCandidateController.text =
+        //     responseDecoded["response"][0]['CSN_DP'];
+        // assemblyCandidateController.text =
+        //     responseDecoded["response"][0]['CSN_AP'];
+        assemblyCandidateController.text =
+            "University/College CSN : ${responseDecoded["response"][0]['CSN_AP'] ?? ''}";
+        // districtCandidateGsController.text =
+        //     responseDecoded["response"][0]['CSN_BT'];
+        // mandalamCandidateController.text =
+        //     responseDecoded["response"][0]['CSN_BL'];
+        otpVerified = true;
+        update();
+        csnDetails = responseDecoded["response"][0];
+        print(responseDecoded["response"]);
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).pop(); // pop loading
+
+        if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseDecoded["response"])));
+        } else {}
+      }
+    } else {
+      Navigator.of(context).pop(); // pop loading
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(apiResponse.error)));
+    }
+    return true;
+  }
+
+  getCSNOTP(BuildContext context, String memberID) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+    ApiResponse apiResponse =
+        await BatchRepo(dioClient: sl()).getCSNOTP(memberID);
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
+      final responseDecoded =
+          jsonDecode(utf8.decode(base64Decode(apiResponse.response!.data)));
+      print(responseDecoded);
+      if (responseDecoded['status'] == "SUCCESS") {
+        otpSent = true;
+        update();
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).pop(); // pop loading
+        if (responseDecoded['error_code'] == 1001) {
+          // handleUpdateBox();
+        } else if (responseDecoded['error_code'] == 9999) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseDecoded["response"])));
+        } else {}
+      }
+    } else {
+      Navigator.of(context).pop(); // pop loading
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(apiResponse.error)));
+    }
+    return true;
+  }
+
+  onClickSendOtp(BuildContext context) {
+    getCSNOTP(context, currentMember!.memberId!);
+  }
+
+  onClickValidateOtp(BuildContext context) {
+    if (otpCodeController.text.length == 6) {
+      validateCSNOTP(context, otpCodeController.text, currentMember!.memberId!);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Enter valid otp')));
+    }
+  }
+
   Future<void> next(BuildContext context) async {
     pageController.nextPage(
         duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -112,6 +219,8 @@ class MembershipMemberViewController extends GetxController {
     update();
   }
 
+  bool isEnableCSNverify = false;
+
   void setCurrentMember(
     BatchMember membershipRequestModel,
   ) async {
@@ -123,6 +232,12 @@ class MembershipMemberViewController extends GetxController {
     await getDistrictList(currentMember!.stateCode ?? '');
     await getAssemblyList(
         currentMember!.stateCode ?? '', currentMember!.districtCode ?? '');
+
+    // if (member.assemblyCandidate!.contains('**') &&
+    //     member.assemblyCandidate!.contains('**')) {
+    isEnableCSNverify = true;
+    // update();
+    // }
     // await createBoothList(currentMember!.stateCode ?? '',
     //     currentMember!.districtCode ?? '', currentMember!.assemblyCode ?? '');
 
@@ -162,6 +277,8 @@ class MembershipMemberViewController extends GetxController {
         .toList();
     if (data2.isNotEmpty) {
       districtController.text = data2.first.name;
+    } else {
+      districtController.text = currentMember!.districtName ?? '';
     }
 
     List<Assembly>? data3 = assemblyList!
@@ -169,6 +286,8 @@ class MembershipMemberViewController extends GetxController {
         .toList();
     if (data3.isNotEmpty) {
       universityController.text = data3.first.name;
+    } else {
+      universityController.text = currentMember!.assemblyName ?? '';
     }
 
     // List<Booth>? data4 = _boothList
@@ -207,6 +326,8 @@ class MembershipMemberViewController extends GetxController {
       pickedDocumentBack = File(currentMember!.documentBackPath!);
       showDocumentBack = true;
     }
+    assemblyCandidateController.text =
+        "University/College CSN : ${member.assemblyCandidate ?? ''}";
     isLoading = false;
     update();
   }

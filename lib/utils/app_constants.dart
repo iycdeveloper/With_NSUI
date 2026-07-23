@@ -8,7 +8,7 @@ class AppConstants {
   static String orgName = "NSUI";
   static final String versionName = "17.5.4";
 
-  static String membershipVersion = "1.0"; //
+  static String membershipVersion = "1.1"; //
   static String iycVersion = "1.0";
   static String channel = "M";
   static String nominationVersion = "1.1";

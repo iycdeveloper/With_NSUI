@@ -13,6 +13,7 @@ import 'package:iyc/app/widgets/custom_floating_text_field.dart';
 import 'package:iyc/app/widgets/loading_widget.dart';
 import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
 import 'package:iyc/nusi/widgets/upload_button_nsui.dart';
+import 'package:iyc/screens/widgets/u_round_button.dart';
 import 'package:iyc/utils/constants.dart';
 import 'package:pinput/pinput.dart';
 
@@ -21,6 +22,8 @@ class MembershipMemberviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      //  Color _indigo = Color(0xFF1356BF);
+
     return SafeArea(
       child: GetBuilder<MembershipMemberViewController>(
         builder: (logic) {
@@ -71,7 +74,7 @@ class MembershipMemberviewScreen extends StatelessWidget {
                             _basicDetails(logic, context),
                             _consistencyDetails(logic),
                             _identityDetails(logic, context),
-                            _candidateDetails(logic)
+                            _candidateDetails(logic,context)
                           ],
                         ),
                       ),
@@ -318,7 +321,7 @@ class MembershipMemberviewScreen extends StatelessWidget {
                 keyBoardType: TextInputType.name,
                 controller: logic.genderController,
               ),
-               TextFieldWithLabelNSUI(
+              TextFieldWithLabelNSUI(
                 readOnly: true,
                 labelcolor: theme.textTheme.bodyLarge!.color,
                 label: "Category",
@@ -681,97 +684,140 @@ class MembershipMemberviewScreen extends StatelessWidget {
         ),
       );
 
-  Widget _candidateDetails(MembershipMemberViewController logic) =>
-      SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            TextFieldWithLabelNSUI(
-              maxline: 2,
-              readOnly: true,
-              labelcolor: theme.textTheme.bodyLarge!.color,
-              label: "University/College President Candidate",
-              hintText: "University/College President Candidate",
-              keyBoardType: TextInputType.name,
-              controller: logic.universityPresidentController,
-            ),
-            // TextFieldWithLabelNSUI(
-            //   maxline: 2,
-            //   readOnly: true,
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   label: "State President Candidate",
-            //   hintText: "State President Candidate",
-            //   keyBoardType: TextInputType.name,
-            //   controller: logic.statePresidentController,
-            // ),
-            // TextFieldWithLabelNSUI(
-            //   maxline: 2,
-            //   readOnly: true,
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   label: "State General Secretary Candidate",
-            //   hintText: "State General Secretary Candidate",
-            //   keyBoardType: TextInputType.name,
-            //   controller: logic.stateSGSPresidentController,
-            // ),
-            // TextFieldWithLabelNSUI(
-            //   readOnly: true,
-            //   maxline: 2,
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   label: "District President Candidate",
-            //   hintText: "District President Candidate",
-            //   keyBoardType: TextInputType.name,
-            //   controller: logic.districtPresidentController,
-            // ),
-            // TextFieldWithLabelNSUI(
-            //   readOnly: true,
-            //   maxline: 2,
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   label: "University President Candidate",
-            //   hintText: "University President Candidate",
-            //   keyBoardType: TextInputType.name,
-            //   controller: logic.universityPresidentController,
-            // ),
-            // TextFieldWithLabelNSUI(
-            //   readOnly: true,
-            //   maxline: 2,
-            //   labelcolor: theme.textTheme.bodyLarge!.color,
-            //   label: "College President Candidate",
-            //   hintText: "College President Candidate",
-            //   keyBoardType: TextInputType.name,
-            //   controller: logic.universityPresidentController,
-            // ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-                // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: logic.declarationStatus,
-                        activeColor: Colors.orange,
-                        onChanged: (value) {
-                          // logic.changeDeclarationStatus(value!);
-                        },
-                      ),
-                      Container(
-                        width: MediaQuery.of(Get.context!).size.width * 0.8,
-                        child: Text(
-                          'I’m under 27 years of age and I accept the terms and conditions of NSUI',
-                          style: TextStyle(
-                              color: Colors.grey.shade600, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  )
-                ])),
-          ],
+  Widget _candidateDetails(MembershipMemberViewController logic,BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: const Color.fromRGBO(126, 203, 224, 1),
         ),
-      );
+      ),
+    );
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          TextFieldWithLabelNSUI(
+            maxline: 2,
+            readOnly: true,
+            labelcolor: theme.textTheme.bodyLarge!.color,
+            label: "University/College President Candidate",
+            hintText: "University/College President Candidate",
+            keyBoardType: TextInputType.name,
+            controller: logic.assemblyCandidateController,
+          ),
+          // TextFieldWithLabelNSUI(
+          //   maxline: 2,
+          //   readOnly: true,
+          //   labelcolor: theme.textTheme.bodyLarge!.color,
+          //   label: "State President Candidate",
+          //   hintText: "State President Candidate",
+          //   keyBoardType: TextInputType.name,
+          //   controller: logic.statePresidentController,
+          // ),
+          // TextFieldWithLabelNSUI(
+          //   maxline: 2,
+          //   readOnly: true,
+          //   labelcolor: theme.textTheme.bodyLarge!.color,
+          //   label: "State General Secretary Candidate",
+          //   hintText: "State General Secretary Candidate",
+          //   keyBoardType: TextInputType.name,
+          //   controller: logic.stateSGSPresidentController,
+          // ),
+          // TextFieldWithLabelNSUI(
+          //   readOnly: true,
+          //   maxline: 2,
+          //   labelcolor: theme.textTheme.bodyLarge!.color,
+          //   label: "District President Candidate",
+          //   hintText: "District President Candidate",
+          //   keyBoardType: TextInputType.name,
+          //   controller: logic.districtPresidentController,
+          // ),
+          // TextFieldWithLabelNSUI(
+          //   readOnly: true,
+          //   maxline: 2,
+          //   labelcolor: theme.textTheme.bodyLarge!.color,
+          //   label: "University President Candidate",
+          //   hintText: "University President Candidate",
+          //   keyBoardType: TextInputType.name,
+          //   controller: logic.universityPresidentController,
+          // ),
+          // TextFieldWithLabelNSUI(
+          //   readOnly: true,
+          //   maxline: 2,
+          //   labelcolor: theme.textTheme.bodyLarge!.color,
+          //   label: "College President Candidate",
+          //   hintText: "College President Candidate",
+          //   keyBoardType: TextInputType.name,
+          //   controller: logic.universityPresidentController,
+          // ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+              // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: logic.declarationStatus,
+                      activeColor: Colors.orange,
+                      onChanged: (value) {
+                        // logic.changeDeclarationStatus(value!);
+                      },
+                    ),
+                    Container(
+                      width: MediaQuery.of(Get.context!).size.width * 0.8,
+                      child: Text(
+                        'I’m under 27 years of age and I accept the terms and conditions of NSUI',
+                        style: TextStyle(
+                            color: Colors.grey.shade600, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                )
+              ])),
+          if (logic.otpSent && !logic.otpVerified)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              child: Pinput(
+                length: 6,
+                // focusNode: model.otpCodeFocus,
+                controller: logic.otpCodeController,
+                defaultPinTheme: defaultPinTheme,
+                followingPinTheme: defaultPinTheme,
+                submittedPinTheme: defaultPinTheme,
+                pinAnimationType: PinAnimationType.fade,
+              ),
+            ),
+          if (logic.isEnableCSNverify) ...[
+            if (!logic.otpVerified)
+              SizedBox(
+                height: 90,
+                child: URoundButton(
+                  color: Color(0xFF1356BF),
+                    title: logic.otpSent ? "Verify" : "Get OTP To Verify CSN",
+                    onTap: () {
+                      logic.otpSent
+                          ? logic.onClickValidateOtp(context)
+                          : logic.onClickSendOtp(context);
+                    }),
+              )
+          ]
+        ],
+      ),
+    );
+  }
 }
 
 extension EmailValidator on String {
