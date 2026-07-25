@@ -20,7 +20,7 @@ class StateDropDrownNSUI extends StatelessWidget {
 
   final States? value;
   final List<States>? listValues;
-  final void Function(dynamic v) onChanged;
+  final dynamic Function(dynamic v) onChanged;
   EdgeInsetsGeometry? margin;
   final Color? labelcolor;
   final String? lable;
@@ -68,8 +68,15 @@ class StateDropDrownNSUI extends StatelessWidget {
                           children: List.generate(
                               listValues!.length,
                               (index) => GestureDetector(
-                                    onTap: () {
-                                      onChanged(listValues![index]);
+                                    onTap: () async {
+                                      // Close this picker only after onChanged
+                                      // finishes — some implementations (e.g.
+                                      // Register's onChangeState) open/close
+                                      // their own progress dialog on the same
+                                      // GetX navigator stack, and closing this
+                                      // dialog first races with that, leaving
+                                      // the wrong dialog open.
+                                      await onChanged(listValues![index]);
                                       Get.back();
                                     },
                                     child: Column(
@@ -152,13 +159,7 @@ class StateDropDrownNSUI extends StatelessWidget {
                                   Padding(
                                       padding: EdgeInsets.only(top: 0.v),
                                       child: Text(
-                                          value != null
-                                              ? listValues!
-                                                  .firstWhere((element) =>
-                                                      element.stateCode ==
-                                                      value!.stateCode)
-                                                  .name
-                                              : title!,
+                                          value != null ? value!.name : title!,
                                           style: value != null
                                               ? theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500)
                                               : theme.textTheme.bodyMedium!

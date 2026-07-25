@@ -210,12 +210,14 @@ class RegisterNSUIController extends GetxController {
     update();
   }
 
-  void onChangeState(States value) async {
+  Future<void> onChangeState(States value) async {
     selectedState = value;
     selectedDistrict = null;
-
     selectedAssembly = null;
-    await getDistrictList();
+    // District isn't part of this form (its dropdown is commented out in
+    // register_screen_nsui.dart), so no need to fetch/wait on districtList
+    // here — that fetch was leaving the state-picker's progress dialog
+    // stuck open.
     update();
   }
 

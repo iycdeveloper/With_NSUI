@@ -9,6 +9,7 @@ import 'package:iyc/app/routes/routes_management.dart';
 import 'package:iyc/di_container.dart';
 import 'package:iyc/model/data_model/login_model.dart';
 import 'package:iyc/model/data_model/otp_model.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -16,6 +17,14 @@ class LoginNSUIController extends GetxController with CodeAutoFill {
   Rx<TextEditingController> mobileNumberController =
       TextEditingController().obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
+
+  String appVersion = '';
+
+  Future<void> loadAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    appVersion = packageInfo.version;
+    update();
+  }
 
   final authService = Get.find<AuthService>();
 
@@ -49,6 +58,7 @@ class LoginNSUIController extends GetxController with CodeAutoFill {
     // setrecorder();
     Get.put(AuthService(), permanent: true);
     listenForCode();
+    loadAppVersion();
   }
 
   // setrecorder(){

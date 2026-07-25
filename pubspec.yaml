@@ -2,7 +2,7 @@ name: iyc
 description: IYC Program Registration.
 publish_to: 'none' 
 
-version: 1.0.4+7
+version: 1.0.6+9
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -73,6 +73,7 @@ dependencies:
   map_launcher: ^3.5.0
   map_picker:
   multi_select_flutter: ^4.1.2
+  package_info_plus: ^8.1.0
   path_provider: ^2.0.9
   pdf: ^3.11.1
   permission_handler: ^11.3.1

@@ -425,7 +425,12 @@ class MembershipBatchController extends GetxController {
         Navigator.of(context).pop(); // pop loading
       } else {
         Navigator.of(context).pop(); // pop loading
-        CustomSnackBar.showErrorSnackBar(responseDecoded["response"]);
+        if (responseDecoded['error_code'] == 9999) {
+          CustomSnackBar.showAppUpdateRequiredDialog(
+              responseDecoded["response"]);
+        } else {
+          CustomSnackBar.showErrorSnackBar(responseDecoded["response"]);
+        }
       }
     } else {
       Navigator.of(context).pop(); // pop loading

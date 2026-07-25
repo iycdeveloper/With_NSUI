@@ -198,6 +198,14 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                         ),
                       ],
                     )),
+                if (controller.appVersion.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  Text(
+                    'version ${controller.appVersion}',
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.75), fontSize: 12),
+                  ),
+                ],
               ],
             )),
       ));

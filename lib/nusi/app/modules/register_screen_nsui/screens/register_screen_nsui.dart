@@ -249,9 +249,8 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
                                   title: '  Choose State',
                                   value: controller.selectedState,
                                   listValues: controller.stateList,
-                                  onChanged: (value) {
-                                    controller.onChangeState(value);
-                                  },
+                                  onChanged: (value) =>
+                                      controller.onChangeState(value),
                                   lable: 'State',
                                 ),
                                 UploadButtonImageNSUI(
