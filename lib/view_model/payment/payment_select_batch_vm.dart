@@ -54,19 +54,27 @@ class PaymentSelectBatchVM extends ChangeNotifier {
     }
   }
 
+  // batch.countAM is the batch's stored server-side quota, which can be
+  // stale/inflated relative to how many members are actually synced and
+  // shown for that batch (the same batch-quota-vs-real-members mismatch
+  // fixed on the Membership Batch List screen). Charge for the members
+  // actually visible/selectable here instead.
+  int _realMemberCount(String batchId) =>
+      memberList?.where((m) => m.batchId == batchId).length ?? 0;
+
   initiatePayment(BuildContext context) async {
     showNetworkLoadingDialog(context);
+    final selectedBatches =
+        membershipBatchList.where((element) => element.selected).toList();
     ApiResponse apiResponse = await sl<PaymentRepo>().initiatePayment(
-        membershipBatchList
-            .where((element) => element.selected)
-            .toList()
-            .map((e) =>
-                {"AMOUNT": paymentFee! * e.countAM, "BATCH_NO": e.batchId})
+        selectedBatches
+            .map((e) => {
+                  "AMOUNT": paymentFee! * _realMemberCount(e.batchId),
+                  "BATCH_NO": e.batchId
+                })
             .toList());
-    totalAmount = membershipBatchList
-        .where((element) => element.selected)
-        .toList()
-        .map((e) => e.countAM * paymentFee!)
+    totalAmount = selectedBatches
+        .map((e) => _realMemberCount(e.batchId) * paymentFee!)
         .toList()
         .reduce((value, element) => value + element);
 
@@ -108,22 +116,27 @@ class PaymentSelectBatchVM extends ChangeNotifier {
     }
   }
 
+  // "Select All" must only touch the batches actually visible in the list
+  // (synced + still Pending) — looping over the raw, unfiltered
+  // membershipBatchList would also select already-paid/unsynced batches the
+  // user never saw or intended to pay for.
   toggleSelectAll() {
     isSelectedAll = !isSelectedAll;
-    if (isSelectedAll) {
-      membershipBatchList.forEach((element) {
-        element.selected = true;
-      });
-    } else {
-      membershipBatchList.forEach((element) {
-        element.selected = false;
-      });
+    for (final element in membershipBatchList) {
+      if (element.syncStatus == "1" && element.paymentStatus == "Pending") {
+        element.selected = isSelectedAll;
+      }
     }
     notifyListeners();
   }
 
-  changeCheckBox(index) {
-    membershipBatchList[index].selected = !membershipBatchList[index].selected;
+  // Takes the BatchDataModel itself (same object reference as in
+  // membershipBatchList) rather than a list index — the screen renders a
+  // *filtered* list, so a raw index into membershipBatchList[index] could
+  // silently toggle a completely different, invisible batch whenever any
+  // batch ahead of it had been filtered out (already paid, unsynced).
+  changeCheckBox(BatchDataModel batch) {
+    batch.selected = !batch.selected;
     notifyListeners();
   }
 

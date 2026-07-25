@@ -109,38 +109,19 @@ class _PaymentSelectBatchState extends State<PaymentSelectBatch> {
                                     leading: Checkbox(
                                         activeColor: _indigo,
                                         checkColor: Colors.white,
-                                        value: model.membershipBatchList
-                                            .where((element) =>
-                                                element.syncStatus == "1" &&
-                                                element.paymentStatus ==
-                                                    'Pending')
-                                            .toList()[index]
-                                            .selected,
+                                        value: batch.selected,
                                         onChanged: (val) {
                                           context
                                               .read<PaymentSelectBatchVM>()
-                                              .changeCheckBox(index);
+                                              .changeCheckBox(batch);
                                         }),
                                     title: Text(
                                       members.first.memberId ?? "",
-                                      // model.memberList!
-                                      //     .where((test) =>
-                                      //         test.batchId ==
-                                      //         (model.membershipBatchList
-                                      //             .where((element) =>
-                                      //                 element.syncStatus ==
-                                      //                     "1" &&
-                                      //                 element.paymentStatus ==
-                                      //                     'Pending')
-                                      //             .toList()[index]
-                                      //             .batchId))
-                                      //     .first
-                                      //     .memberId!,
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                     trailing: Text(
-                                        "₹ : ${model.paymentFee! * model.membershipBatchList.where((element) => element.syncStatus == "1").toList()[index].countAM}"),
+                                        "₹ : ${model.paymentFee! * members.length}"),
                                   );
                                 }))
                       ],
