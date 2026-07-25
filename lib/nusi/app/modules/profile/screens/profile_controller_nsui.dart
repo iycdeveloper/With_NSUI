@@ -534,33 +534,49 @@ class ProfileNSUIController extends GetxController
       }
       isLoading = false;
 
-      userDetail!.stateName = stateList
-          .firstWhere((element) => element.stateCode == userDetail!.stateCode)
-          .name;
+      // Each lookup below used a bare `.firstWhere` with no `orElse` — a
+      // non-matching code (timing, case mismatch, unrecognized value) throws
+      // a StateError that's caught by the outer catch, aborting this whole
+      // block INCLUDING the districtName/assemblyName lines after it. Since
+      // the TextEditingController reassignments live outside the try/catch,
+      // they still run afterward with these names left unset — the field
+      // then renders empty even though userDetail loaded fine. Guard each
+      // lookup individually so one missing code doesn't blank out the rest.
+      for (final element in stateList) {
+        if (element.stateCode == userDetail!.stateCode) {
+          userDetail!.stateName = element.name;
+          break;
+        }
+      }
       // workState = stateList
       //     .firstWhere(
       //         (element) => element.stateCode == userDetail!.workingState)
       //     .name;
 
-      userDetail!.districtName = districtList
-          .firstWhere(
-              (element) => element.districtCode == userDetail!.districtCode)
-          .name;
-      userDistrict = districtList.firstWhere(
-          (element) => element.districtCode == userDetail!.districtCode);
+      for (final element in districtList) {
+        if (element.districtCode == userDetail!.districtCode) {
+          userDetail!.districtName = element.name;
+          userDistrict = element;
+          break;
+        }
+      }
       if (assemblyList.isNotEmpty) {
-        userDetail!.assemblyName = assemblyList
-            .firstWhere(
-                (element) => element.assemblyCode == userDetail!.assemblyCode)
-            .name;
-        userAssembly = assemblyList.firstWhere(
-            (element) => element.assemblyCode == userDetail!.assemblyCode);
+        for (final element in assemblyList) {
+          if (element.assemblyCode == userDetail!.assemblyCode) {
+            userDetail!.assemblyName = element.name;
+            userAssembly = element;
+            break;
+          }
+        }
       }
 
       if (userDetail!.category != null && userDetail!.category != '') {
-        selectedCategory = categoryList
-            .firstWhere((test) => test.value == userDetail!.category)
-            .name;
+        for (final test in categoryList) {
+          if (test.value == userDetail!.category) {
+            selectedCategory = test.name;
+            break;
+          }
+        }
       }
     } catch (e) {
       Log.printELog(e);

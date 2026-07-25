@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/nusi/app/modules/profile/widgets/delete_profile_webview.dart';
 import 'package:iyc/app/modules/profile/widgets/profile_photo_change_view_buttom_sheet..dart';
-import 'package:iyc/app/routes/routes_management.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/custom_floating_text_field_nsui.dart';
 import 'package:iyc/app/widgets/custom_rating_bar.dart';
@@ -23,6 +22,102 @@ class ProfilescreenNSUI extends StatefulWidget {
 class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
   // final controller = Get.put(ProfileNSUIController());
 
+  static const Color _ink = Color(0xFF1F2A44);
+  static const Color _indigo = Color(0xFF1356BF);
+
+  Widget _buildHero(ProfileNSUIController controller, BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF1356BF), Color(0xFF5B2EC4), Color(0xFF2CC7E2)],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: _indigo.withOpacity(0.30),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: profilePhotoChangeViewBottomSheet,
+            child: Container(
+              height: 64,
+              width: 64,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Image.network(
+                controller.userDetail?.profilePic ?? '',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset('assets/nsui/images/Vector2.png',
+                      scale: 0.5),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  controller.userDetail != null
+                      ? controller.userDetail!.name
+                      : '',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  controller.noBDetails != null
+                      ? "${controller.noBDetails!.postalloted}"
+                      : controller.obDetails != null
+                          ? "${controller.obDetails!.postalloted}"
+                          : "${controller.userDetail!.roleName}",
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                ),
+                const SizedBox(height: 6),
+                CustomRatingBar(
+                    itemSize: 14,
+                    alignment: Alignment.centerLeft,
+                    itemCount: 5,
+                    color: const Color(0xffFFB800),
+                    initialRating: int.parse(controller.authPoint) * 1.0),
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () => toPage(context, DeleteAccountScreen()),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.16),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.delete_outline_rounded,
+                  color: Colors.white, size: 20),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -34,140 +129,38 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
             : Container(
                 width: double.infinity,
                 height: double.infinity,
-                padding: EdgeInsets.only(
-                    left: mediaQueryData.size.width * 0.05,
-                    right: mediaQueryData.size.width * 0.05),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                      const Color(0xFF2CC7E2).withOpacity(0.1),
-                      Colors.white
-                    ])),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFFF1F4FF), Color(0xFFF8FAFF)],
+                  ),
+                ),
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(18, 14, 18, 28),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              profilePhotoChangeViewBottomSheet();
-                            },
-                            child: Container(
-                              height: mediaQueryData.size.height * 0.08,
-                              width: mediaQueryData.size.width * 0.16,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: const Offset(1,
-                                        1), // horizontal & vertical shadow offset
-                                    blurRadius: 4, // softness of shadow
-                                    color: Colors.black
-                                        .withOpacity(0.3), // shadow color
-                                  ),
-                                ],
-                                // borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    width: 1, color: Colors.grey[200]!),
-                              ),
-                              clipBehavior: Clip
-                                  .hardEdge, // Ensures image respects borderRadius
-                              child: Image.network(
-                                controller.userDetail?.profilePic ?? '',
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  // If image fails to load, show a fallback image
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/nsui/images/Vector2.png',
-                                      // fit: BoxFit.fill,
-                                      scale: 0.5,
-                                      // height: height * 0.02,
-                                      // width: width * 0.10,
-                                    ),
-                                  );
-                                },
-                              ),
+                      _buildHero(controller, context),
+                      const SizedBox(height: 18),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.06),
+                              blurRadius: 16,
+                              offset: const Offset(0, 6),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                controller.userDetail != null
-                                    ? controller.userDetail!.name
-                                    : '',
-                                style: theme.textTheme.bodyLarge!
-                                    .copyWith(shadows: [
-                                  Shadow(
-                                    offset: const Offset(1,
-                                        1), // horizontal & vertical shadow offset
-                                    blurRadius: 4, // softness of shadow
-                                    color: Colors.black
-                                        .withOpacity(0.2), // shadow color
-                                  ),
-                                ], fontWeight: FontWeight.bold),
-                              ),
-                              // Text(
-                              //   "Karnataka",
-                              //   style: theme.textTheme.bodyMedium!
-                              //       .copyWith(color: Colors.grey),
-                              // ),
-                              controller.noBDetails != null
-                                  ? Text(
-                                      "${controller.noBDetails!.postalloted}",
-                                      style: theme.textTheme.bodyLarge)
-                                  : controller.obDetails != null
-                                      ? Text(
-                                          "${controller.obDetails!.postalloted}",
-                                          style: theme.textTheme.bodyLarge)
-                                      : Text(
-                                          "${controller.userDetail!.roleName}",
-                                          style: theme.textTheme.bodyLarge),
-                              CustomRatingBar(
-                                  itemSize: 12,
-                                  alignment: Alignment.center,
-                                  itemCount: 5,
-                                  color: const Color(0xffFFB800),
-                                  initialRating:
-                                      int.parse(controller.authPoint) * 1.0),
-                            ],
-                          ),
-                          const Spacer(),
-                          IconButton(
-                              onPressed: () {
-                                RoutesManagement.goToEditProfileScreenNSUI();
-                              },
-                              icon: Icon(
-                                Icons.edit_square,
-                                color: theme.textTheme.bodyLarge!.color,
-                                size: 30,
-                              )),
-                          IconButton(
-                              onPressed: () {
-                                // RoutesManagement.goToEditProfileScreenNSUI();
-                                toPage(context, DeleteAccountScreen());
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: theme.textTheme.bodyLarge!.color,
-                                size: 30,
-                              ))
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Column(
+                          ],
+                        ),
+                        child: Column(
                         children: [
                           TextFieldWithLabelNSUI(
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
                             controller: controller.fullNameController,
                             readOnly: true,
                             label: "Full Name",
@@ -187,7 +180,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                           ),
                           TextFieldWithLabelNSUI(
                             controller: controller.mobileNumberController,
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
                             readOnly: true,
                             label: "Phone Number",
                             hintText: "Phone Number",
@@ -205,7 +198,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                             },
                           ),
                           CustomFloatingTextFieldNSUI(
-                              labelcolor: theme.textTheme.bodyLarge!.color,
+                              labelcolor: _ink,
                               autofocus: false,
                               margin: EdgeInsets.only(
                                   left: 0.h, top: 0.v, right: 0.h),
@@ -216,7 +209,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                               hintText: "lbl_state".tr,
                               hintStyle: theme.textTheme.bodyLarge!),
                           CustomFloatingTextFieldNSUI(
-                              labelcolor: theme.textTheme.bodyLarge!.color,
+                              labelcolor: _ink,
                               autofocus: false,
                               margin: EdgeInsets.only(
                                   left: 0.h, top: 0.v, right: 0.h),
@@ -294,7 +287,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                           //     }),
                           TextFieldWithLabelNSUI(
                             //
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
                             controller: controller.dobController,
 
                             label: "Date of Birth",
@@ -314,7 +307,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                           ),
                           TextFieldWithLabelNSUI(
                             //
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
 
                             label: "Email",
                             hintText: "Email",
@@ -332,7 +325,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                             },
                           ),
                           TextFieldWithLabelNSUI(
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
                             readOnly: controller.isEditing,
                             controller: controller.addressController,
                             label: "Addresss",
@@ -351,7 +344,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                             },
                           ),
                           TextFieldWithLabelNSUI(
-                            labelcolor: theme.textTheme.bodyLarge!.color,
+                            labelcolor: _ink,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(7)
                             ],
@@ -387,6 +380,7 @@ class _ProfilescreenNSUIState extends State<ProfilescreenNSUI> {
                             height: 20,
                           ),
                         ],
+                      ),
                       ),
                     ],
                   ),

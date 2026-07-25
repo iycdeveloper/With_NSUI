@@ -272,6 +272,7 @@ class MembershipBatchController extends GetxController {
         }
         // log(_membershipRequestList.length.toString());
         filtermemberList = memberList!.reversed.toList();
+        recomputeHeaderCounts();
         update();
 
         //  Navigator.of(context).pop();
@@ -292,37 +293,46 @@ class MembershipBatchController extends GetxController {
     return returnValue;
   }
 
+  /// Derives Total AM/Unpaid/Paid from the actual member list (same source
+  /// the batch-list screen renders), not from summing every batch's stored
+  /// TOTAL_AM. A batch is created (and counted server-side) as soon as
+  /// "New Member" is tapped, even if the form is abandoned before a member
+  /// is ever actually saved — counting batches instead of real members
+  /// over-counts in that case. Only counts members that have a matching
+  /// batch, mirroring the skip-if-no-match behaviour of `_batchCard`.
+  void recomputeHeaderCounts() {
+    final members = filtermemberList ?? [];
+    int paid = 0;
+    int unpaid = 0;
+    for (final member in members) {
+      final batch = _filtermembershipBatchList.cast<dynamic>().firstWhere(
+            (b) => b.batchId == member.batchId,
+            orElse: () => null,
+          );
+      if (batch == null) continue;
+      if (batch.paymentStatus == "PAID") {
+        paid++;
+      } else {
+        unpaid++;
+      }
+    }
+    totalPaidAmCount = paid;
+    totalUnpaidAmCount = unpaid;
+    totalCount = paid + unpaid;
+  }
+
   getMembershipBatchList(BuildContext context, {bool? reload}) async {
     loading = true;
     if (reload != null && reload) {
       update();
     }
     _membershipBatchList = await batchDBRepo.getData();
-    totalCount = await countAm();
-    totalUnpaidAmCount = await countAmUnPaid(_membershipBatchList);
-    totalPaidAmCount = totalCount - totalUnpaidAmCount;
     _filtermembershipBatchList = _membershipBatchList;
+    recomputeHeaderCounts();
 
     Log.printILog(totalUnpaidAmCount);
     loading = false;
     update();
-  }
-
-  Future<int> countAm() async {
-    var sum = 0;
-    sum = _membershipBatchList.fold(0, (sum, element) => sum + element.countAM);
-    Log.printILog("sum by reduce is : $sum");
-    return sum;
-  }
-
-  Future<int> countAmUnPaid(List<BatchDataModel> batchDtaList) async {
-    var sum = 0;
-    sum = _membershipBatchList.fold(
-        0,
-        (sum, element) =>
-            sum + (element.paymentStatus != "PAID" ? element.countAM : 0));
-    print("sum by reduce is : $sum");
-    return sum;
   }
 
   Future<bool> dobRange({required BuildContext context}) async {
