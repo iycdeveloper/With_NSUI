@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "iyc",
-      "version": "1.0.2+5",
+      "version": "1.0.6+9",
       "dependencies": [
         "amazon_cognito_identity_dart_2",
         "another_stepper",
@@ -70,6 +70,7 @@
         "map_picker",
         "motion_tab_bar_v2",
         "multi_select_flutter",
+        "package_info_plus",
         "path_provider",
         "pdf",
         "permission_handler",
@@ -559,6 +560,22 @@
         "path_provider_linux",
         "path_provider_platform_interface",
         "path_provider_windows"
+      ]
+    },
+    {
+      "name": "package_info_plus",
+      "version": "8.3.1",
+      "dependencies": [
+        "clock",
+        "ffi",
+        "flutter",
+        "flutter_web_plugins",
+        "http",
+        "meta",
+        "package_info_plus_platform_interface",
+        "path",
+        "web",
+        "win32"
       ]
     },
     {
@@ -2117,6 +2134,15 @@
       "dependencies": [
         "flutter",
         "path_provider_platform_interface"
+      ]
+    },
+    {
+      "name": "package_info_plus_platform_interface",
+      "version": "3.2.1",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
       ]
     },
     {

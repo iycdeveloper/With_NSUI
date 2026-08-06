@@ -45,7 +45,7 @@ class MyNotification {
 
   static Future<void> showNotification(
       RemoteNotification? message, FlutterLocalNotificationsPlugin fln) async {
-    if (message!.android!.imageUrl != null &&
+    if (message!.android!=null&&message.android!.imageUrl != null &&
         message.android!.imageUrl!.isNotEmpty) {
       try {
         await showBigPictureNotificationHiddenLargeIcon(message, fln);
@@ -103,7 +103,7 @@ class MyNotification {
     );
     int notificationId = 0; // Default value in case null is passed
 
-    if (message != null && message.android!.channelId != null) {
+    if (message.android != null && message.android!.channelId != null) {
       notificationId = int.tryParse(message.android!.channelId!) ?? 0;
       print('channelid:' + notificationId.toString());
     }

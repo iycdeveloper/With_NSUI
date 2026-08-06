@@ -9,15 +9,10 @@
       "client_info": {
         "mobilesdk_app_id": "1:621348065220:android:645d23331ca09e4896de91",
         "android_client_info": {
-          "package_name": "com.bif.nsui"
+          "package_name": "com.bif.iyc"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "621348065220-ipnda6lj8ltrvdtkj8ueap1cqqo2513r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyDSojzoYFjwCB7Lf0DMSnJMaHBeBm5G-Xs"
@@ -25,12 +20,64 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "621348065220-ipnda6lj8ltrvdtkj8ueap1cqqo2513r.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621348065220:android:79d76df2f5ad76f096de91",
+        "android_client_info": {
+          "package_name": "com.bif.nsui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSojzoYFjwCB7Lf0DMSnJMaHBeBm5G-Xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621348065220:android:6596504365f2758a96de91",
+        "android_client_info": {
+          "package_name": "com.inc.bpcc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSojzoYFjwCB7Lf0DMSnJMaHBeBm5G-Xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621348065220:android:e41b454fdb7b636b96de91",
+        "android_client_info": {
+          "package_name": "com.inc.iyc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSojzoYFjwCB7Lf0DMSnJMaHBeBm5G-Xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }

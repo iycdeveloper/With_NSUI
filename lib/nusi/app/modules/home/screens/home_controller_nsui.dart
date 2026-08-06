@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/app/routes/routes_management.dart';
@@ -68,6 +71,9 @@ class HomeNSUIController extends GetxController
   FloatingActionButtonLocation floatingActionButtonLocation =
       FloatingActionButtonLocation.startDocked;
   initmethod() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    log("fcmToken:" + fcmToken.toString());
+
     await getLocation();
     await Future.delayed(const Duration(seconds: 2));
     isLoading = false;
