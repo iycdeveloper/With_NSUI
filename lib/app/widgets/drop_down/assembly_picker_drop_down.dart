@@ -109,11 +109,7 @@ class AssemblyDropDrown extends StatelessWidget {
                             padding: EdgeInsets.only(top: 3.v),
                             child: Text(
                                 value != null
-                                    ? listValues!
-                                    .firstWhere((element) =>
-                                element.assemblyCode ==
-                                    value!.assemblyCode)
-                                    .name
+                                    ? value!.name
                                     : "",
                                 style: theme.textTheme.bodyLarge)),
                         (readOnly == null || readOnly == false)

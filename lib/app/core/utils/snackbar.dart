@@ -71,6 +71,29 @@ abstract class CustomSnackBar{
   /// server error (error_code 9999) — the app is unusable until the user
   /// updates, so a transient snackbar isn't enough; this can't be missed or
   /// swiped away, and links straight to the Play Store listing.
+  /// Blocking error dialog carrying the server's own message.
+  ///
+  /// Use this instead of [showErrorSnackBar] when the failure stops the user
+  /// from completing what they were doing (a member that did not sync, media
+  /// the server cannot see) — a 3s snackbar is too easy to miss for those.
+  static void showErrorDialog(String message, {String title = 'Failed'}) {
+    if (Get.isDialogOpen ?? false) return;
+    Get.dialog(
+      AlertDialog(
+        icon: const Icon(Icons.error_outline_rounded,
+            color: Color(0xFFE0245E), size: 36),
+        title: Text(title),
+        content: Text(message.isEmpty ? 'Something went wrong.' : message),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   static void showAppUpdateRequiredDialog(String message) {
     if (Get.isDialogOpen ?? false) return;
     Get.dialog(

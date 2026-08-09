@@ -10,11 +10,17 @@ class FieldLabelNSUI extends StatelessWidget {
   final String label;
   final Color? color;
 
+  /// Opt-in emphasis for a label that carries the whole form (e.g. the single
+  /// field on the Nomination Phase 2 screen). Off by default so every other
+  /// screen renders exactly as before.
+  final bool bold;
+
   const FieldLabelNSUI({
     Key? key,
     this.icon,
     required this.label,
     this.color,
+    this.bold = false,
   }) : super(key: key);
 
   @override
@@ -22,7 +28,10 @@ class FieldLabelNSUI extends StatelessWidget {
     if (icon == null) {
       return Text(
         label,
-        style: TextStyle(color: color ?? Colors.blueAccent, fontSize: 14),
+        style: TextStyle(
+            color: color ?? Colors.blueAccent,
+            fontSize: 14,
+            fontWeight: bold ? FontWeight.bold : null),
       );
     }
     return Padding(
@@ -36,8 +45,8 @@ class FieldLabelNSUI extends StatelessWidget {
               label,
               style: TextStyle(
                 color: color ?? Colors.blueAccent,
-                fontSize: 12.5,
-                fontWeight: FontWeight.w600,
+                fontSize: bold ? 15 : 12.5,
+                fontWeight: bold ? FontWeight.bold : FontWeight.w600,
               ),
             ),
           ),

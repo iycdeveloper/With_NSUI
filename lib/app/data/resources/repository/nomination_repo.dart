@@ -43,6 +43,36 @@ class NominationRepo {
     }
   }
 
+  /// Same payload as [getNominationStatus], but hits the Phase 2 endpoint.
+  getNominationStatusPhase2() async {
+    var data = '''[{
+    "V":"${AppConstants.nominationVersion}",
+    "ORG":"${AppConstants.orgName}",
+    "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
+    "USER_ID":"${await LocalStorageServices().getUserId()}",
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? ''}",
+    "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? ''}"
+    }]''';
+    try {
+      var base64encoded = base64.encode(utf8.encode(data));
+      print("------------------------$data");
+      Response result = await dioClient.post(Urls.getNominationStatusPhase2,
+          options: Options(
+              contentType: Headers.textPlainContentType,
+              responseType: ResponseType.plain,
+              receiveDataWhenStatusError: true,
+              headers: {
+                "Accept": "application/json",
+                "Authorization": "Bearer ${AppConstants.authorisationKey}",
+              }),
+          data: base64encoded);
+      return ApiResponse.withSuccess(result);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   updateCsn(Map<String, String> dataMap) async {
     var baseDataMap = {
       "V": "${AppConstants.nominationVersion}",

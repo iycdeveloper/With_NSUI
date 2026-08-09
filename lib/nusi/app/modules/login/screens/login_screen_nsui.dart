@@ -124,13 +124,14 @@ class LoginScreenNSUI extends GetWidget<LoginNSUIController> {
                                 keyBoardType: TextInputType.number,
                                 // maxLength: 10,
                                 inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10),
+                                  LengthLimitingTextInputFormatter(11),
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
                                 controller:
                                     controller.mobileNumberController.value,
                                 validation: (value) {
-                                  if (value.length != 10) {
+                                  /// 10 or 11 digits are both accepted.
+                                  if (value.length < 10 || value.length > 11) {
                                     return "Please enter valid phone number";
                                   }
                                   return null;

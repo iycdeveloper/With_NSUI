@@ -76,7 +76,9 @@ class LoginNSUIController extends GetxController with CodeAutoFill {
     reSendOtp = false;
     update();
     otpController = TextEditingController().obs;
-    if (mobileNumberController.value.text.length == 10) {
+    /// Accept 10 or 11 digit mobile numbers.
+    final mobileLength = mobileNumberController.value.text.length;
+    if (mobileLength == 10 || mobileLength == 11) {
       await authService
           .getOtpLogin(
               loginModel: LoginModel(mobile: mobileNumberController.value.text))
@@ -108,12 +110,19 @@ class LoginNSUIController extends GetxController with CodeAutoFill {
           OTPModel(mobile: mobileNumberController.value.text, otp: otp);
       await authService.verifyOtpLogin(otpModel: otpModel).then((value) async {
         if (value) {
+          /// `sl<Database>()` was never registered in GetIt, so this threw
+          /// every time — and because the throw happened on the first line of
+          /// the try, `initDB()` below never ran either. Drop the stale
+          /// lookup and let each step fail independently.
           try {
-            if (sl<Database>().isOpen) await IycDbServices.db.deleteDb();
-            await IycDbServices.db.initDB();
-            // await DbServices.db.database;
+            await IycDbServices.db.deleteDb();
           } catch (e) {
-            Log.printELog(e);
+            Log.printELog('deleteDb on login failed: $e');
+          }
+          try {
+            await IycDbServices.db.initDB();
+          } catch (e) {
+            Log.printELog('initDB on login failed: $e');
           } finally {
             RoutesManagement.goToHomeScreenNSUI();
           }

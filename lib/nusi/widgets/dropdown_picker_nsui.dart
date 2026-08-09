@@ -21,6 +21,7 @@ class DropDownPickerNSUI extends StatelessWidget {
     this.height,
     this.refKey,
     this.viewOnly = false,
+    this.labelBold = false,
   }) : super(key: key);
 
   final dynamic currentValue;
@@ -35,21 +36,35 @@ class DropDownPickerNSUI extends StatelessWidget {
   final IconData? icon;
   final GlobalKey? refKey;
 
+  /// Renders the field label in bold — opt-in, off everywhere else.
+  final bool labelBold;
+
+  /// Name of the currently selected item, or the raw value when the list has
+  /// no match for it. A bare `firstWhere` here throws "Bad state: No element"
+  /// whenever a stored value isn't in the list (or the list hasn't loaded),
+  /// which red-screens the page in viewOnly mode.
+  String get _selectedName {
+    for (final item in listValues ?? []) {
+      if (item.value == currentValue) return item.name;
+    }
+    return currentValue?.toString() ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return viewOnly
-        ? DropDownTextFielNSUI(
-            title: listValues!
-                .firstWhere((element) => element.value == currentValue)
-                .name,
-            label: labelText)
+        ? DropDownTextFielNSUI(title: _selectedName, label: labelText)
         : Container(
             // color: Colors.white,
             margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FieldLabelNSUI(icon: icon, label: labelText, color: labelcolor),
+                FieldLabelNSUI(
+                    icon: icon,
+                    label: labelText,
+                    color: labelcolor,
+                    bold: labelBold),
                 Container(
                   margin: const EdgeInsets.only(
                     top: 5,

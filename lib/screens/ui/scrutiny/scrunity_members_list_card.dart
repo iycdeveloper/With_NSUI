@@ -123,11 +123,18 @@ class ScrutinyMembersListCard extends StatelessWidget {
                         onPressed: () async {
                           Navigator.pop(context);
                           await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ScrutinyMembershipEditHomePage(
-                                    scrutinyMembersListVM: provider,
-                                    member: member,
-                                    isUpdate: true,
+                              builder: (context) => ChangeNotifierProvider(
+                                    /// The page reads ScrutinyMembershipEditVM
+                                    /// in initState — pushing it bare threw a
+                                    /// ProviderNotFoundException. Matches the
+                                    /// other call site above.
+                                    create: (context) =>
+                                        ScrutinyMembershipEditVM(),
+                                    child: ScrutinyMembershipEditHomePage(
+                                      scrutinyMembersListVM: provider,
+                                      member: member,
+                                      isUpdate: true,
+                                    ),
                                   )));
                           context
                               .read<ScrutinyMembersListVM>()

@@ -239,7 +239,27 @@ class MembershipMemberCreateController extends GetxController {
 //Sync below
 
     var aggrId = await LocalStorageServices().getAgrIDMembership();
-    await s3uploadAllMemberImages();
+
+    /// Upload every picked media first and wait for ALL of them to finish,
+    /// then ask the server to confirm it can see them (checkS3Upload).
+    /// Only once that succeeds do we sync the member record.
+    showNetworkLoadingDialog(context,
+        willPopScope: false, msg: 'Uploading photo ....');
+    final s3UploadSuccess = await s3uploadAllMemberImages();
+    if (s3UploadSuccess == false) {
+      Navigator.of(context).pop();
+
+      /// close loading
+      CustomSnackBar.showErrorDialog(
+          'One or more of the photo / ID / Aadhaar / video files did not upload. Please check your connection and try again.',
+          title: 'Upload failed');
+      return;
+    }
+    final s3Verified = await checkS3Upload(context);
+    Navigator.of(context).pop();
+
+    /// close loading
+    if (!s3Verified) return;
     Map<String, dynamic> newMemberData = {
       'MEMBER_ID': currentMember!.memberId,
       "BATCH_NO": currentMember!.batchId,
@@ -385,15 +405,82 @@ class MembershipMemberCreateController extends GetxController {
         //     .getMembershipList(context, currentMember.batchId!, reload: true);
       } else {
         Navigator.of(context).pop();
+        Log.printILog('syncMembership -> $responseDecoded');
         if ('${responseDecoded["response"]}'.contains('Aggregator')) {
           Get.find<AuthService>().forceLogout();
         }
-        CustomSnackBar.showErrorSnackBar(
-            responseDecoded["response"] ?? "Batch Sync Failed! Try Again");
+
+        /// Surface the server's message — the member did NOT sync, so this
+        /// must not be a snackbar the user can scroll past.
+        CustomSnackBar.showErrorDialog(
+            '${responseDecoded["response"] ?? "Batch Sync Failed! Try Again"}',
+            title: 'Sync failed');
       }
     } else {
       Navigator.of(context).pop();
-      CustomSnackBar.showErrorSnackBar(apiResponse.error.message.toString());
+      CustomSnackBar.showErrorDialog(
+          apiResponse.error?.message?.toString() ??
+              apiResponse.error?.toString() ??
+              'Could not reach the server to sync this member. Please check your connection and try again.',
+          title: 'Sync failed');
+    }
+  }
+
+  /// Asks the server to confirm every media file for this member actually
+  /// landed in S3. Must only be called after [s3uploadAllMemberImages] has
+  /// completed. Returns true when the server reports SUCCESS; on failure it
+  /// surfaces the server's message and the caller must not sync.
+  Future<bool> checkS3Upload(BuildContext context) async {
+    var testJsonData = '''[{
+    "V":"${AppConstants.membershipVersion}",
+    "ORG":"${AppConstants.orgName}",
+    "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "USER_ID":"${await LocalStorageServices().getUserId()}",
+    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? ''}",
+    "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? ''}",
+    "MEMBER_ID":"${currentMember!.memberId}",
+    "ST_CODE":"${currentMember!.stateCode}",
+    "CHANNEL":"M"
+    }]''';
+    log(testJsonData);
+    try {
+      ApiResponse apiResponse = await apiConfig!
+          .postData(endpointUrl: Urls.checkS3Upload, jsonData: testJsonData);
+
+      if (apiResponse.response != null &&
+          apiResponse.response!.statusCode == 200) {
+        final responseDecoded =
+            jsonDecode(utf8.decode(base64Decode(apiResponse.response!.data)));
+        Log.printILog('checkS3Upload -> $responseDecoded');
+        if (responseDecoded['status'] == "SUCCESS") {
+          return true;
+        }
+
+        /// Show the server's own wording — "Directory missing", "App version
+        /// not supported", whatever it sent — so the user and support can act
+        /// on it instead of a generic failure.
+        CustomSnackBar.showErrorDialog(
+            '${responseDecoded["response"] ?? "Media verification failed on the server."}',
+            title: 'Upload check failed');
+        return false;
+      }
+
+      /// Non-200 / transport failure.
+      CustomSnackBar.showErrorDialog(
+          apiResponse.error?.message?.toString() ??
+              apiResponse.error?.toString() ??
+              'Could not reach the server to verify the uploaded files. Please check your connection and try again.',
+          title: 'Upload check failed');
+      return false;
+    } catch (e) {
+      /// Malformed/undecodable body, base64 or JSON failure — never crash the
+      /// submit, always tell the user something actionable.
+      Log.printELog('checkS3Upload failed: $e');
+      CustomSnackBar.showErrorDialog(
+          'Could not verify the uploaded files ($e). Please try again.',
+          title: 'Upload check failed');
+      return false;
     }
   }
 
@@ -960,21 +1047,28 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   Future<void> saveVideo(File result) async {
-    File image;
-    image = File(result.path);
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    String dirPath = extDir.path;
+    try {
+      final File image = File(result.path);
+      final Directory extDir = await getApplicationDocumentsDirectory();
+      String dirPath = extDir.path;
 
-    final String filePath =
-        '$dirPath/${p.basenameWithoutExtension(result.path)}.mp4';
-    final File newImage = await image.copy(filePath);
-    File _image = newImage;
+      final String filePath =
+          '$dirPath/${p.basenameWithoutExtension(result.path)}.mp4';
 
-    pickedVideoFile = _image;
-    pickedVideoFilePath = _image.path;
-    Log.printELog(pickedVideoFilePath);
-    showVideoFile = true;
-    update();
+      /// Copying a file onto itself truncates it to 0 bytes — keep the
+      /// recorded file as-is when it already lives at the destination.
+      final File savedVideo =
+          result.path == filePath ? image : await image.copy(filePath);
+
+      pickedVideoFile = savedVideo;
+      pickedVideoFilePath = savedVideo.path;
+      Log.printELog(pickedVideoFilePath);
+      showVideoFile = true;
+      update();
+    } catch (e) {
+      Log.printELog('saveVideo failed: $e');
+      CustomSnackBar.showErrorSnackBar(ImageServices.describePickError(e));
+    }
   }
 
   Future<void> pickDocument(ImageSource imageSource, String? pickedFilePath,
@@ -982,20 +1076,43 @@ class MembershipMemberCreateController extends GetxController {
     //  FocusScope.of(context).unfocus();
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final result =
-        await ImageServices().pickImage(imageSource, cropimage: false);
+    final File? result;
+    try {
+      result = await ImageServices().pickImage(imageSource, cropimage: false);
+    } catch (e) {
+      /// pickImage already reports its own failures, this is the last line of
+      /// defence so a picker/permission problem can never crash the app.
+      Log.printELog('pickDocument failed: $e');
+      CustomSnackBar.showErrorSnackBar(ImageServices.describePickError(e));
+      return;
+    }
     if (result != null) {
-      var status = await Permission.storage.status;
-      if (!status.isGranted) {
-        await Permission.storage.request();
+      try {
+        var status = await Permission.storage.status;
+        if (!status.isGranted) {
+          await Permission.storage.request();
+        }
+      } catch (e) {
+        /// A permission plugin failure must not stop the flow — the copy
+        /// below targets app-private storage, which needs no permission.
+        Log.printELog('storage permission check failed: $e');
       }
       File image;
       image = File(result.path);
       //  final myImagePath = '/storage/emulated/0/Download' ;
-      final Directory extDir = await getApplicationDocumentsDirectory();
-      String dirPath = extDir.path;
-      final String filePath = '$dirPath/${p.basename(result.path)}';
-      final File newImage = await image.copy(filePath);
+      final Directory extDir;
+      final File newImage;
+      try {
+        extDir = await getApplicationDocumentsDirectory();
+        String dirPath = extDir.path;
+        final String filePath = '$dirPath/${p.basename(result.path)}';
+        newImage = await image.copy(filePath);
+      } catch (e) {
+        /// Out of space, revoked storage permission, unreadable source file …
+        Log.printELog('saving picked document failed: $e');
+        CustomSnackBar.showErrorSnackBar(ImageServices.describePickError(e));
+        return;
+      }
 
       File _image = newImage;
 
@@ -1045,9 +1162,20 @@ class MembershipMemberCreateController extends GetxController {
   }
 
   void clickLivePhotoNew(BuildContext context) async {
-    final cameras = await availableCameras();
-    if (cameras.isNotEmpty) {
-      XFile result = await Navigator.push(
+    try {
+      /// Throws a CameraException when camera permission is denied or no
+      /// camera is available — must not reach the user as a crash.
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        CustomSnackBar.showErrorSnackBar(
+            'No camera is available on this device.');
+        return;
+      }
+
+      /// Nullable on purpose: the page pops with null when the user backs out
+      /// or no face is detected. Assigning that to a non-nullable XFile threw
+      /// before the null check below could ever run.
+      final XFile? result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const FaceDetectionPage(),
@@ -1061,10 +1189,11 @@ class MembershipMemberCreateController extends GetxController {
         showAMImage = true;
         update();
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Camera not active!')),
-      );
+    } catch (e) {
+      Log.printELog('clickLivePhotoNew failed: $e');
+      CustomSnackBar.showErrorSnackBar(e is CameraException
+          ? 'Camera permission is denied or the camera is unavailable. Please allow camera access in Settings and try again.'
+          : ImageServices.describePickError(e));
     }
   }
 
@@ -1455,7 +1584,27 @@ class MembershipMemberCreateController extends GetxController {
     update();
   }
 
+  /// The "Training" state is a QA/testing state — mobile OTP is not enforced
+  /// there so testers can walk the flow without a real SMS. Every other state
+  /// still requires a verified OTP before Step 1 can be left.
+  static const String trainingStateCode = 'TS';
+
+  Future<bool> isTrainingState() async {
+    final code =
+        (selectedState?.stateCode ?? await LocalStorageServices().getSTCode())
+            .toUpperCase();
+    final name = (selectedState?.name ?? '').toUpperCase();
+    return code == trainingStateCode || name.contains('TRAIN');
+  }
+
   Future<bool> validateOtpPage(BuildContext context) async {
+    if (await isTrainingState()) {
+      Log.printILog(
+          'Training state (${selectedState?.stateCode} / ${selectedState?.name}) — skipping mobile OTP validation');
+      otpError = null;
+      update();
+      return true;
+    }
     if (!otpVerified) await verifyOtpForMember(context);
     return otpVerified;
   }

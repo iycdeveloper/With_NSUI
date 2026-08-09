@@ -185,13 +185,18 @@ class RegisterScreenNSUI extends GetWidget<RegisterNSUIController> {
                                 CustomFloatingTextFieldNSUI(
                                   onTap: () async {
                                     var now = DateTime.now();
+
+                                    /// Registration DOB is open — anything
+                                    /// from 60 years ago up to today. (It used
+                                    /// to force a minimum age of 18 by capping
+                                    /// lastDate at now - 18 years.)
                                     final datePick = await showDatePicker(
                                       context: context,
                                       initialDate: DateTime(
                                           now.year - 18, now.month, now.day),
-                                      firstDate: new DateTime(1950),
-                                      lastDate: DateTime(
-                                          now.year - 18, now.month, now.day),
+                                      firstDate: DateTime(
+                                          now.year - 60, now.month, now.day),
+                                      lastDate: now,
                                       builder:
                                           (BuildContext? context, Widget? child) {
                                         return Theme(

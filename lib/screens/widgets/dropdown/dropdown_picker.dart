@@ -30,14 +30,21 @@ class DropDownPicker extends StatelessWidget {
   final bool viewOnly;
   final GlobalKey? refKey;
 
+  /// Name of the currently selected item, or the raw value when the list has
+  /// no match for it. A bare `firstWhere` here threw "Bad state: No element"
+  /// whenever a stored value wasn't present in the list (or the list hadn't
+  /// loaded yet), which red-screened the whole page in viewOnly mode.
+  String get _selectedName {
+    for (final item in listValues ?? []) {
+      if (item.value == currentValue) return item.name;
+    }
+    return currentValue?.toString() ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return viewOnly
-        ? DropDownTextField(
-            title: listValues!
-                .firstWhere((element) => element.value == currentValue)
-                .name,
-            label: labelText)
+        ? DropDownTextField(title: _selectedName, label: labelText)
         : Container(
             // color: Colors.white,
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

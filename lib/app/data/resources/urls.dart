@@ -102,11 +102,21 @@ class Urls {
   static const nominationAmount =
       _baseUrl + "selfnomination_1/nominationAmount.php";
   static const syncNomination = _baseUrl + "selfnomination_1/addNomination.php";
+
+  /// Nomination Phase 2 submit — takes a reduced payload (member is already
+  /// known server-side).
+  static const syncNominationPhase2 =
+      _baseUrl + "selfnomination_1/addNominationPhase2.php";
   static const paymentNomination =
       _baseUrl + "selfnomination_1/addNominationPayment.php";
 
   static const getNominationStatus =
       _baseUrl + "selfnomination_1/getNominationStatus.php";
+
+  /// Nomination Phase 2 uses its own status endpoint — Phase 1 keeps the one
+  /// above untouched.
+  static const getNominationStatusPhase2 =
+      _baseUrl + "selfnomination_1/getNominationStatusPhase2.php";
   static const getNominationPaymentCheck =
       _baseUrl + "selfnomination_1/checkNominationPayment.php";
   static const addNominationPayment =

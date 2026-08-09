@@ -137,11 +137,7 @@ class DistrictDropDrownNSUI extends StatelessWidget {
                                       padding: EdgeInsets.only(top: 0.v),
                                       child: Text(
                                           value != null
-                                              ? listValues!
-                                                  .firstWhere((element) =>
-                                                      element.districtCode ==
-                                                      value!.districtCode)
-                                                  .name
+                                              ? value!.name
                                               : title!,
                                           style: value != null
                                               ? theme.textTheme.bodyLarge!

@@ -105,11 +105,7 @@ class CategoryDropDrown extends StatelessWidget {
                             padding: EdgeInsets.only(top: 3.v),
                             child: Text(
                                 value != null
-                                    ? listValues!
-                                        .firstWhere((element) =>
-                                            element.categoryCode ==
-                                            value!.categoryCode)
-                                        .name
+                                    ? value!.name
                                     : "",
                                 style: theme.textTheme.bodyLarge)),
                         CustomImageView(

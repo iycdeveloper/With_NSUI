@@ -7,10 +7,15 @@ class DropDownTextFielNSUI extends StatelessWidget {
   final String title;
   final String label;
 
+  /// The chevron implies the field can be opened. Pass false for values that
+  /// are purely static so the user isn't invited to tap something inert.
+  final bool showChevron;
+
   const DropDownTextFielNSUI({
     Key? key,
     required this.title,
     required this.label,
+    this.showChevron = true,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,9 @@ class DropDownTextFielNSUI extends StatelessWidget {
                 style: theme.textTheme.bodyLarge!
                     .copyWith(fontWeight: FontWeight.w500),
               ),
-              trailing: const Icon(Icons.keyboard_arrow_down_outlined),
+              trailing: showChevron
+                  ? const Icon(Icons.keyboard_arrow_down_outlined)
+                  : null,
             ),
           ),
         ],
