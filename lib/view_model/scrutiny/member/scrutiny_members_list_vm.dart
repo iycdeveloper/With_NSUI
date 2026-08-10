@@ -318,7 +318,7 @@ class ScrutinyMembersListVM extends ChangeNotifier {
   Future<bool> uploadDocumentFrontImage(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(member.idDocumentFilePath!),
-        destDir: "SCRUTINY/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/SCRUTINY/${member.stateCode}/OM/${member.memberId}",
         filename:
             "${member.memberId}_D.${member.idDocumentFilePath?.split(".").last}");
 
@@ -331,7 +331,7 @@ class ScrutinyMembersListVM extends ChangeNotifier {
   Future<bool> uploadDocumentBackImage(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(member.documentBackPath!),
-        destDir: "SCRUTINY/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/SCRUTINY/${member.stateCode}/OM/${member.memberId}",
         filename:
             "${member.memberId}_D_BACK.${member.documentBackPath?.split(".").last}");
 
@@ -344,7 +344,7 @@ class ScrutinyMembersListVM extends ChangeNotifier {
   Future<bool> uploadDocumentAmPhoto(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(member.amPhotoFilePath!),
-        destDir: "SCRUTINY/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/SCRUTINY/${member.stateCode}/OM/${member.memberId}",
         filename:
             "${member.memberId}_P.${member.amPhotoFilePath?.split(".").last}");
     Log.printDLog(result);
@@ -357,7 +357,7 @@ class ScrutinyMembersListVM extends ChangeNotifier {
   Future<bool> uploadProfileVideo(BatchMember member) async {
     String? result = await AwsUploadServices().uploadFile(
         file: File(member.videoFilePath!),
-        destDir: "SCRUTINY/${member.stateCode}/OM/${member.memberId}",
+        destDir: "NSUI/SCRUTINY/${member.stateCode}/OM/${member.memberId}",
         filename:
             "${member.memberId}.${member.videoFilePath?.split(".").last}");
 

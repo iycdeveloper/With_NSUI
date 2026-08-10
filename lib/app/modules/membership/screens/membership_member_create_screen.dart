@@ -810,21 +810,23 @@ class _MembershipMemberCreateScreenState
               },
               showImage: logic.pickedAMFilePath != null,
               pickedFile: logic.pickedAMFile,
-              buttonTextLabel:
-                  logic.showAMImage ? "Change Photo" : "Upload Photo",
-              labelText: 'Upload Photo',
+              buttonTextLabel: logic.showAMImage
+                  ? "Change Member Photo"
+                  : "Upload Member Photo",
+              labelText: 'Upload Member Photo',
             ),
             SizedBox(
               height: 10,
             ),
             UploadButtonVideo(
               labelcolor: theme.textTheme.bodyLarge!.color,
-              buttonTextLabel:
-                  logic.showVideoFile ? "Change video" : "Upload Video",
+              buttonTextLabel: logic.showVideoFile
+                  ? "Change Member Video"
+                  : "Upload Member Video",
               onTap: (str) => logic.saveVideo(str),
               pickedFile: logic.pickedVideoFile,
               showImage: logic.showVideoFile,
-              lable: 'Upload Video',
+              lable: 'Upload Member Video',
               icon: Icons.videocam_outlined,
             ),
             SizedBox(
@@ -864,6 +866,26 @@ class _MembershipMemberCreateScreenState
               pickedFile: logic.pickedIdFileBack,
               showImage: logic.pickedIdProofPathBack != null,
               labelText: 'Upload College ID (Back)',
+            ),
+            SizedBox(
+              height: 10,
+            ),
+
+            /// Aadhaar number — submitted as ID_VALUE.
+            TextFieldWithLabelNSUI(
+              labelcolor: theme.textTheme.bodyLarge!.color,
+              label: "Enter Aadhaar ID",
+              icon: Icons.pin_outlined,
+              hintText: "12 digit Aadhaar number",
+              keyBoardType: TextInputType.number,
+              controller: logic.idController,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(12),
+              ],
+              validation: (value) => value.trim().length == 12
+                  ? null
+                  : "Enter a valid 12 digit Aadhaar number",
             ),
             SizedBox(
               height: 10,

@@ -1,3 +1,4 @@
+import 'package:iyc/utils/scrutiny_codes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/model/data_model/batch_member.dart';
@@ -34,6 +35,7 @@ class ScrutinyPersonalInfoVM extends ChangeNotifier {
   String? membershipId;
   bool editMode = false;
   bool enableDobEdit = false;
+  bool enableGenderEdit = false;
   bool enableDistrictEdit = false;
   bool disableFields = true;
   List<String> scrutinyCodeList = [];
@@ -88,17 +90,22 @@ class ScrutinyPersonalInfoVM extends ChangeNotifier {
         context.read<ScrutinyMembershipEditVM>().currentMember!;
     selectedEducation = membershipRequestModel.education;
 
-    selectedGender = membershipRequestModel.gender!;
-    print(membershipRequestModel.category);
+    selectedGender = membershipRequestModel.gender;
 
-    selectedCategoryId = categoryList!
-        .firstWhere((element) =>
-            element.categoryCode == membershipRequestModel.category)
-        .name;
+    /// A bare firstWhere here threw "Bad state: No element" and took down the
+    /// whole Personal Info page whenever the member's category wasn't in the
+    /// local list.
+    selectedCategoryId = null;
+    for (final category in categoryList ?? []) {
+      if (category.categoryCode == membershipRequestModel.category) {
+        selectedCategoryId = category.name;
+        break;
+      }
+    }
     selectedDate = membershipRequestModel.dob;
 
     if (membershipRequestModel.scrutinyCode != null) {
-      scrutinyCodeList = membershipRequestModel.scrutinyCode!.split(';');
+      scrutinyCodeList = ScrutinyCodes.parse(membershipRequestModel.scrutinyCode);
       Log.printILog("---scrutinyCode");
       scrutinyCodeList.forEach((element) {
         Log.printILog(element);
@@ -120,6 +127,13 @@ class ScrutinyPersonalInfoVM extends ChangeNotifier {
           disableFields = true;
           enableDistrictEdit = true;
         }
+
+        /// 26 = GENDER MISMATCH — let the scrutiniser correct the gender.
+        /// The ID re-upload that backs it up is unlocked on the Identity page.
+        if (element == ScrutinyCodes.genderMismatch) {
+          enableGenderEdit = true;
+          disableFields = true;
+        }
       });
     }
     isLoading = false;
@@ -131,6 +145,10 @@ class ScrutinyPersonalInfoVM extends ChangeNotifier {
     BatchMember membershipRequestModel =
         context.read<ScrutinyMembershipEditVM>().currentMember!;
     membershipRequestModel.dob = selectedDate;
+
+    /// Gender was never written back, so a code-26 correction would have been
+    /// silently discarded.
+    membershipRequestModel.gender = selectedGender;
 
     context
         .read<ScrutinyMembershipEditVM>()

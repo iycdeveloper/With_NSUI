@@ -1,3 +1,4 @@
+import 'package:iyc/utils/scrutiny_codes.dart';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:iyc/app/core/utils/snackbar.dart';
 import 'package:iyc/model/data_model/batch_member.dart';
 import 'package:iyc/model/data_model/dropdown_item.dart';
 import 'package:iyc/provider/scrutiny/member/scrutiny_member_edit_vm.dart';
+import 'package:iyc/app/data/resources/services/aws_upload_services.dart';
 import 'package:iyc/app/data/resources/services/image_services.dart';
 import 'package:iyc/screens/widgets/button/upload_button.dart';
 import 'package:iyc/screens/widgets/custom_snack_bar.dart';
@@ -46,6 +48,18 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
   bool enableIDEdit = false;
   bool enableAMImageEdit = false;
   bool enableAMVideoEdit = false;
+
+  /// Aadhaar re-upload (scrutiny codes 2 and 26). These stay in the view-model
+  /// and go straight to S3 — they are deliberately NOT written onto
+  /// BatchMember, because `toMap()` would then emit AADHAR_* keys that the
+  /// scrutiny_batch_members table has no columns for.
+  bool enableAadhaarEdit = false;
+  File? pickedAadhaarFront;
+  String? pickedAadhaarFrontPath;
+  bool showAadhaarFront = false;
+  File? pickedAadhaarBack;
+  String? pickedAadhaarBackPath;
+  bool showAadhaarBack = false;
   bool disableFields = true;
   List<String> scrutinyCodeList = [];
   File? pickedVideoFile;
@@ -303,11 +317,15 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
           // TODO: Handle this case.
           throw UnimplementedError();
         case DocumentType.adhaaridFront:
-          // TODO: Handle this case.
-          throw UnimplementedError();
+          pickedAadhaarFront = _image;
+          pickedAadhaarFrontPath = pickedAadhaarFront!.path;
+          showAadhaarFront = true;
+          break;
         case DocumentType.adhaaridBack:
-          // TODO: Handle this case.
-          throw UnimplementedError();
+          pickedAadhaarBack = _image;
+          pickedAadhaarBackPath = pickedAadhaarBack!.path;
+          showAadhaarBack = true;
+          break;
         case DocumentType.studentid:
           // TODO: Handle this case.
           throw UnimplementedError();
@@ -331,20 +349,34 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
     idController.text = membershipRequestModel.idValue ?? "";
     print("start");
     if (membershipRequestModel.scrutinyCode != null) {
-      scrutinyCodeList = membershipRequestModel.scrutinyCode!.split(';');
+      scrutinyCodeList = ScrutinyCodes.parse(membershipRequestModel.scrutinyCode);
       print("---scrutinyCode");
       scrutinyCodeList.forEach((element) {
         Log.printILog(element);
-        if (element == "2") {
+        /// 2 = ID proof problem. The scrutiniser re-uploads the Aadhaar card
+        /// (front + back) instead of retyping an ID number, so the ID number
+        /// field is not unlocked here.
+        if (element == ScrutinyCodes.idProof) {
           enableMediaEdit = true;
           // enableAMImageEdit = true;
-          if (membershipRequestModel.reason!.contains("INVALID VIDEO"))
+          if (membershipRequestModel.reason?.contains("INVALID VIDEO") ?? false)
             enableAMVideoEdit = true;
-          enableIDEdit = true;
+          enableAadhaarEdit = true;
+          disableFields = true;
+        }
+
+        /// 26 = GENDER MISMATCH, 22 = NAME MISMATCH. Both corrections have to
+        /// be backed by a fresh Aadhaar upload — these members were enrolled
+        /// without an ID_TYPE/ID_VALUE, so there is no ID number to re-check
+        /// and the card images are the only evidence available.
+        if (element == ScrutinyCodes.genderMismatch ||
+            element == ScrutinyCodes.nameMismatch) {
+          enableMediaEdit = true;
+          enableAadhaarEdit = true;
           disableFields = true;
         }
         if (element == "18") {
-          if (membershipRequestModel.reason!.contains("INVALID VIDEO"))
+          if (membershipRequestModel.reason?.contains("INVALID VIDEO") ?? false)
             enableAMVideoEdit = true;
           enableIDEdit = true;
           disableFields = true;
@@ -374,6 +406,11 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
           enableAMImageEdit = true;
         }
       });
+
+      /// The ID Proof picker is hidden in Aadhaar mode, so pin the type to
+      /// Aadhaar ("AC") — otherwise whatever was on file would be submitted
+      /// alongside a freshly uploaded Aadhaar card.
+      if (enableAadhaarEdit) selectedIdProof = "AC";
       notifyListeners();
     }
 
@@ -437,13 +474,71 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
         validated = false;
       }
     }
+    if (enableAadhaarEdit) {
+      if (pickedAadhaarFrontPath == null) {
+        showCustomSnackBar("Upload Aadhaar Card (Front)", context);
+        validated = false;
+      } else if (pickedAadhaarBackPath == null) {
+        showCustomSnackBar("Upload Aadhaar Card (Back)", context);
+        validated = false;
+      }
+    }
 
-    if (idController.text.isEmpty) {
+    /// Only demand an ID number when that field is actually shown — on an
+    /// Aadhaar re-upload it is hidden, and this check used to block submit
+    /// with "ID card is invalid" on a member who had no ID value on file.
+    if (!enableAadhaarEdit && idController.text.isEmpty) {
       showCustomSnackBar("ID card is invalid", context);
       validated = false;
     }
 
     return validated;
+  }
+
+  /// Uploads the re-picked Aadhaar images straight to S3, mirroring the
+  /// membership naming (`<memberId>_A` / `<memberId>_A_BACK`) under the
+  /// `NSUI/` org prefix. Returns false if any upload fails so the caller can
+  /// stop before saving. Nothing is persisted locally — this is online only.
+  Future<bool> uploadAadhaarImages(BuildContext context) async {
+    if (!enableAadhaarEdit) return true;
+    if (pickedAadhaarFrontPath == null && pickedAadhaarBackPath == null) {
+      return true;
+    }
+
+    final BatchMember member =
+        context.read<ScrutinyMembershipEditVM>().currentMember!;
+    final String destDir =
+        "NSUI/SCRUTINY/${member.stateCode}/OM/${member.memberId}";
+
+    try {
+      final results = await Future.wait([
+        if (pickedAadhaarFrontPath != null)
+          AwsUploadServices().uploadFile(
+              file: File(pickedAadhaarFrontPath!),
+              destDir: destDir,
+              filename:
+                  "${member.memberId}_A.${pickedAadhaarFrontPath!.split(".").last}"),
+        if (pickedAadhaarBackPath != null)
+          AwsUploadServices().uploadFile(
+              file: File(pickedAadhaarBackPath!),
+              destDir: destDir,
+              filename:
+                  "${member.memberId}_A_BACK.${pickedAadhaarBackPath!.split(".").last}"),
+      ]);
+      if (results.any((r) => r is! String)) {
+        CustomSnackBar.showErrorDialog(
+            'The Aadhaar images could not be uploaded. Please check your connection and try again.',
+            title: 'Upload failed');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      Log.printELog('Aadhaar upload failed: $e');
+      CustomSnackBar.showErrorDialog(
+          'The Aadhaar images could not be uploaded ($e). Please try again.',
+          title: 'Upload failed');
+      return false;
+    }
   }
 
   populateToModel(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:iyc/utils/scrutiny_codes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/model/data_model/batch_member.dart';
@@ -71,7 +72,7 @@ class ScrutinyBasicInfoVM extends ChangeNotifier {
     professionController.text = value.profession ?? "";
     fatherNameController.text = value.relativeName ?? "";
     if (value.scrutinyCode != null) {
-      scrutinyCodeList = value.scrutinyCode!.split(';');
+      scrutinyCodeList = ScrutinyCodes.parse(value.scrutinyCode);
       Log.printILog("ScrutinyCode ${value.scrutinyCode}");
       scrutinyCodeList.forEach((element) {
         // if (element == "23") {

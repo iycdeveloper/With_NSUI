@@ -1,3 +1,4 @@
+import 'package:iyc/utils/scrutiny_codes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:iyc/model/data_model/batch_member.dart';
 import 'package:iyc/model/offline_model/database/assembly.dart';
@@ -143,21 +144,33 @@ class ScrutinyConstituencyInfoVM extends ChangeNotifier {
         ? defaultState
         : membershipRequestModel.stateName!;
 
+    /// Bare firstWhere calls here threw "Bad state: No element" and killed the
+    /// page whenever a member's district/assembly wasn't in the local list.
     if (membershipRequestModel.districtCode != null &&
-        membershipRequestModel.districtCode != "null")
-      selectedDistrict = districtList!.firstWhere((element) =>
-          element.districtCode == membershipRequestModel.districtCode);
+        membershipRequestModel.districtCode != "null") {
+      for (final district in districtList ?? []) {
+        if (district.districtCode == membershipRequestModel.districtCode) {
+          selectedDistrict = district;
+          break;
+        }
+      }
+    }
 
     selectedDisName = selectedDistrict?.name;
     if (selectedDistrict != null) await getAssemblyList();
     if (membershipRequestModel.assemblyCode != null &&
-        membershipRequestModel.assemblyCode != "null")
-      selectedAssembly = assemblyList!.firstWhere((element) =>
-          element.assemblyCode == membershipRequestModel.assemblyCode);
+        membershipRequestModel.assemblyCode != "null") {
+      for (final assembly in assemblyList ?? []) {
+        if (assembly.assemblyCode == membershipRequestModel.assemblyCode) {
+          selectedAssembly = assembly;
+          break;
+        }
+      }
+    }
 
     selectedAssemblyName = selectedAssembly?.name;
     if (membershipRequestModel.scrutinyCode != null) {
-      scrutinyCodeList = membershipRequestModel.scrutinyCode!.split(';');
+      scrutinyCodeList = ScrutinyCodes.parse(membershipRequestModel.scrutinyCode);
       print("---scrutinyCode");
       scrutinyCodeList.forEach((element) {
         print(element);

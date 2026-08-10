@@ -1,3 +1,6 @@
+import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
+import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/screens/widgets/textfeild_with_label.dart';
 import 'package:iyc/utils/constants.dart';
@@ -26,10 +29,17 @@ class _ScrutinyBasicInfoState extends State<ScrutinyBasicInfo> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+      backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title:
-              Text("Basic Information", style: Constants.appbarTitleTextStyle),
-          backgroundColor: Constants.themeGradients[0],
+          title: const Text("Basic Information",
+              style: TextStyle(
+                  color: ScrutinyTheme.brand,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          surfaceTintColor: Colors.white,
+          iconTheme: const IconThemeData(color: ScrutinyTheme.brand),
           centerTitle: true,
         ),
         body: Consumer<ScrutinyBasicInfoVM>(
@@ -38,7 +48,7 @@ class _ScrutinyBasicInfoState extends State<ScrutinyBasicInfo> {
                     key: model.firstFormKey,
                     child: Column(
                       children: [
-                        TextFieldWithLabel(
+                        TextFieldWithLabelNSUI(
                           label: "First Name",
                           hintText: "First Name",
                           focusNode: model.usernameFocus,
@@ -53,7 +63,7 @@ class _ScrutinyBasicInfoState extends State<ScrutinyBasicInfo> {
                             return null;
                           },
                         ),
-                        TextFieldWithLabel(
+                        TextFieldWithLabelNSUI(
                           label: "Last Name",
                           hintText: "Last Name",
                           focusNode: model.lastNameFocus,
@@ -68,7 +78,7 @@ class _ScrutinyBasicInfoState extends State<ScrutinyBasicInfo> {
                             return null;
                           },
                         ),
-                        TextFieldWithLabel(
+                        TextFieldWithLabelNSUI(
                           label: "Your Profession",
                           hintText: "Your Profession",
                           readOnly: model.disableFields,
@@ -83,7 +93,7 @@ class _ScrutinyBasicInfoState extends State<ScrutinyBasicInfo> {
                             return null;
                           },
                         ),
-                        TextFieldWithLabel(
+                        TextFieldWithLabelNSUI(
                           label: "Relative Name",
                           hintText: "Relative Name",
                           readOnly: !model.enableRelationEdit,

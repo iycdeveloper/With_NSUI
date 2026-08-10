@@ -1,3 +1,4 @@
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/app/core/utils/snackbar.dart';
@@ -78,26 +79,41 @@ class _ScrutinyMembershipEditHomePageState
         ),
       ],
       builder: (context1, _) => Scaffold(
-        body: PageView(
-          controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (page) {
-            setState(() {
-              pageNumber = page;
-            });
-          },
-          children: [
-            ScrutinyBasicInfo(),
-            ScrutinyPersonalInfoPage(),
-            ScrutinyContactDetails(),
-            ScrutinyIdentityInfoPage(),
-            // ScrutinyConstituencyInfoPage(),
-          ],
+        backgroundColor: Colors.transparent,
+
+        /// One gradient behind the whole wizard; each step's Scaffold is
+        /// transparent so it shows through.
+        body: ScrutinyPageBackground(
+          child: PageView(
+            controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
+            onPageChanged: (page) {
+              setState(() {
+                pageNumber = page;
+              });
+            },
+            children: [
+              ScrutinyBasicInfo(),
+              ScrutinyPersonalInfoPage(),
+              ScrutinyContactDetails(),
+              ScrutinyIdentityInfoPage(),
+              // ScrutinyConstituencyInfoPage(),
+            ],
+          ),
         ),
-        bottomNavigationBar: pageNumber != fixedPageIndex
-            ? URoundButton(
-                title: "Next", onTap: () => oneNext(pageNumber, context1))
-            : URoundButton(title: "Submit", onTap: () => onSubmit(context1)),
+        bottomNavigationBar: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+          child: pageNumber != fixedPageIndex
+              ? ScrutinyGradientButton(
+                  label: "Next",
+                  onTap: () => oneNext(pageNumber, context1),
+                  margin: EdgeInsets.zero)
+              : ScrutinyGradientButton(
+                  label: "Submit",
+                  onTap: () => onSubmit(context1),
+                  margin: EdgeInsets.zero),
+        ),
       ),
     );
   }
@@ -190,6 +206,13 @@ class _ScrutinyMembershipEditHomePageState
   onSubmit(BuildContext context) async {
     Log.printILog('Is update ${widget.isUpdate}');
     if (context.read<ScrutinyIdentityInfoVM>().validatePage(context)) {
+      /// Aadhaar re-uploads go to S3 on their own, before anything is saved —
+      /// if they fail we stop here rather than record a correction whose
+      /// evidence never made it to the server.
+      final uploaded = await context
+          .read<ScrutinyIdentityInfoVM>()
+          .uploadAadhaarImages(context);
+      if (!uploaded) return;
       context.read<ScrutinyIdentityInfoVM>().populateToModel(context);
       await Provider.of<ScrutinyMembershipEditVM>(context, listen: false)
           .scrutinyMemberSaveToDB(context, widget.isUpdate);

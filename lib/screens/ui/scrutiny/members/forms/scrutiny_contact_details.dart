@@ -1,3 +1,6 @@
+import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
+import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/screens/widgets/textfeild_with_label.dart';
 import 'package:iyc/screens/widgets/u_round_button.dart';
@@ -27,10 +30,17 @@ class ScrutinyContactDetails extends StatelessWidget {
       ),
     );
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title:
-            Text("Contact Information", style: Constants.appbarTitleTextStyle),
-        backgroundColor: Constants.themeGradients[0],
+        title: const Text("Contact Information",
+            style: TextStyle(
+                color: ScrutinyTheme.brand,
+                fontSize: 19,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.white,
+        iconTheme: const IconThemeData(color: ScrutinyTheme.brand),
         centerTitle: true,
       ),
       body: Consumer<ScrutinyContactInfoVM>(
@@ -42,7 +52,7 @@ class ScrutinyContactDetails extends StatelessWidget {
                     Form(
                       key: model.mobileFormKey,
                       child: Column(children: [
-                        TextFieldWithLabel(
+                        TextFieldWithLabelNSUI(
                           label: "Mobile No.",
                           hintText: "Mobile No.",
                           readOnly: model.disabledContactEditing,
@@ -117,7 +127,7 @@ class ScrutinyContactDetails extends StatelessWidget {
                           },
                         ),
                       ),
-                    // TextFieldWithLabel(
+                    // TextFieldWithLabelNSUI(
                     //   label: "Verification Code",
                     //   hintText: "Verification Code",
                     //
@@ -133,7 +143,7 @@ class ScrutinyContactDetails extends StatelessWidget {
                     //   },
                     // ),
 
-                    TextFieldWithLabel(
+                    TextFieldWithLabelNSUI(
                         label: "Email Id",
                         hintText: "Email Id",
                         focusNode: model.emailFocus,
@@ -153,7 +163,7 @@ class ScrutinyContactDetails extends StatelessWidget {
                           //   return 'Enter a Valid Email Address';
                           // }
                         }),
-                    TextFieldWithLabel(
+                    TextFieldWithLabelNSUI(
                       label: "Address",
                       hintText: "Address",
                       readOnly: model.disableFields,
@@ -162,7 +172,7 @@ class ScrutinyContactDetails extends StatelessWidget {
                       keyBoardType: TextInputType.name,
                       controller: model.addressController,
                     ),
-                    // TextFieldWithLabel(
+                    // TextFieldWithLabelNSUI(
                     //   label: "Pin",
                     //   hintText: "Pin",
                     //   readOnly: model.disableFields,

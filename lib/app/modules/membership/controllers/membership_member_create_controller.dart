@@ -285,6 +285,9 @@ class MembershipMemberCreateController extends GetxController {
       "CSN_BL": selectedBoothNominations,
       "AGGR_ID": aggrId,
       "VERIFICATION_CODE": verificationCodeController.text,
+
+      /// Aadhaar number captured on Step 3.
+      "ID_VALUE": idController.text,
       "ID_DOCUMENT":
           '${currentMember!.memberId}_D.${pickedIdProofPath?.split(".").last}',
       "ID_DOCUMENT_BACK":
@@ -1214,6 +1217,14 @@ class MembershipMemberCreateController extends GetxController {
             pickedVideoFilePath == null //new
         ) {
       CustomSnackBar.showErrorSnackBar("Upload all documents");
+      return false;
+    }
+
+    /// Aadhaar number is mandatory and exactly 12 digits — it goes up as
+    /// ID_VALUE, so an empty or short entry must not reach the server.
+    if (idController.text.trim().length != 12) {
+      CustomSnackBar.showErrorSnackBar(
+          "Enter a valid 12 digit Aadhaar number");
       return false;
     }
     return

@@ -1,3 +1,4 @@
+import 'package:iyc/utils/scrutiny_codes.dart';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ class ScrutinyContactInfoVM extends ChangeNotifier {
     verificationCodeController.text = membershipRequestModel.verificationCode ?? "";
 
     Log.printILog(membershipRequestModel.scrutinyCode);
-    scrutinyCodeList = membershipRequestModel.scrutinyCode!.split(';');
+    scrutinyCodeList = ScrutinyCodes.parse(membershipRequestModel.scrutinyCode);
 
     scrutinyCodeList.forEach((element) {
       if(element == "1"){

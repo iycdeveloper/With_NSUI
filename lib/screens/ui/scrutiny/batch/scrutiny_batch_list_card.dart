@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iyc/model/api_model/batch/batch_data_model.dart';
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:iyc/view_model/scrutiny/member/scrutiny_members_list_vm.dart';
 import 'package:iyc/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -14,27 +15,12 @@ class ScrutinyBatchListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final int onHold = int.tryParse(batch.onhold ?? "0") ?? 0;
+
+    return ScrutinyCard(
       onTap: () async {
-        // ///fetch membership data
-        // await Provider.of<ScrutinyMembersVM>(context, listen: false)
-        //     .getMembershipList(context, batch.batchId);
         await toPage(
           context,
-          // MembershipMain(
-          //   batchId: batch.batchId,
-          //   syncStatus: batch.syncStatus! == "1" ? true : false,
-          // )
-          // ChangeNotifierProvider(
-          //   create: (context) =>
-          //     ScrutinyMembersVM(
-          //     scrutinyDBProvider:Provider.of<ScrutinyMembershipDBProvider>(context, listen: false),
-          //     membershipRepo:Provider.of<ScrutinyRepo>(context, listen: false)),
-          // child:
-
-          // ChangeNotifierProvider(
-          //   create: (context) => sl<ScrutinyMembersVM>(),
-          //   child:
           ChangeNotifierProvider(
             create: (context) => ScrutinyMembersListVM(
               scrutinyRepo: sl(),
@@ -46,49 +32,59 @@ class ScrutinyBatchListCard extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.065,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: Colors.primaries[5].shade700)),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                batch.batchId,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue.shade800),
-              ),
-              flex: 2,
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: ScrutinyTheme.brand.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(12),
             ),
-            Expanded(
-              child: Text(
-                batch.countAM.toString(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.bold),
-              ),
-              flex: 1,
+            child: const Icon(Icons.inventory_2_outlined,
+                size: 18, color: ScrutinyTheme.brand),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  batch.batchId,
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: ScrutinyTheme.ink),
+                ),
+                const SizedBox(height: 6),
+
+                /// Wrap, not Row — on narrow screens the two chips overflowed
+                /// the card by a couple of pixels.
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: [
+                    ScrutinyChip(
+                      label:
+                          "${batch.countAM} ${batch.countAM == 1 ? 'member' : 'members'}",
+                      color: ScrutinyTheme.brand,
+                      icon: Icons.people_alt_outlined,
+                    ),
+                    ScrutinyChip(
+                      label: onHold > 0 ? "$onHold on hold" : "None on hold",
+                      color: onHold > 0
+                          ? const Color(0xFFE0245E)
+                          : const Color(0xFF11998E),
+                      icon: onHold > 0
+                          ? Icons.pause_circle_outline
+                          : Icons.check_circle_outline,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            // Expanded(
-            //   child: Text(
-            //     batch.syncStatus! == "1" ? "Completed" : "PENDING",
-            //   ),
-            //   flex: 1,
-            // ),
-            Expanded(
-              child: Text(batch.onhold ?? "0",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.deepOrange, fontWeight: FontWeight.bold)),
-              flex: 1,
-            ),
-          ],
-        ),
+          ),
+          Icon(Icons.chevron_right_rounded, color: Colors.grey[400]),
+        ],
       ),
     );
   }

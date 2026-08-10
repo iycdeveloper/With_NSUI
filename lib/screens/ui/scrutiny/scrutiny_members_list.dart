@@ -1,3 +1,4 @@
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/screens/widgets/custom_snack_bar.dart';
@@ -51,8 +52,16 @@ class _ScrutinyMembersListState extends State<ScrutinyMembersList> {
       },
       child: Container(
         child: Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('${widget.batchId}'),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            surfaceTintColor: Colors.white,
+            title: Text('${widget.batchId}',
+                style: const TextStyle(
+                    color: ScrutinyTheme.brand,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold)),
             leading: IconButton(
                 onPressed: () async {
                   if (!context
@@ -64,7 +73,8 @@ class _ScrutinyMembersListState extends State<ScrutinyMembersList> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.arrow_back)),
+                icon: const Icon(Icons.arrow_back,
+                    color: ScrutinyTheme.brand)),
             actions: [
               IconButton(
                   onPressed: () async {
@@ -81,9 +91,9 @@ class _ScrutinyMembersListState extends State<ScrutinyMembersList> {
                     //     filename: "TS90400054902_CATEGORY_DOC.jpg");
                     // print(result);
                   },
-                  icon: Icon(
-                    Icons.sync,
-                    color: Colors.white,
+                  icon: const Icon(
+                    Icons.sync_rounded,
+                    color: ScrutinyTheme.brand,
                   ))
             ],
           ),
@@ -137,13 +147,20 @@ class _ScrutinyMembersListState extends State<ScrutinyMembersList> {
           //         .getMembershipList(context, widget.batchId);
           //   },
           // ),
-          body: Consumer<ScrutinyMembersListVM>(
+          body: ScrutinyPageBackground(
+            child: Consumer<ScrutinyMembersListVM>(
             builder: (_, val, __) => val.loading
                 ? NetworkLoading()
                 : val.scrutinyMemberstList.isNotEmpty
                     ? SingleChildScrollView(
                         child: Column(
                           children: [
+                            const ScrutinyHero(
+                              icon: Icons.groups_2_rounded,
+                              title: 'Members',
+                              subtitle: 'Review and correct flagged records ✍️',
+                            ),
+                            const SizedBox(height: 6),
                             // Row(
                             //   children: [
                             //     Expanded(
@@ -173,13 +190,37 @@ class _ScrutinyMembersListState extends State<ScrutinyMembersList> {
                                                 context,
                                                 listen: false),
                                         member:
-                                            val.scrutinyMemberstList[index]))
+                                            val.scrutinyMemberstList[index])),
+                            const SizedBox(height: 24),
                           ],
                         ),
                       )
-                    : Center(
-                        child: Text("No members found"),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 80),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(18),
+                              decoration: BoxDecoration(
+                                color: ScrutinyTheme.brand.withOpacity(0.08),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.group_off_outlined,
+                                  size: 34, color: ScrutinyTheme.brand),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text("No members in this batch",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: ScrutinyTheme.ink)),
+                          ],
+                        ),
                       ),
+          ),
           ),
         ),
       ),

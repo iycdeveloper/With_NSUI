@@ -1,3 +1,6 @@
+import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
+import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/screens/widgets/button/upload_button.dart';
 import 'package:iyc/screens/widgets/dropdown/dropdown_picker.dart';
@@ -12,45 +15,92 @@ class ScrutinyIdentityInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title:
-            Text("Identity Information", style: Constants.appbarTitleTextStyle),
-        backgroundColor: Constants.themeGradients[0],
+        title: Text(
+            context.watch<ScrutinyIdentityInfoVM>().enableAadhaarEdit
+                ? "Aadhaar Verification"
+                : "Identity Information",
+            style: const TextStyle(
+                color: ScrutinyTheme.brand,
+                fontSize: 19,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.white,
+        iconTheme: const IconThemeData(color: ScrutinyTheme.brand),
         centerTitle: true,
       ),
       body: Consumer<ScrutinyIdentityInfoVM>(
           builder: (_, model, __) => SingleChildScrollView(
                 child: Column(
                   children: [
-                    DropDownPicker(
-                        currentValue: model.selectedIdProof,
-                        listValues: model.idProofList,
-                        viewOnly: model.disableFields,
-                        onChanged: (val) {
-                          context
-                              .read<ScrutinyIdentityInfoVM>()
-                              .changeIdProof(val);
-                        },
-                        labelText: "Id Proof",
-                        hintText: "Select Id Proof"),
-                    TextFieldWithLabel(
-                        label: "Id Document Number",
-                        hintText: "Document Number",
-                        //focusNode: model.emailFocus,
-                        // nextFocus: model.addressFocus,
-                        keyBoardType: TextInputType.emailAddress,
-                        controller: model.idController,
-                        readOnly: !model.enableIDEdit, // for disable field
-                        validation: (value) {
-                          if (value != null) {
-                            if (value.length > 10) {
-                              return null;
+                    /// ID Proof is Aadhaar-only, so on an Aadhaar re-upload
+                    /// the picker has nothing to choose between — the header
+                    /// below states it instead.
+                    if (model.enableAadhaarEdit)
+                      const ScrutinySectionHeader(
+                          icon: Icons.badge_outlined,
+                          title: 'Aadhaar Card')
+                    else
+                      DropDownPickerNSUI(
+                          currentValue: model.selectedIdProof,
+                          listValues: model.idProofList,
+                          viewOnly: model.disableFields,
+                          onChanged: (val) {
+                            context
+                                .read<ScrutinyIdentityInfoVM>()
+                                .changeIdProof(val);
+                          },
+                          labelText: "Id Proof",
+                          hintText: "Select Id Proof"),
+                    /// On an Aadhaar re-upload the ID number is not collected
+                    /// at all — the card images are the evidence.
+                    if (!model.enableAadhaarEdit)
+                      TextFieldWithLabelNSUI(
+                          label: "Id Document Number",
+                          hintText: "Document Number",
+                          //focusNode: model.emailFocus,
+                          // nextFocus: model.addressFocus,
+                          keyBoardType: TextInputType.emailAddress,
+                          controller: model.idController,
+                          readOnly: !model.enableIDEdit, // for disable field
+                          validation: (value) {
+                            if (value != null) {
+                              if (value.length > 10) {
+                                return null;
+                              }
+                              return 'Enter a Valid Document Number';
                             }
-                            return 'Enter a Valid Document Number';
-                          }
-                        }),
+                          }),
                     Column(
                       children: [
+                        if (model.enableAadhaarEdit) ...[
+                          UploadButtonImage(
+                            onTap: (str) => context
+                                .read<ScrutinyIdentityInfoVM>()
+                                .pickDocument(str, model.pickedAadhaarFrontPath,
+                                    DocumentType.adhaaridFront),
+                            showImage: model.showAadhaarFront,
+                            pickedFile: model.pickedAadhaarFront,
+                            passedContext: context,
+                            buttonTextLabel: model.showAadhaarFront
+                                ? "Change Aadhaar Card (Front)"
+                                : "Upload Aadhaar Card (Front)",
+                          ),
+                          UploadButtonImage(
+                            onTap: (str) => context
+                                .read<ScrutinyIdentityInfoVM>()
+                                .pickDocument(str, model.pickedAadhaarBackPath,
+                                    DocumentType.adhaaridBack),
+                            showImage: model.showAadhaarBack,
+                            pickedFile: model.pickedAadhaarBack,
+                            passedContext: context,
+                            buttonTextLabel: model.showAadhaarBack
+                                ? "Change Aadhaar Card (Back)"
+                                : "Upload Aadhaar Card (Back)",
+                          ),
+                        ],
                         if (model.enableIDEdit)
                           UploadButtonImage(
                             onTap: (str) => context

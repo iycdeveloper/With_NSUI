@@ -1,3 +1,6 @@
+import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
+import 'package:iyc/nusi/widgets/textfeild_with_label_nsui.dart';
+import 'package:iyc/screens/ui/scrutiny/widgets/scrutiny_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iyc/app/data/resources/services/local_storage_services.dart';import 'package:iyc/screens/ui/membership/widgets/education_dropdown.dart';
 import 'package:iyc/screens/widgets/date_picker_widget.dart';
@@ -28,10 +31,17 @@ class _ScrutinyPersonalInfoPageState extends State<ScrutinyPersonalInfoPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+      backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text("Personal Information",
-              style: Constants.appbarTitleTextStyle),
-          backgroundColor: Constants.themeGradients[0],
+          title: const Text("Personal Information",
+              style: TextStyle(
+                  color: ScrutinyTheme.brand,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          surfaceTintColor: Colors.white,
+          iconTheme: const IconThemeData(color: ScrutinyTheme.brand),
           centerTitle: true,
         ),
         body: Consumer<ScrutinyPersonalInfoVM>(
@@ -42,11 +52,13 @@ class _ScrutinyPersonalInfoPageState extends State<ScrutinyPersonalInfoPage> {
                     key: model.secondFormKey,
                     child: Column(
                       children: [
-                        DropDownPicker(
+                        DropDownPickerNSUI(
                           onChanged: (val) {
                             model.changeGender(val);
                           },
-                          viewOnly: model.disableFields,
+                          /// Unlocked by scrutiny code 26 (gender mismatch).
+                          viewOnly:
+                              model.disableFields && !model.enableGenderEdit,
                           listValues: model.genders,
                           labelText: "Gender",
                           hintText: "Select a gender",
