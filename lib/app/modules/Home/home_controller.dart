@@ -177,8 +177,12 @@ class HomeController extends GetxController
   }
 
   Future<void> checkVersion() async {
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    log("fcmToken:" + fcmToken.toString());
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      log("fcmToken:" + fcmToken.toString());
+    } catch (e) {
+      log("fcmToken error (expected on iOS simulator): $e");
+    }
     // try{
     //   await _appVersionChecker
     //       .checkUpdate()
