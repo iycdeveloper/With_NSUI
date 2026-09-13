@@ -29,7 +29,7 @@ Future<dynamic> nominationNSUIPaymentConfirmationBottomSheet(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Nomination",
+                  Text("Nomination Phase1 (College/University)",
                       style: CustomTextStyles.titleMediumOnPrimaryContainer18),
                   AppbarImage1(
                     onTap: () {

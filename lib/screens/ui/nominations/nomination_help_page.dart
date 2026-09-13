@@ -24,7 +24,7 @@ class NominationHelpPage extends StatelessWidget {
                 svgPath: ImageConstant.imgBiarrowleftIndigo800,
                 margin: EdgeInsets.only(left: 20.h, top: 15.v, bottom: 15.v)),
             title: AppbarSubtitle1(
-                text: "Nomination", margin: EdgeInsets.only(left: 12.h)),
+                text: "Nomination Phase1 (College/University)", margin: EdgeInsets.only(left: 12.h)),
             styleType: Style.standard),
         body: Container(
           width: double.infinity,

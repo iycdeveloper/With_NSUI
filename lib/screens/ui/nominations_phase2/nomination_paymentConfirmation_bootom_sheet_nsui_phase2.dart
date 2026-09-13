@@ -29,7 +29,7 @@ Future<dynamic> nominationNSUIPaymentConfirmationBottomSheetPhase2(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Nomination Phase 2",
+                  Text("Nomination Phase2 (State & District)",
                       style: CustomTextStyles.titleMediumOnPrimaryContainer18),
                   AppbarImage1(
                     onTap: () {

@@ -81,10 +81,10 @@ class _NominationsMainState extends State<NominationsMain> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('File Your Nomination',
+                Text('Nomination Phase1 (College/University)',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 19,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold)),
                 SizedBox(height: 3),
                 Text('Complete all sections to submit 🗳️',
@@ -138,10 +138,15 @@ class _NominationsMainState extends State<NominationsMain> {
                 ? Scaffold(
                     appBar: AppBar(
                       backgroundColor: Colors.white,
-                      title: Text('Nomination',
-                          style: theme.textTheme.titleLarge!.copyWith(
-                              color: appTheme.indigo800,
-                              fontWeight: FontWeight.bold)),
+                      title: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text('Nomination Phase1 (College/University)',
+                            maxLines: 1,
+                            style: theme.textTheme.titleLarge!.copyWith(
+                                color: appTheme.indigo800,
+                                fontWeight: FontWeight.bold)),
+                      ),
                       elevation: 0,
                       leading: AppbarImage(
                           onTap: () {
@@ -152,7 +157,7 @@ class _NominationsMainState extends State<NominationsMain> {
                               left: 20.h, top: 15.v, bottom: 15.v)),
                     ),
                     body: const Center(
-                      child: Text("Nomination Not Available"),
+                      child: Text("Nomination Phase1 (College/University) Not Available"),
                     ))
                 : model.nominationStatus == NominationStatus.UNPAID ||
                         model.nominationStatus == NominationStatus.PAID
@@ -165,10 +170,16 @@ class _NominationsMainState extends State<NominationsMain> {
 
                             appBar: AppBar(
                               backgroundColor: Colors.white,
-                              title: Text('Nomination',
-                                  style: theme.textTheme.titleLarge!.copyWith(
-                                      color: appTheme.indigo800,
-                                      fontWeight: FontWeight.bold)),
+                              title: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                    'Nomination Phase1 (College/University)',
+                                    maxLines: 1,
+                                    style: theme.textTheme.titleLarge!.copyWith(
+                                        color: appTheme.indigo800,
+                                        fontWeight: FontWeight.bold)),
+                              ),
                               elevation: 0,
                               leading: AppbarImage(
                                   onTap: () {

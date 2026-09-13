@@ -704,8 +704,8 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                 ),
                 const SizedBox(width: 14),
                 _bentoTile(
-                  title: 'Nomination',
-                  subtitle: 'File yours',
+                  title: 'Nomination\nPhase1',
+                  subtitle: '(College/University)',
                   svgname: 'nomination',
                   colors: const [Color(0xFFF7971E), Color(0xFFFF5F6D)],
                   onTap: () {
@@ -730,8 +730,8 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
             Row(
               children: [
                 _bentoTile(
-                  title: 'Nomination\nPhase 2',
-                  subtitle: 'File yours',
+                  title: 'Nomination\nPhase2',
+                  subtitle: '(State & District)',
                   svgname: 'nomination',
                   colors: const [Color(0xFF0F9B8E), Color(0xFF2CC7E2)],
                   onTap: () {

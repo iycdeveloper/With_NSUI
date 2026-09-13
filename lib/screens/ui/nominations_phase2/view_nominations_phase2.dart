@@ -22,7 +22,7 @@ class ViewNominationPhase2 extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'Nomination Phase 2',
+          'Nomination Phase2 (State & District)',
         ),
         centerTitle: true,
         backgroundColor: Constants.themeGradients[0],
@@ -142,7 +142,7 @@ class ViewNominationPhase2 extends StatelessWidget {
                     ),
                     if (model.nominationMember.paymentStatus != "PAID")
                       URoundButton(
-                          title: "Pay Nomination Phase 2",
+                          title: "Pay Nomination Phase2 (State & District)",
                           onTap: () {
                             context
                                 .read<ViewNominationVmPhase2>()

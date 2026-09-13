@@ -83,10 +83,10 @@ class _NominationsMainState extends State<NominationsMainPhase2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('File Your Nomination Phase 2',
+                Text('Nomination Phase2 (State & District)',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 19,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold)),
                 SizedBox(height: 3),
                 Text('Complete all sections to submit 🗳️',
@@ -140,10 +140,15 @@ class _NominationsMainState extends State<NominationsMainPhase2> {
                 ? Scaffold(
                     appBar: AppBar(
                       backgroundColor: Colors.white,
-                      title: Text('Nomination Phase 2',
-                          style: theme.textTheme.titleLarge!.copyWith(
-                              color: appTheme.indigo800,
-                              fontWeight: FontWeight.bold)),
+                      title: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text('Nomination Phase2 (State & District)',
+                            maxLines: 1,
+                            style: theme.textTheme.titleLarge!.copyWith(
+                                color: appTheme.indigo800,
+                                fontWeight: FontWeight.bold)),
+                      ),
                       elevation: 0,
                       leading: AppbarImage(
                           onTap: () {
@@ -158,7 +163,7 @@ class _NominationsMainState extends State<NominationsMainPhase2> {
                         padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: Text(
                           model.statusErrorMessage.isEmpty
-                              ? "Nomination Phase 2 Not Available"
+                              ? "Nomination Phase2 (State & District) Not Available"
                               : model.statusErrorMessage,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -177,10 +182,16 @@ class _NominationsMainState extends State<NominationsMainPhase2> {
 
                             appBar: AppBar(
                               backgroundColor: Colors.white,
-                              title: Text('Nomination Phase 2',
-                                  style: theme.textTheme.titleLarge!.copyWith(
-                                      color: appTheme.indigo800,
-                                      fontWeight: FontWeight.bold)),
+                              title: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                    'Nomination Phase2 (State & District)',
+                                    maxLines: 1,
+                                    style: theme.textTheme.titleLarge!.copyWith(
+                                        color: appTheme.indigo800,
+                                        fontWeight: FontWeight.bold)),
+                              ),
                               elevation: 0,
                               leading: AppbarImage(
                                   onTap: () {
