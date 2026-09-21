@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iyc/app/modules/Home/home_controller.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_image.dart';
 import 'package:iyc/app/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:iyc/app/widgets/app_bar/custom_app_bar.dart';
@@ -17,8 +16,6 @@ class NotificationScreen extends StatelessWidget {
             leadingWidth: 44.h,
             leading: AppbarImage(
                 onTap: () {
-                  // Get.back();
-                  Get.find<HomeController>().changeSelectIndex();
                   Get.back();
                 },
                 svgPath: ImageConstant.imgBiarrowleftIndigo800,

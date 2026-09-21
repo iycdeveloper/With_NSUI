@@ -494,7 +494,7 @@ class ProfileNSUIController extends GetxController
               responseDecoded["response"]['BASIC_DETAILS'][0]);
           List<dynamic> noBdata = responseDecoded["response"]['NOB_DETAILS'];
           List<dynamic> oBdata = responseDecoded["response"]['OB_DETAILS'];
-          List<dynamic> appCODdata = responseDecoded["response"]['OB_DETAILS'];
+          List<dynamic> appCODdata = responseDecoded["response"]['APP_COD'];
 
           if (noBdata.isNotEmpty) {
             noBDetails = NOBaccessDetails.fromJson(

@@ -123,6 +123,13 @@ class Urls {
       _baseUrl + "selfnomination_1/addNominationPayment.php";
   static const updateCsn = _baseUrl + "selfnomination_1/updateCSN.php";
 
+  ///Polling Phase 2 url...............................
+  static const checkPhase2PollingAccess =
+      _baseUrl + "selfnomination_1/checkPhase2PollingAccess.php";
+  static const getPhase2Candidate =
+      _baseUrl + "selfnomination_1/getPhase2Candidates.php";
+  static const pollingPhase2 = _baseUrl + "selfnomination_1/pollingPhase2.php";
+
   //TODO://
   // static const syncBatch = _baseUrl + "";
 

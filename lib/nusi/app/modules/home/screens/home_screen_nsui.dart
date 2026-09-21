@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iyc/app/core/app_export.dart';
 import 'package:iyc/app/core/service/auth_service.dart';
-import 'package:iyc/app/core/utils/snackbar.dart';
 import 'package:iyc/app/routes/routes_management.dart';
-import 'package:iyc/app/widgets/app_bar/appbar_image_1.dart';
 import 'package:iyc/app/widgets/custom_rating_bar.dart';
 import 'package:iyc/di_container.dart';
 import 'package:iyc/helper/api_config.dart';
 import 'package:iyc/nusi/app/modules/home/screens/home_controller_nsui.dart';
 import 'package:iyc/nusi/app/modules/profile/screens/profile_screen_nsui.dart';
 import 'package:iyc/nusi/app/modules/social/screens/social_controller_nsui.dart';
-import 'package:iyc/nusi/widgets/custom_elevated_button_nsui.dart';
 import 'package:iyc/nusi/widgets/dropdown_picker_nsui.dart';
 import 'package:iyc/provider/nomination/nominations_provider.dart';
 import 'package:iyc/provider/nomination_phase2/nominations_provider_phase2.dart';
+import 'package:iyc/provider/polling_phase2/polling_provider_phase2.dart';
 import 'package:iyc/provider/scrutiny/scrutiny_batch_vm.dart';
 import 'package:iyc/screens/ui/complaints/complaints_home.dart';
+import 'package:iyc/screens/ui/polling_phase2/polling_candidates_screen.dart';
+import 'package:iyc/screens/ui/polling_phase2/widgets/polling_dialogs.dart';
 import 'package:iyc/screens/ui/scrutiny/batch/scrutiny_batch_list.dart';
 import 'package:iyc/screens/ui/nominations/nominations_main.dart';
 import 'package:iyc/screens/ui/nominations_phase2/nominations_main_phase2.dart';
+import 'package:iyc/screens/widgets/network_loading_dialog_box.dart';
 import 'package:iyc/utils/utils.dart';
 import 'package:iyc/view_model/complaints/complaints_home_vm.dart';
 import 'package:iyc/view_model/nomination/view_nomination_vm.dart';
@@ -73,7 +74,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
               //     Spacer(),
               InkWell(
                 onTap: () {
-                  // RoutesManagement.goToNotificationScreen();
+                  RoutesManagement.goToNotificationScreen();
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -87,74 +88,7 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                             MaterialTapTargetSize.shrinkWrap, // the '2023' part
                       ),
                       onPressed: () {
-                        Get.bottomSheet(Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    topRight: Radius.circular(24))),
-                            width: double.maxFinite,
-                            height: mediaQueryData.size.height * 0.45,
-                            child: Column(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      // color: Colors.white,
-                                      color: appTheme.indigo800,
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(24),
-                                          topRight: Radius.circular(24))),
-                                  width: double.maxFinite,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20.h, vertical: 17.v),
-                                  // decoration: AppDecoration.heading,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Member Submission",
-                                          style: CustomTextStyles
-                                              .titleMediumOnPrimaryContainer18),
-                                      AppbarImage1(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        svgPath: ImageConstant.imgEpcircleclose,
-                                      ),
-                                    ],
-                                  )),
-                              SizedBox(height: 33.v),
-                              CustomImageView(
-                                  svgPath: 'assets/nsui/svg/backtoprofile.svg',
-                                  height: 69.adaptSize,
-                                  width: 69.adaptSize),
-                              SizedBox(height: 15.v),
-                              Text("Thanks for the Submission",
-                                  style: theme.textTheme.titleLarge),
-                              Text(
-                                  "Member data wil be added to batch after verification",
-                                  style: theme.textTheme.bodyLarge!
-                                      .copyWith(color: Colors.blueAccent)),
-                              // Spacer(),
-                              SizedBox(height: 25.v),
-
-                              CustomElevatedButtonNSUI(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                            color: Colors.grey,
-                                            spreadRadius: 0.6,
-                                            blurRadius: 0.6)
-                                      ]),
-                                  width: mediaQueryData.size.width * 0.7,
-                                  buttonStyle: ButtonStyle(
-                                      backgroundColor:
-                                          WidgetStateProperty.all(Colors.blue)),
-                                  text: 'Back to Home',
-                                  onTap: Get.back),
-                              SizedBox(height: 25.v),
-                            ])));
-                        // RoutesManagement.goToNotificationScreen();
+                        RoutesManagement.goToNotificationScreen();
                       },
                       icon: const Icon(
                         Icons.notifications,
@@ -796,26 +730,41 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
                 ),
                 const SizedBox(width: 14),
                 _bentoTile(
-                  title: 'RO Access',
-                  subtitle: 'Coming soon',
-                  svgname: 'roaccess',
-                  colors: const [Color(0xFF11998E), Color(0xFF38EF7D)],
-                  onTap: () =>
-                      CustomSnackBar.showAlertSnackBar('Coming Soon..'),
+                  title: 'Polling Phase2',
+                  subtitle: 'Cast your vote',
+                  svgname: 'result',
+                  colors: const [Color(0xFFFFB300), Color(0xFFFF7043)],
+                  onTap: () => _onPollingTap(context),
                 ),
               ],
-            ),
-            const SizedBox(height: 14),
-            _wideTile(
-              title: 'Result',
-              subtitle: 'Live results & winners',
-              svgname: 'result',
-              colors: const [Color(0xFFFFB300), Color(0xFFFF7043)],
-              onTap: () => CustomSnackBar.showAlertSnackBar('Coming Soon..'),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// Unlike every other card here, Polling gates navigation on an API call:
+  /// the destination screen only makes sense once access is confirmed, so we
+  /// check first and only push the candidate screen on success.
+  void _onPollingTap(BuildContext context) async {
+    final pollingProvider = PollingProviderPhase2();
+    showNetworkLoadingDialog(context, willPopScope: false);
+    final hasAccess = await pollingProvider.checkAccess(context);
+
+    /// Pop the loading dialog before showing anything else: checkAccess
+    /// never opens a dialog of its own (see its doc comment), so this pop
+    /// always dismisses the loading spinner and nothing else.
+    Navigator.of(context).pop();
+    if (!hasAccess) {
+      showPollingErrorDialog(context, pollingProvider.lastError ?? '',
+          title: 'Polling Unavailable');
+      return;
+    }
+    toPage(
+      context,
+      ChangeNotifierProvider.value(
+          value: pollingProvider, child: const PollingCandidatesScreen()),
     );
   }
 
@@ -1022,66 +971,6 @@ class HomescreenNSUI extends GetWidget<HomeNSUIController> {
     );
   }
 
-  Widget _wideTile({
-    required String title,
-    required String subtitle,
-    required String svgname,
-    required List<Color> colors,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: colors,
-          ),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: colors.last.withOpacity(0.35),
-              blurRadius: 18,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                  color: Colors.white, shape: BoxShape.circle),
-              child: SvgPicture.asset('assets/nsui/svg/$svgname.svg',
-                  height: 28, width: 28),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 2),
-                  Text(subtitle,
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.9), fontSize: 12)),
-                ],
-              ),
-            ),
-            const Icon(Icons.arrow_forward_ios_rounded,
-                color: Colors.white, size: 18),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class MyShape extends CircularNotchedRectangle {
