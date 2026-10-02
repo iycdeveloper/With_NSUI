@@ -101,7 +101,10 @@ class ScrutinyIdentityInfoPage extends StatelessWidget {
                                 : "Upload Aadhaar Card (Back)",
                           ),
                         ],
-                        if (model.enableIDEdit)
+                        if (model.enableIDEdit) ...[
+                          const ScrutinySectionHeader(
+                              icon: Icons.badge_outlined,
+                              title: 'College ID'),
                           UploadButtonImage(
                             onTap: (str) => context
                                 .read<ScrutinyIdentityInfoVM>()
@@ -111,10 +114,9 @@ class ScrutinyIdentityInfoPage extends StatelessWidget {
                             pickedFile: model.pickedIdFile,
                             passedContext: context,
                             buttonTextLabel: model.showIdImage
-                                ? "Change ID Document (F) "
-                                : "Upload ID Document (F) ",
+                                ? "Change College ID (Front)"
+                                : "Upload College ID (Front)",
                           ),
-                        if (model.enableIDEdit)
                           UploadButtonImage(
                             onTap: (str) => context
                                 .read<ScrutinyIdentityInfoVM>()
@@ -125,9 +127,10 @@ class ScrutinyIdentityInfoPage extends StatelessWidget {
                             showImage: model.showDocumentBack,
                             pickedFile: model.pickedDocumentBack,
                             buttonTextLabel: model.showDocumentBack
-                                ? "Change ID Document (B)"
-                                : "Upload ID Document (B)",
+                                ? "Change College ID (Back)"
+                                : "Upload College ID (Back)",
                           ),
+                        ],
                         if (model.enableAMImageEdit)
 
                         UploadButtonImage(

@@ -14,7 +14,7 @@ class AppConstants {
   static String nominationVersion = "1.4";
   static final String unitManagementVersion = "1.0";
   static String reportsVersion = "1.0";
-  static String scrutinyVersion = "1.0";
+  static String scrutinyVersion = "1.1";
   static final String complaintsVersion = "1.0";
   static final String roVersion = "1.0";
   static final String voterSearchVersion = "1.0";

@@ -354,11 +354,12 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
       scrutinyCodeList.forEach((element) {
         Log.printILog(element);
         /// 2 = ID proof problem. The scrutiniser re-uploads the Aadhaar card
-        /// (front + back) instead of retyping an ID number, so the ID number
-        /// field is not unlocked here.
+        /// (front + back) AND the College ID document (front + back) --
+        /// both are mandatory together; the ID number field stays hidden
+        /// since the document images are the evidence, not a typed number.
         if (element == ScrutinyCodes.idProof) {
           enableMediaEdit = true;
-          // enableAMImageEdit = true;
+          enableIDEdit = true;
           if (membershipRequestModel.reason?.contains("INVALID VIDEO") ?? false)
             enableAMVideoEdit = true;
           enableAadhaarEdit = true;
@@ -414,14 +415,19 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
       notifyListeners();
     }
 
-    if (membershipRequestModel.idDocumentFilePath != null &&
+    /// enableIDEdit means the College ID on file is the thing under
+    /// correction -- showing it via the view/eye icon before a fresh upload
+    /// would let the reviewer "view" the very document flagged as wrong.
+    /// Mirrors Aadhaar, which never prefills from an old file either.
+    if (!enableIDEdit &&
+        membershipRequestModel.idDocumentFilePath != null &&
         membershipRequestModel.idDocumentFilePath != "null") {
       pickedIdFile = File(membershipRequestModel.idDocumentFilePath!);
       showIdImage = true;
       notifyListeners();
       print("set 1");
     }
-    if (membershipRequestModel.documentBackPath != null) {
+    if (!enableIDEdit && membershipRequestModel.documentBackPath != null) {
       pickedDocumentBack = File(membershipRequestModel.documentBackPath!);
       showDocumentBack = true;
       notifyListeners();
@@ -458,7 +464,10 @@ class ScrutinyIdentityInfoVM extends ChangeNotifier {
 
     if (enableIDEdit) {
       if (pickedIdProofPath == null) {
-        showCustomSnackBar("Pick a Id Proof Image", context);
+        showCustomSnackBar("Upload College ID (Front)", context);
+        validated = false;
+      } else if (pickedDocumentBackFilePath == null) {
+        showCustomSnackBar("Upload College ID (Back)", context);
         validated = false;
       }
     }

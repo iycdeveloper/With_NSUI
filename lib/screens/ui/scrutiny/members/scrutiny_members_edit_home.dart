@@ -216,12 +216,15 @@ class _ScrutinyMembershipEditHomePageState
       context.read<ScrutinyIdentityInfoVM>().populateToModel(context);
       await Provider.of<ScrutinyMembershipEditVM>(context, listen: false)
           .scrutinyMemberSaveToDB(context, widget.isUpdate);
-      // await Provider.of<ScrutinyMembersListVM>(context, listen: false)
-      //     .getScrutinyMembersList(context, widget.member.batchId!);;
-      // await context
-      //     .read<ScrutinyMembersListVM>()
-      //     .syncScrutinyBatch(context);
-      // Navigator.of(context).pop();
+
+      /// College ID (and any other un-uploaded docs) still need to reach S3,
+      /// and the server needs to hear about this correction -- syncScrutinyBatch
+      /// does both. It was previously wired through context.read<
+      /// ScrutinyMembersListVM>(), which isn't registered anywhere in this
+      /// screen's provider tree (it's only ever passed down as a constructor
+      /// argument) and would throw ProviderNotFoundException; use that
+      /// constructor-injected instance instead.
+      await widget.scrutinyMembersListVM.syncScrutinyBatch(context);
       Navigator.pop(context, "reload");
     }
   }
