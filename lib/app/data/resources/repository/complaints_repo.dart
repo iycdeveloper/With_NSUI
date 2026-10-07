@@ -9,6 +9,7 @@ import 'package:iyc/app/data/resources/remote/exception/api_error_handler.dart';
 import 'package:iyc/app/data/resources/services/local_storage_services.dart';
 import 'package:iyc/app/data/resources/urls.dart';
 import 'package:iyc/utils/app_constants.dart';
+import 'package:iyc/utils/text_sanitizer.dart';
 import 'package:iyc/utils/utils.dart';
 
 class ComplaintsRepo {
@@ -84,7 +85,7 @@ class ComplaintsRepo {
     "V":"${AppConstants.complaintsVersion}","ORG":"${AppConstants.orgName}","STATE_CODE":"${await LocalStorageServices().getSTCode()}",
     "MOBILE":"${await LocalStorageServices().getMobile()}","MEMBER_ID":"$userMemberId",
     "COMPLAINT_TYPE":"NOMINATION",
-    "CANDIDATE_ID":"${candidateData["MEMBER_ID"]}","COMPLAINT_TEXT":"$complaintText",
+    "CANDIDATE_ID":"${candidateData["MEMBER_ID"]}","COMPLAINT_TEXT":"${TextSanitizer.sanitizeForServer(complaintText)}",
     "COMMITTEE_TYPE":"$committeeType",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
     "COMPLAINT_DOC_1":"${documentNameList[0]}","COMPLAINT_DOC_2":"${documentNameList[1]}",
