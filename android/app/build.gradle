@@ -79,6 +79,7 @@ android {
 //                abiFilters 'armeabi-v7a','arm64-v8a','x86_64'
 //            }
             signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         applicationVariants.all {
             variant ->
