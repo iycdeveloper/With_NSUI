@@ -45,6 +45,7 @@ class AuthRepo {
     "twitter":"${data.twitterId ?? ""}",
     "INSTAGRAM":"${data.instagramId ?? ""}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "ADDRESS":"$address",
     "REFERRER":"$referralMobileNo",
     "tag":"$tag",
@@ -81,7 +82,8 @@ class AuthRepo {
         "MOBILE":"${loginModel.mobile}",
         "V":"${AppConstants.iycVersion}",
         "CHANNEL":"${AppConstants.channel}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}"      
+        "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}"
       }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
@@ -108,6 +110,7 @@ class AuthRepo {
       "V": "${AppConstants.iycVersion}",
       "CHANNEL": "${AppConstants.channel}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "DEVICE_TOKEN": 'fcmToken',
     });
     Log.printILog('fcmToken');
@@ -138,8 +141,9 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -157,8 +161,9 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -180,7 +185,8 @@ class AuthRepo {
         "EMAIL":"${loginModel.email}",
         "V":"${AppConstants.membershipVersion}",
         "CHANNEL":"${AppConstants.channel}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}"      
+        "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}"
       }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
@@ -209,9 +215,10 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.00001"}",
-"LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.00001"}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.00001"}",
+"LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.00001"}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -231,9 +238,10 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.00001"}",
-"LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.00001"}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.00001"}",
+"LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.00001"}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -254,9 +262,10 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.00001"}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.00001"}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.00001"}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.00001"}",
     "LEADERBOARD_TYPE":"$selectedLeaderBoardType",
     "FROM": "${startDate}",
     "TO":"${endDate}"}]''';
@@ -276,9 +285,10 @@ class AuthRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.00001"}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.00001"}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.00001"}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.00001"}",
     "NAME":"${userDetail.name}",
     "DISTRICT_CODE":"${userDetail.districtCode}",
     "ASSEMBLY_CODE":"${userDetail.assemblyCode}",
@@ -301,8 +311,8 @@ class AuthRepo {
   Future<ApiResponse> getAuthPoints() async {
     var data =
         '''[{"V":"${AppConstants.iycVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getAuthPoints,
@@ -325,8 +335,8 @@ class AuthRepo {
   Future<ApiResponse> getUserPoints() async {
     var data =
         '''[{"V":"${AppConstants.taskManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getUserPoints,

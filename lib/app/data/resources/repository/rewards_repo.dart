@@ -15,8 +15,8 @@ class RewardsRepo{
   getRewardsDetail() async {
     var data =
     '''[{"V":"${AppConstants.rewardsVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getRewards,

@@ -462,6 +462,7 @@ class MembersListVM extends ChangeNotifier {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "LATITUDE":"${_locationData.latitude}",
     "LONGITUDE":"${_locationData.longitude}",
@@ -642,9 +643,10 @@ class MembersListVM extends ChangeNotifier {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "MEMBER_ID":"${membershipRequestList.map((e) => e.memberId).reduce((value, element) => "$value , $element")}", 
     "ST_CODE":"${membershipRequestList.first.stateCode}",
     "CHANNEL":"M"
@@ -795,7 +797,8 @@ class MembersListVM extends ChangeNotifier {
     "STATE":${await LocalStorageServices().getSTCode()},
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
 
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.DOBRange, jsonData: testJsonData);

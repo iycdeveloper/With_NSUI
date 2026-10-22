@@ -89,7 +89,8 @@ class PaymentRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-   "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","AGGR_ID":"$aggrId","STATE_CODE":"${await LocalStorageServices().getSTCode()}" }]''';
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+   "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}","AGGR_ID":"$aggrId","STATE_CODE":"${await LocalStorageServices().getSTCode()}" }]''';
 
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -126,6 +127,7 @@ class PaymentRepo {
          "V":"${AppConstants.nominationVersion}","ORG":"${AppConstants.orgName}",
          "MEMBER_ID":"${member.memberId}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
 "CHANNEL":"${AppConstants.channel}","NOMINATION_ID":"${member.id}",
     "ORDER_ID":"$transactionId","AMOUNT":"${member.amount}"}]''';
 
@@ -145,6 +147,7 @@ class PaymentRepo {
          "V":"${AppConstants.nominationVersion}","ORG":"${AppConstants.orgName}",
          "MEMBER_ID":"${member.memberId}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
 "CHANNEL":"${AppConstants.channel}","NOMINATION_ID":"${member.id}",
     "ORDER_ID":"$transactionId","AMOUNT":"${member.amount}"}]''';
 
@@ -164,7 +167,8 @@ class PaymentRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-   "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+   "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "ORDER_NUMBER":"$transactionId","AMOUNT":"$amount"
     }]''';
 

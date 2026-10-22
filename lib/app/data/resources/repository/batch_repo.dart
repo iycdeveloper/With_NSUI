@@ -32,6 +32,7 @@ class BatchRepo {
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"${AppConstants.channel}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
      "LATITUDE":"${position.latitude}","LONGITUDE":"${position.longitude}"
 
 
@@ -59,7 +60,8 @@ class BatchRepo {
     "ST_CODE":"${await LocalStorageServices().getSTCode()}",
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"${AppConstants.channel}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -91,6 +93,7 @@ class BatchRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "LATITUDE":"${position.latitude}","LONGITUDE":"${position.longitude}"
     }]''';
     try {
@@ -118,7 +121,8 @@ class BatchRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -143,7 +147,8 @@ class BatchRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","MEMBER_ID":"$memberID"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}","MEMBER_ID":"$memberID"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -168,7 +173,8 @@ class BatchRepo {
     "V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","MEMBER_ID":"${memberID}","OTP":"${otp}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}","MEMBER_ID":"${memberID}","OTP":"${otp}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));

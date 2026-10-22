@@ -20,9 +20,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
         }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -45,8 +46,8 @@ class RoRepo {
   checkRoPayment(String mobile) async {
     var data =
         '''[{"V":"${AppConstants.roVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "MOBILE_PAYEE":"$mobile"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -72,9 +73,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"$roId",
         "SEARCH_DATA":"$searchData"
         }]''';
@@ -109,9 +111,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"$roId",
         "BALLOT":"$ballot",
         "STATE_CODE":"$state",
@@ -145,9 +148,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"$roId"
         }]''';
     try {
@@ -176,9 +180,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"$roId"
         }]''';
     try {
@@ -205,9 +210,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"${roId}",
         "MEMBER_ID":"${memberId}",
         "NOMINATION_STATUS":"${nominationStatus}",
@@ -237,9 +243,10 @@ class RoRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     baseDataMap.addAll(dataMap);
     try {
@@ -267,9 +274,10 @@ class RoRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RO_ID":"${roId}",
         "MEMBER_ID":"${memberId}",
         "RO_STATUS":"${nominationStatus}",

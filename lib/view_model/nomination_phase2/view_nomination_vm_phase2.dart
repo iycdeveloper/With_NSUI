@@ -296,6 +296,7 @@ class ViewNominationVmPhase2 extends ChangeNotifier {
        "ORG":"${AppConstants.orgName}",
        "CHANNEL":"${AppConstants.channel}",
        "DEVICE_ID":"${await getDeviceIdentifier()}",
+       "IP_ADDRESS":"${await getDeviceIpAddress()}",
        "LEVEL":"${nominationMember.level}",
        "GENDER":"${nominationMember.gender}",
        "CATEGORY":"${nominationMember.category}",

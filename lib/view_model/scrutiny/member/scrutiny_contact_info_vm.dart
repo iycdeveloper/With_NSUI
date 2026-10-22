@@ -97,7 +97,8 @@ class ScrutinyContactInfoVM extends ChangeNotifier {
     "MOBILE":"${mobileController.text}",
     "CHANNEL":"${AppConstants.channel}",
     "V":"${AppConstants.membershipVersion}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.checkAMMobile, jsonData: testJsonData);
 
@@ -138,10 +139,11 @@ class ScrutinyContactInfoVM extends ChangeNotifier {
       "CHANNEL": "${AppConstants.channel}",
       "V":"${AppConstants.membershipVersion}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}",
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
       "ORG": "LC",
     };
     var testJsonData = '''[${json.encode(d)}]''';

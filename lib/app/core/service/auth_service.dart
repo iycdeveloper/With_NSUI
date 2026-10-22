@@ -368,6 +368,7 @@ class AuthService extends GetxService {
     "V":"${AppConstants.dobVersion}",
     "CHANNEL":"M",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "STATE_CODE":"${await LocalStorageServices().getSTCode()}"}]''';
 
     // Log.printDLog(testJsonData);

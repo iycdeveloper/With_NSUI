@@ -121,7 +121,7 @@ class ScrutinyBatchVM extends ChangeNotifier {
     "STATE":"${await LocalStorageServices().getSTCode()}",
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
 
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.DOBRange, jsonData: testJsonData);

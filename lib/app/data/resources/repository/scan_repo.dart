@@ -17,6 +17,7 @@ class ScanRepo {
     [{"V":"${AppConstants.iycVersion}","ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "LATITUDE":"$lat",
     "LONGITUDE":"$long",

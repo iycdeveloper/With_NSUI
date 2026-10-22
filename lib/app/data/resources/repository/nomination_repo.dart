@@ -20,8 +20,9 @@ class NominationRepo {
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -51,8 +52,9 @@ class NominationRepo {
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? ''}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? ''}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? ''}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? ''}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -79,9 +81,10 @@ class NominationRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     baseDataMap.addAll(dataMap);
     try {

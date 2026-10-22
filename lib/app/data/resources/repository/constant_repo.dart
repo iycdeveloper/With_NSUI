@@ -21,9 +21,10 @@ class ConstantApiRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
         }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -50,9 +51,10 @@ class ConstantApiRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "STATE_CODE":"${state ?? ''}"
         }]''';
     try {
@@ -81,9 +83,10 @@ class ConstantApiRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "STATE_CODE":"${state ?? ''}",
         "DISTRICT_CODE":"${district ?? ''}"
         }]''';
@@ -114,9 +117,10 @@ class ConstantApiRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "STATE_CODE":"${state ?? ''}",
         "DISTRICT_CODE":"${district ?? ''}",
         "UNIVERSITY_CODE":"${university ?? ''}"

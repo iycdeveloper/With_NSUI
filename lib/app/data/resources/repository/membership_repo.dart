@@ -24,6 +24,7 @@ class MembershipRepo {
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"${AppConstants.channel}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "STATE_CODE":"${await LocalStorageServices().getSTCode()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}"
@@ -51,6 +52,7 @@ class MembershipRepo {
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"${AppConstants.channel}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "STATE_CODE":"${await LocalStorageServices().getSTCode()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
@@ -77,7 +79,7 @@ class MembershipRepo {
 
   Future<NewApiResponse> getINCUserDetails(String memberId) async {
     var testJsonData =
-        '''[{"V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}","DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}","LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","INC_MEMBER_ID":"$memberId"}]''';
+        '''[{"V":"${AppConstants.membershipVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}","DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}","LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}","INC_MEMBER_ID":"$memberId"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -106,9 +108,10 @@ class MembershipRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
-      "LATITUDE": "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
       "STATE_CODE":"$stateCode",
       "EPIC":"${id}"
     }]''';
@@ -143,9 +146,10 @@ class MembershipRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "BALLOT":"$ballot",
         "STATE_CODE":"$state",
         "DISTRICT_CODE":"$district",

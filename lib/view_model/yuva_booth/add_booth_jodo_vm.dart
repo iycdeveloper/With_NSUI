@@ -323,9 +323,10 @@ class AddBoothJodoVM extends ChangeNotifier {
     "V":"${AppConstants.iycVersion}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     ApiResponse apiResponse = await sl<ApiConfig>()
         .postData(endpointUrl: Urls.getOtpCommon, jsonData: testJsonData);
 
@@ -371,8 +372,9 @@ class AddBoothJodoVM extends ChangeNotifier {
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     ApiResponse apiResponse = await sl<ApiConfig>()
         .postData(endpointUrl: Urls.validateOtpCommon, jsonData: testJsonData);
 

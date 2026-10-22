@@ -281,7 +281,7 @@ class AuthApiProvider {
     
     "V":"${AppConstants.dobVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}","STATE_CODE":"${await LocalStorageServices().getSTCode()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","STATE_CODE":"${await LocalStorageServices().getSTCode()}"}]''';
 
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.DOBRange, jsonData: testJsonData);

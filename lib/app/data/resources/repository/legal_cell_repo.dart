@@ -16,8 +16,8 @@ class LegalCellRepo {
   getLegalCellAvailability() async {
     var data =
         '''[{"V":"${AppConstants.legalCellVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result =
@@ -32,8 +32,8 @@ class LegalCellRepo {
   getLegalCellList() async {
     var data =
         '''[{"V":"${AppConstants.legalCellVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result =
@@ -48,8 +48,8 @@ class LegalCellRepo {
   addLegalCell(BatchMember member) async {
     var data =
         '''[{"V":"${AppConstants.legalCellVersion}","ORG":"LC","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "FIRST_NAME":"${member.firstName}","LAST_NAME":"${member.lastName}","MOBILE":"${member.mobile}",
         "EMAIL":"${member.email}","STATE_CODE":"${member.stateCode}","ASSEMBLY_CODE":"${member.assemblyCode}",
         "DISTRICT_CODE":"${member.districtCode}","BLOCK_CODE":"${member.blockCode ?? 0}","BOOTH_CODE":"${member.boothCode}","SEX_CODE":"${member.gender}",

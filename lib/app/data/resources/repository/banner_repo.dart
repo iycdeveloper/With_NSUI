@@ -15,8 +15,8 @@ class BannerRepo {
   checkBannerAccess() async {
     var data =
         '''[{"V":"${AppConstants.bannerVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "MODULE":"MEMBERSHIP"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -40,8 +40,8 @@ class BannerRepo {
   getBanners() async {
     var data =
         '''[{"V":"${AppConstants.bannerVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude??0.0}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude??0.0}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude??0.0}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude??0.0}",
         "MODULE":"MEMBERSHIP"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -68,9 +68,10 @@ class BannerRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}",
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     };
     testData.addAll(answerData);
     var data = '''[${jsonEncode(testData)}]''';

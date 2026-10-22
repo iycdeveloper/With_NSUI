@@ -22,10 +22,11 @@ class PollingRepo {
         "SESSION_ID": await LocalStorageServices().getSessionId(),
         "USER_ID": await LocalStorageServices().getUserId(),
         "DEVICE_ID": await getDeviceIdentifier(),
+        "IP_ADDRESS": await getDeviceIpAddress(),
         "LATITUDE":
-            "${sl<LocationProvider>().currentLocation?.latitude ?? ''}",
+            "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? ''}",
         "LONGITUDE":
-            "${sl<LocationProvider>().currentLocation?.longitude ?? ''}",
+            "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? ''}",
       };
 
   Future<ApiResponse> _post(String endpointUrl, Map<String, dynamic> fields) async {
@@ -59,10 +60,13 @@ class PollingRepo {
   }
 
   Future<ApiResponse> pollingPhase2(
-      {required String csnSp, required String csnDp}) async {
+      {required String csnSp,
+      required String csnDp,
+      required String csnSg}) async {
     var fields = await _commonFields();
     fields["CSN_SP"] = csnSp;
     fields["CSN_DP"] = csnDp;
+    fields["CSN_SG"] = csnSg;
     return _post(Urls.pollingPhase2, fields);
   }
 }

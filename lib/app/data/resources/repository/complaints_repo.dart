@@ -20,7 +20,8 @@ class ComplaintsRepo {
     "V":"${AppConstants.complaintsVersion}","ORG":"${AppConstants.orgName}","STATE_CODE":"${await LocalStorageServices().getSTCode()}",
     "MOBILE":"${await LocalStorageServices().getMobile()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -53,7 +54,8 @@ class ComplaintsRepo {
     "MOBILE":"${await LocalStorageServices().getMobile()}","DISTRICT_CODE":"$userDistrict","ASSEMBLY_CODE":"$userAssembly","BLOCK_CODE":"$userBlock",
     "MANDALAM_CODE":"$userMandalam","COMMITTEE_TYPE":"$committeeType",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -88,6 +90,7 @@ class ComplaintsRepo {
     "CANDIDATE_ID":"${candidateData["MEMBER_ID"]}","COMPLAINT_TEXT":"${TextSanitizer.sanitizeForServer(complaintText)}",
     "COMMITTEE_TYPE":"$committeeType",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "COMPLAINT_DOC_1":"${documentNameList[0]}","COMPLAINT_DOC_2":"${documentNameList[1]}",
     "COMPLAINT_DOC_3":"${documentNameList[2]}"
     }]''';
@@ -115,6 +118,7 @@ class ComplaintsRepo {
          "V":"${AppConstants.complaintsVersion}","ORG":"${AppConstants.orgName}",
          "MOBILE":"${await LocalStorageServices().getMobile()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
 "STATE_CODE":"${await LocalStorageServices().getSTCode()}",
     "ORDER_ID":"$transactionId"}]''';
 
@@ -136,9 +140,10 @@ class ComplaintsRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
         }]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));

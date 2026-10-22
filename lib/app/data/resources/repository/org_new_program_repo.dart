@@ -17,9 +17,9 @@ class OrgNewProgramRepo {
   getViewProgramList() async {
     var data =
         '''[{"V":"${AppConstants.formVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "HOME_STATE_CODE":"${await LocalStorageServices().getSTCode()}"
         }]''';
     try {
@@ -44,8 +44,8 @@ class OrgNewProgramRepo {
   checkOBAccess() async {
     var data =
         '''[{"V":"${AppConstants.formVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0}",
         "HOME_STATE_CODE":"${await LocalStorageServices().getSTCode()}"
         }]''';
     try {
@@ -73,11 +73,12 @@ class OrgNewProgramRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}"
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}"
     };
 
     baseData.addAll(addProgramFlag);
@@ -105,9 +106,9 @@ class OrgNewProgramRepo {
   getViewProgramFlagData(String? programID) async {
     var data =
         '''[{"V":"${AppConstants.formVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "HOME_STATE_CODE":"${await LocalStorageServices().getSTCode()}",
         "PROGRAM_ID":"$programID"
         }]''';
@@ -137,11 +138,12 @@ class OrgNewProgramRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}"
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}"
     };
 
     baseData.addAll(addProgramFlag);

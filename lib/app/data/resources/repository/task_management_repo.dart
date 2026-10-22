@@ -15,8 +15,8 @@ class TaskManagementRepo {
   getTaskList() async {
     var data =
         '''[{"V":"${AppConstants.taskManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getTaskList,
@@ -46,8 +46,8 @@ class TaskManagementRepo {
   completeTask(String id, String taskInfo, String taskDateSelected) async {
     var data =
         '''[{"V":"${AppConstants.taskManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "TASK_ID":"$id","TASK_DATE":"$taskDateSelected","TASK_INFO":"$taskInfo"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -71,8 +71,8 @@ class TaskManagementRepo {
   getUserPoints() async {
     var data =
         '''[{"V":"${AppConstants.taskManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getUserPoints,
@@ -97,8 +97,8 @@ class TaskManagementRepo {
     // '''[{"V":"1.5","ORG":"IYC","SESSION_ID":"Fthi4QMFNvXffpw6g6WT5b5IK6ILcx3WLsWWsLOmIC9zXjscBO4xBDs9Up0IIwAi","DEVICE_ID":"cdbbed0a-1989-4fa7-859f-fc47dab6992a","USER_ID":"G4dAjSvMvDW+Uk33JUzl6A==","LATITUDE":"3.989234383434343","LONGITUDE":"9.034342423423"}]''';
 
     '''[{"V":"1.5","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getAuthPoints,
@@ -135,9 +135,10 @@ class TaskManagementRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "TASK_TYPE":"$type",
         "TASK_TEXT":"$desc",
         "TASK_POINT":"$point",
@@ -176,9 +177,10 @@ class TaskManagementRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "MONTH":"$month",
         "YEAR":"$year"
         }]''';
@@ -206,9 +208,10 @@ class TaskManagementRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "TASK_ID":"$taskId"
         }]''';
     try {
@@ -232,8 +235,8 @@ class TaskManagementRepo {
   getTaskStar(String month, String year) async {
     var data =
         '''[{"V":"${AppConstants.taskManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "MONTH":"$month","YEAR":"$year"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -263,9 +266,10 @@ class TaskManagementRepo {
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "DATE":"$date"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));

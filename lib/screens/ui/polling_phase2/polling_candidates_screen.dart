@@ -86,7 +86,8 @@ class _PollingCandidatesScreenState extends State<PollingCandidatesScreen> {
         child: Consumer<PollingProviderPhase2>(
           builder: (_, val, __) => val.isLoading &&
                   val.stateCandidates.isEmpty &&
-                  val.districtCandidates.isEmpty
+                  val.districtCandidates.isEmpty &&
+                  val.stateCommitteeCandidates.isEmpty
               ? const NetworkLoading()
               : ListView(
                   padding: const EdgeInsets.only(bottom: 24),
@@ -94,7 +95,8 @@ class _PollingCandidatesScreenState extends State<PollingCandidatesScreen> {
                     const ScrutinyHero(
                       icon: Icons.how_to_vote_rounded,
                       title: 'Polling · Phase 2',
-                      subtitle: 'Cast your vote for State & District President',
+                      subtitle:
+                          'Cast your vote for State President, District President & State Committee',
                     ),
                     const ScrutinySectionHeader(
                       icon: Icons.groups_rounded,
@@ -117,6 +119,14 @@ class _PollingCandidatesScreenState extends State<PollingCandidatesScreen> {
                             isLoading: val.isLoading,
                             selectedCsn: val.selectedDistrictCsn,
                             onChanged: val.selectDistrictCandidate,
+                          ),
+                          const SizedBox(height: 8),
+                          _candidateField(
+                            label: 'State Committee',
+                            candidates: val.stateCommitteeCandidates,
+                            isLoading: val.isLoading,
+                            selectedCsn: val.selectedStateCommitteeCsn,
+                            onChanged: val.selectStateCommitteeCandidate,
                           ),
                         ],
                       ),

@@ -18,9 +18,10 @@ class LeaderBoardRepo{
         "ORG":"${AppConstants.orgName}",
         "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "MONTH":"$month",
         "YEAR":"$year"
         }]''';

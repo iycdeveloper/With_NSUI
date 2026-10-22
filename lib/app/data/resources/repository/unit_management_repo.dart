@@ -21,8 +21,8 @@ class UnitManagementRepo {
   checkOBAccess() async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.checkOBAccess,
@@ -45,8 +45,8 @@ class UnitManagementRepo {
   getStateOBUsers() async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getStateOBUsers,
@@ -69,8 +69,8 @@ class UnitManagementRepo {
   getVerifyEvent() async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getVerifyEvent,
@@ -92,7 +92,7 @@ class UnitManagementRepo {
 
   verifyEvent(String eventId, String rating) async {
     var data =
-        '''[{"V":"1.0","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}","DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}","LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}","EVENT_ID":"${eventId}","EVENT_RATING":"${rating}"}]''';
+        '''[{"V":"1.0","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}","DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}","LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}","EVENT_ID":"${eventId}","EVENT_RATING":"${rating}"}]''';
     // '''[{"V":"${AppConstants.unitManagementVersion}",
     //      "ORG":"${AppConstants.orgName}",
     //      "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
@@ -137,9 +137,10 @@ class UnitManagementRepo {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
         "DEVICE_ID":"${await getDeviceIdentifier()}",
+        "IP_ADDRESS":"${await getDeviceIpAddress()}",
         "USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "EXTERNAL_TRAINING_TYPE":"${type}",
         "EXTERNAL_TRAINING_FROM":"${dateFrom}",
         "EXTERNAL_TRAINING_TO":"${dateTo}",
@@ -171,8 +172,8 @@ class UnitManagementRepo {
   getDistrictOBUsers() async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getDistrictOBUsers,
@@ -195,8 +196,8 @@ class UnitManagementRepo {
   getAssemblyOBUsers() async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getAssemblyOBUsers,
@@ -219,8 +220,8 @@ class UnitManagementRepo {
   getDailyEvent(DateTime dateTime) async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "EVENT_DATE":"${DateFormat('dd-MM-yyyy').format(dateTime)}"}]''';
     //DateFormat("dd-MM-yyyy").format(dateTime)
     try {
@@ -245,8 +246,8 @@ class UnitManagementRepo {
   setRSVPEvent(String rsvp, Event event, {String? reason = ""}) async {
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "RSVP":"$rsvp","RSVP_REASON":"$reason","EVENT_ID":"${event.eventId}"}]''';
     //DateFormat("dd-MM-yyyy").format(dateTime)
     try {
@@ -274,6 +275,7 @@ class UnitManagementRepo {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "LATITUDE":"${event.address!.latitude.toString()}",
     "LONGITUDE":"${event.address!.longitude.toString()}",
@@ -363,7 +365,7 @@ class UnitManagementRepo {
 
     var data =
         '''[{"V":"${AppConstants.unitManagementVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
         "LATITUDE":"${position.latitude}","LONGITUDE":"${position.longitude}","CHECKIN_ADDRESS":"$address",
         "CHECKIN_STATE":"$state",
         "CHECKIN_CITY":"$city",
@@ -395,9 +397,9 @@ class UnitManagementRepo {
     var data = '''[{"V":"${AppConstants.unitManagementVersion}",
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.electionReport,
@@ -422,9 +424,9 @@ class UnitManagementRepo {
     var data = '''[{"V":"${AppConstants.unitManagementVersion}",
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "STATE_CODE": "$stateCode",
     "STATE_NAME":"$stateName",
     "MONTH":"$monthNumber",

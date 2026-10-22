@@ -41,6 +41,7 @@ class BatchMember {
   String? referrerId;
   String? declaration;
   String? deviceId;
+  String? ipAddress;
   String? verificationCode;
   String? channel;
   String? mandalamCode;
@@ -111,6 +112,7 @@ class BatchMember {
       this.referrerId,
       this.declaration,
       this.deviceId,
+      this.ipAddress,
       this.verificationCode,
       this.channel,
       this.mandalamCode,
@@ -326,6 +328,7 @@ class BatchMember {
             ? tmpId
             : DateTime.now().millisecondsSinceEpoch.toString(),
         "DEVICE_ID": deviceId ?? "",
+        "IP_ADDRESS": ipAddress ?? "",
         "REFERRER_ID": referrerId ?? "",
         "BOOTH_CODE": boothCode ?? "",
         "CITY": education ?? "",
@@ -386,6 +389,7 @@ class BatchMember {
         "AGGR_ID": aggrId ?? "",
         "TMP_ID": tmpId ?? "",
         "DEVICE_ID": deviceId ?? "",
+        "IP_ADDRESS": ipAddress ?? "",
         if (verificationCode != null) "VERIFICATION_CODE": verificationCode,
         "REFERRER_ID": referrerId ?? "",
         "BOOTH_CODE": boothCode ?? "",
@@ -450,6 +454,7 @@ class BatchMember {
         "AGGR_ID": aggrId ?? "",
         "TMP_ID": tmpId ?? "",
         "DEVICE_ID": deviceId ?? "",
+        "IP_ADDRESS": ipAddress ?? "",
         if (verificationCode != null) "VERIFICATION_CODE": verificationCode,
         "REFERRER_ID": referrerId ?? "",
         "BOOTH_CODE": boothCode ?? "",

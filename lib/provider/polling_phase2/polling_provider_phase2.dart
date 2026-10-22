@@ -23,9 +23,11 @@ class PollingProviderPhase2 extends ChangeNotifier {
 
   List<Phase2Candidate> stateCandidates = [];
   List<Phase2Candidate> districtCandidates = [];
+  List<Phase2Candidate> stateCommitteeCandidates = [];
 
   String? selectedStateCsn;
   String? selectedDistrictCsn;
+  String? selectedStateCommitteeCsn;
 
   /// Decodes the common `[{"status": "...", "response": ...}]` envelope every
   /// Nomination/Polling Phase 2 endpoint returns. Never shows any UI itself —
@@ -62,6 +64,7 @@ class PollingProviderPhase2 extends ChangeNotifier {
     var results = await Future.wait([
       _pollingRepo.getPhase2Candidate(ballot: "STATE PRESIDENT"),
       _pollingRepo.getPhase2Candidate(ballot: "DISTRICT PRESIDENT"),
+      _pollingRepo.getPhase2Candidate(ballot: "STATE COMMITTEE"),
     ]);
 
     /// A ballot with no contest ("No data found") is an ordinary outcome, not
@@ -81,6 +84,14 @@ class PollingProviderPhase2 extends ChangeNotifier {
           .toList();
     }
 
+    var stateCommitteeDecoded = _decode(results[2]);
+    if (stateCommitteeDecoded != null &&
+        stateCommitteeDecoded['status'] == "SUCCESS") {
+      stateCommitteeCandidates = (stateCommitteeDecoded['response'] as List)
+          .map((e) => Phase2Candidate.fromJson(e))
+          .toList();
+    }
+
     isLoading = false;
     notifyListeners();
   }
@@ -95,7 +106,15 @@ class PollingProviderPhase2 extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get canSubmit => selectedStateCsn != null && selectedDistrictCsn != null;
+  void selectStateCommitteeCandidate(String? csn) {
+    selectedStateCommitteeCsn = csn;
+    notifyListeners();
+  }
+
+  bool get canSubmit =>
+      selectedStateCsn != null &&
+      selectedDistrictCsn != null &&
+      selectedStateCommitteeCsn != null;
 
   Future<void> submitPolling(BuildContext context) async {
     if (!canSubmit) return;
@@ -104,7 +123,9 @@ class PollingProviderPhase2 extends ChangeNotifier {
     notifyListeners();
 
     var apiResponse = await _pollingRepo.pollingPhase2(
-        csnSp: selectedStateCsn!, csnDp: selectedDistrictCsn!);
+        csnSp: selectedStateCsn!,
+        csnDp: selectedDistrictCsn!,
+        csnSg: selectedStateCommitteeCsn!);
 
     isLoading = false;
     notifyListeners();

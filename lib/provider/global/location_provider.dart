@@ -139,6 +139,18 @@ class LocationProvider {
     }
   }
 
+  /// Returns the cached location if one has already been fetched this
+  /// session (e.g. via [setInitialLocationOnLogin] on the Home screen), or
+  /// actively fetches and caches a fresh GPS fix via [determinePosition]
+  /// otherwise. Used by API call sites that need the user's real
+  /// lat/long instead of defaulting straight to a placeholder like
+  /// "0.00001" just because the Home-screen fetch hasn't happened yet.
+  Future<Position?> getOrFetchCurrentLocation() async {
+    if (_locationData != null) return _locationData;
+    final result = await determinePosition();
+    return result is Position ? result : null;
+  }
+
   Future getCurrentAddress() async {
     final position = await determinePosition();
 

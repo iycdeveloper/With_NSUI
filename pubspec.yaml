@@ -2,7 +2,7 @@ name: iyc
 description: IYC Program Registration.
 publish_to: 'none' 
 
-version: 1.0.11+17
+version: 1.0.12+18
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -27,6 +27,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   detectable_text_field: ^3.0.2 # Need to check
   device_info_plus: ^11.2.1
+  android_id: ^0.5.2+1
+  flutter_secure_storage: ^10.3.4
+  uuid: ^4.5.1
   dio: ^5.7.0
   dropdown_button2:
   dropdown_search: ^6.0.2

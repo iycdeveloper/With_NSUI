@@ -17,9 +17,9 @@ class CampaignRepo {
   getCampaignList() async {
     var data =
         '''[{"V":"${AppConstants.d2DCampaignVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "WORK_STATE":"${await LocalStorageServices().getWorkStateCode()}",
         "HOME_STATE":"${await LocalStorageServices().getSTCode()}"}]''';
     try {
@@ -44,8 +44,8 @@ class CampaignRepo {
   getCampaignDataList(String campaignId) async {
     var data =
         '''[{"V":"${AppConstants.d2DCampaignVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "CAMPAIGN_ID":"$campaignId"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -69,8 +69,8 @@ class CampaignRepo {
   checkAssembly(String campaignId) async {
     var data =
         '''[{"V":"${AppConstants.d2DCampaignVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "CAMPAIGN_ID":"$campaignId"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -94,9 +94,9 @@ class CampaignRepo {
   getCampaignLeaderboard(String selectedCampaign) async {
     var data =
         '''[{"V":"${AppConstants.d2DCampaignVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.0000}",
-        "LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.0000}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.0000}",
+        "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.0000}",
         "CAMPAIGN_ID":"$selectedCampaign","LEADERBOARD_TYPE":"STATE"
        }]''';
     try {
@@ -124,11 +124,12 @@ class CampaignRepo {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
     };
 
     baseData.addAll(campaignData);
@@ -336,8 +337,8 @@ class CampaignRepo {
   getReports(String reportType, String campaignId) async {
     var data =
         '''[{"V":"${AppConstants.d2DCampaignVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
         "STATE_CODE":"${await LocalStorageServices().getWorkStateCode()}",
         "HOME_STATE":"${await LocalStorageServices().getSTCode()}",
         "REPORT_TYPE":"$reportType","CAMPAIGN_ID":"$campaignId"}]''';

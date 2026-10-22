@@ -21,8 +21,8 @@ class YuvaBoothRepo {
   getYuvaUser() async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.000}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.000}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.000}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.000}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getYuvaUser,
@@ -45,8 +45,8 @@ class YuvaBoothRepo {
   getYuvaUserNew() async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? 0.000}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? 0.000}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? 0.000}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? 0.000}"}]''';
     print(data);
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -70,8 +70,8 @@ class YuvaBoothRepo {
   getAllYuvaUsers(String? stateCode) async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "STATE_CODE":"${stateCode ?? ""}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -98,9 +98,10 @@ class YuvaBoothRepo {
     "ORG":"NSUI",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "MOBILE":"$mobile",
     "TRANSACTION_ID":"$mobile-$randomNumber"
     }]''';
@@ -121,9 +122,10 @@ class YuvaBoothRepo {
     "ORG":"NSUI",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "MOBILE":"$mobile"
     }]''';
     try {
@@ -145,9 +147,10 @@ class YuvaBoothRepo {
     "V":"${AppConstants.iycVersion}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
       Response result =
@@ -168,9 +171,10 @@ class YuvaBoothRepo {
     "V":"${AppConstants.iycVersion}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
       Response result =
@@ -188,9 +192,10 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     baseDataMap.addAll(dataMap);
     try {
@@ -219,9 +224,10 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     baseDataMap.addAll(dataMap);
     try {
@@ -250,9 +256,10 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}",
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
       "MOBILE": mobile,
       "STATE_CODE": await LocalStorageServices().getWorkStateCode()
     };
@@ -283,9 +290,10 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     baseDataMap.addAll(dataMap);
     try {
@@ -314,9 +322,10 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
-      "LATITUDE": "${sl<LocationProvider>().currentLocation!.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation!.longitude}"
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"
     };
     try {
       data.addAll(map);
@@ -345,6 +354,7 @@ class YuvaBoothRepo {
       "ORG": AppConstants.orgName,
       "SESSION_ID": await LocalStorageServices().getSessionId(),
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "USER_ID": await LocalStorageServices().getUserId(),
     };
     baseDataMap.addAll(map);
@@ -372,8 +382,8 @@ class YuvaBoothRepo {
   getBoothJodos() async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getAllBoothJodos,
@@ -396,8 +406,8 @@ class YuvaBoothRepo {
   getLeaderBoardPoints(String leaderBoardType) async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
         "STATE_CODE":"${await LocalStorageServices().getSTCode()}","LEADERBOARD_TYPE":"$leaderBoardType"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
@@ -465,7 +475,7 @@ class YuvaBoothRepo {
 
     var data =
         '''[{"V":"${AppConstants.checkInVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
         "LATITUDE":"${position.latitude}","LONGITUDE":"${position.longitude}","ADDRESS":"$address","DESCRIPTION":"$description",
         "CHECKIN_STATE":"$state2","CHECKIN_CITY":"$city2"}]''';
 
@@ -493,7 +503,7 @@ class YuvaBoothRepo {
   getCheckInData() async {
     var data =
         '''[{"V":"${AppConstants.checkInVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}"}]''';
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));
       Response result = await dioClient.post(Urls.getCheckInData,
@@ -516,8 +526,8 @@ class YuvaBoothRepo {
   getReports(String reportType) async {
     var data =
         '''[{"V":"${AppConstants.yuvaBoothVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
         "STATE_CODE":"${await LocalStorageServices().getSTCode()}","REPORT_TYPE":"$reportType"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(data));

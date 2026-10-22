@@ -220,6 +220,7 @@ class NominationsProviderPhase2 extends ChangeNotifier {
   List<DropdownItem> candidateLevelList = kPhase2SimplifiedForm
       ? [
           DropdownItem("State President", "10"),
+          DropdownItem("State Committee", "50"),
           DropdownItem("District President", "20"),
         ]
       : [
@@ -293,27 +294,6 @@ class NominationsProviderPhase2 extends ChangeNotifier {
   }
 
   initNominations(BuildContext context) async {
-    // isBlockModel = AppConstants.blockStatesList
-    //     .contains(await LocalStorageServices().getSTCode());
-    // if ([
-    //   "KL",
-    //   "TL",
-    //   "KA",
-    //   "DL",
-    //   "HP",
-    //   "LA",
-    //   "LN",
-    //   "TN",
-    //   "HR",
-    //   "TN",
-    //   "MB",
-    //   "GJ",
-    //   "MP",
-    //   "JH"
-    // ].contains(await LocalStorageServices().getSTCode())) {
-    //   mandalamEnabled = true;
-    //   candidateLevelList.add(DropdownItem("Block/Ward", "50"));
-    // }
     await getNominationStatus(context);
     mobileController.text = await LocalStorageServices().getMobile();
   }
@@ -352,7 +332,8 @@ class NominationsProviderPhase2 extends ChangeNotifier {
     "ST_CODE":"${await LocalStorageServices().getSTCode()}",
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"${AppConstants.channel}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"
+    "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}"
 
     }]''';
       print(testJsonData);
@@ -411,7 +392,7 @@ class NominationsProviderPhase2 extends ChangeNotifier {
     var testJsonData = '''[{
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}","STATE":"${await LocalStorageServices().getSTCode()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","STATE":"${await LocalStorageServices().getSTCode()}"}]''';
 
     ApiResponse apiResponse = await apiConfig.postData(
         endpointUrl: Urls.DOBRange, jsonData: testJsonData);
@@ -976,6 +957,7 @@ class NominationsProviderPhase2 extends ChangeNotifier {
        "ORG":"${AppConstants.orgName}",
        "CHANNEL":"${AppConstants.channel}", 
        "DEVICE_ID":"${await getDeviceIdentifier()}",
+       "IP_ADDRESS":"${await getDeviceIpAddress()}",
        "LEVEL":"$selectedCandidateLevel",
        "GENDER":"${selectedGender ?? ''}",
        "CATEGORY":"${selectedCategory ?? ''}",
@@ -1085,6 +1067,18 @@ class NominationsProviderPhase2 extends ChangeNotifier {
           context
               .read<ViewNominationVmPhase2>()
               .setNominationData(nominationData);
+
+          /// The simplified form collects no Gender/Category fields of its
+          /// own ("the member's details are already known"), but
+          /// getNominationAmount sends both -- this endpoint's own DATA
+          /// carries them (unlike the generic profile endpoint, which can
+          /// come back empty for the same member), so pull from here.
+          if (data["GENDER"] != null && "${data["GENDER"]}".isNotEmpty) {
+            selectedGender = "${data["GENDER"]}";
+          }
+          if (data["CATEGORY"] != null && "${data["CATEGORY"]}".isNotEmpty) {
+            selectedCategory = "${data["CATEGORY"]}";
+          }
         }
 
         if (nomStatus == "NEW_NOMINATION") {
@@ -1241,9 +1235,10 @@ class NominationsProviderPhase2 extends ChangeNotifier {
     "ORG":"${AppConstants.orgName}",
     "SESSION_ID":"${await LocalStorageServices().getSessionId()}",
     "DEVICE_ID":"${await getDeviceIdentifier()}",
+    "IP_ADDRESS":"${await getDeviceIpAddress()}",
     "USER_ID":"${await LocalStorageServices().getUserId()}",
-    "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}",
-    "LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+    "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}",
+    "LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
     "MEMBER_ID":"${nominationBatchNumber + "01"}",
     "ST_CODE":"${await LocalStorageServices().getSTCode()}",
     "CHANNEL":"M"
@@ -1305,11 +1300,12 @@ class NominationsProviderPhase2 extends ChangeNotifier {
             "CHANNEL": "M",
             "SESSION_ID": await LocalStorageServices().getSessionId(),
             "DEVICE_ID": await getDeviceIdentifier(),
+            "IP_ADDRESS": await getDeviceIpAddress(),
             "USER_ID": await LocalStorageServices().getUserId(),
             "LATITUDE":
-                "${sl<LocationProvider>().currentLocation?.latitude ?? ''}",
+                "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? ''}",
             "LONGITUDE":
-                "${sl<LocationProvider>().currentLocation?.longitude ?? ''}",
+                "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? ''}",
 
             /// Level Of Candidate is the only thing the user picks; the state
             /// comes from their profile and MEMBER_ID from the status API.
@@ -1323,6 +1319,7 @@ class NominationsProviderPhase2 extends ChangeNotifier {
       "V": AppConstants.nominationVersion,
       "ORG": "NSUI",
       "DEVICE_ID": await getDeviceIdentifier(),
+      "IP_ADDRESS": await getDeviceIpAddress(),
       "FIRST_NAME": usernameController.text,
       "LAST_NAME": lastNameController.text,
       "MOBILE": mobileController.text,

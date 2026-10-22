@@ -28,8 +28,8 @@ class VotersRepo {
   ]) async {
     var data =
         '''[{"V":"${AppConstants.voterSearchVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation?.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation?.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude}",
         "SEARCH_TEXT":"$searchKey",
         "STATE_CODE":"$statecode",
         "PARLIAMENT_CODE":"${prlimentCode ?? ""}","ASSEMBLY_CODE":"${assembyCode ?? ""}",
@@ -67,8 +67,8 @@ class VotersRepo {
       String? language}) async {
     var data =
         '''[{"V":"${AppConstants.voterSearchVersion}","ORG":"${AppConstants.orgName}","SESSION_ID":"${await LocalStorageServices().getSessionId()}",
-        "DEVICE_ID":"${await getDeviceIdentifier()}","USER_ID":"${await LocalStorageServices().getUserId()}",
-        "LATITUDE":"${sl<LocationProvider>().currentLocation!.latitude}","LONGITUDE":"${sl<LocationProvider>().currentLocation!.longitude}",
+        "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","USER_ID":"${await LocalStorageServices().getUserId()}",
+        "LATITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.latitude}","LONGITUDE":"${(await sl<LocationProvider>().getOrFetchCurrentLocation())!.longitude}",
         "SEARCH_TEXT":"$searchKey","STATE_CODE":"${await LocalStorageServices().getWorkStateCode()}",
         "PARLIAMENT_CODE":"${districtCode ?? ""}","ASSEMBLY_CODE":"${assembyCode ?? ""}",
         "PART_NO":"2","HOUSE_NO":"1","EPIC":"${epicId ?? ""}","LANG_CODE":"${language ?? ""}"

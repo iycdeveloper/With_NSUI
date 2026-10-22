@@ -498,11 +498,12 @@ class YIKBController extends GetxController {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
       "NAME": "${fullNameController.text}",
       "MOBILE": "${phoneController.text}",
       "STATE_CODE": "${selectedState!.stateCode}",
@@ -551,11 +552,12 @@ class YIKBController extends GetxController {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
       "YIKB_ID": "${paymentId}"
     };
     ApiResponse apiResponse =
@@ -646,11 +648,12 @@ class YIKBController extends GetxController {
       "ORG": "${AppConstants.orgName}",
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "LATITUDE":
-          "${sl<LocationProvider>().currentLocation?.latitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude ?? "0.0"}",
       "LONGITUDE":
-          "${sl<LocationProvider>().currentLocation?.longitude ?? "0.0"}",
+          "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude ?? "0.0"}",
       "YIKB_ID": "${id}"
     };
     ApiResponse apiResponse =

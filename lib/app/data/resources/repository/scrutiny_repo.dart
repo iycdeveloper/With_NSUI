@@ -23,8 +23,9 @@ class ScrutinyRepo {
       "SESSION_ID": "${await LocalStorageServices().getSessionId()}",
       "USER_ID": "${await LocalStorageServices().getUserId()}",
       "DEVICE_ID": "${await getDeviceIdentifier()}",
-      "LATITUDE": "${sl<LocationProvider>().currentLocation?.latitude}",
-      "LONGITUDE": "${sl<LocationProvider>().currentLocation?.longitude}"
+      "IP_ADDRESS": "${await getDeviceIpAddress()}",
+      "LATITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.latitude}",
+      "LONGITUDE": "${(await sl<LocationProvider>().getOrFetchCurrentLocation())?.longitude}"
     };
     var testJsonData = '''[${json.encode(jsonData)}]''';
     try {
@@ -47,7 +48,7 @@ class ScrutinyRepo {
     "AGGR_ID":"${await LocalStorageServices().getScrutinyAgrID()}",
     "V": "${AppConstants.scrutinyVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}","STATE_CODE":"${await LocalStorageServices().getSTCode()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}","STATE_CODE":"${await LocalStorageServices().getSTCode()}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
       Response result =
@@ -66,7 +67,7 @@ class ScrutinyRepo {
   "V": "${AppConstants.scrutinyVersion}",
     "BATCH_NO":"$batchNumber",
     "STATE":"${await LocalStorageServices().getSTCode()}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
       Response result =
@@ -87,7 +88,7 @@ class ScrutinyRepo {
   "V": "${AppConstants.scrutinyVersion}",
     "BATCH_NO":"${membersList.first.batchId}",
     "STATE_CODE":"${await LocalStorageServices().getSTCode()}",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
 
@@ -104,7 +105,7 @@ class ScrutinyRepo {
     "STATE":"${await LocalStorageServices().getSTCode()}",
     "V":"${AppConstants.membershipVersion}",
     "CHANNEL":"M",
-    "DEVICE_ID":"${await getDeviceIdentifier()}"}]''';
+    "DEVICE_ID":"${await getDeviceIdentifier()}","IP_ADDRESS":"${await getDeviceIpAddress()}"}]''';
     try {
       var base64encoded = base64.encode(utf8.encode(testJsonData));
       Response result =
